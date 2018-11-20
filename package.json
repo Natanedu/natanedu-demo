@@ -1,11 +1,28 @@
 {
-  "name": "natanedudemo",
+  "name": "natanedu",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Online application on blockchain",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/natanedu/natanedudemo.git"
+  },
+  "keywords": [
+    "Nodejs",
+    "Blockchain"
+  ],
+  "author": "Hrsikesh Brahmbhatt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/natanedu/natanedudemo/issues"
+  },
+  "homepage": "https://gitlab.com/natanedu/natanedudemo#readme",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "supervisor": "^0.12.0"
+  }
 }
