@@ -8,10 +8,14 @@ router.get('/', function(req, res) {
 router.get('/home', function(req, res) {
     res.render('home', {title: 'Express'});
 });
-router.get('/login', function(req, res) {
-    res.render('login', {title: 'Express'});
+
+router.get('/studentlogin', function(req, res) {
+    res.render('studentlogin', {title: 'Express'});
 });
 
+router.get('/teacherlogin', function(req, res) {
+    res.render('teacherlogin', {title: 'Express'});
+});
 
 
 module.exports = router;
