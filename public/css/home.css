@@ -112,9 +112,7 @@ body:before {
         background-size: cover;
       }
       
-      .portfolio-item {
-        margin-bottom: 30px;
-      }
+      
       
 
 
@@ -153,7 +151,6 @@ body:before {
     display: table;
     height: 100%;
     width: 100%;
-    margin-top: 20px;
   }
   
   .container-fostrap {
