@@ -112,7 +112,9 @@ body:before {
         background-size: cover;
       }
       
-      
+      .portfolio-item {
+        margin-bottom: 30px;
+      }
       
 
 
