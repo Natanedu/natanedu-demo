@@ -9,11 +9,11 @@ router.get('/home', function(req, res) {
     res.render('home', {title: 'Express'});
 });
 
-router.get('/studentlogin', function(req, res) {
+router.get('/student/login', function(req, res) {
     res.render('studentlogin', {title: 'Express'});
 });
 
-router.get('/teacherlogin', function(req, res) {
+router.get('/teacher/login', function(req, res) {
     res.render('teacherlogin', {title: 'Express'});
 });
 
