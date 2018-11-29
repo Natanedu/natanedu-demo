@@ -1002,7 +1002,7 @@ $(function () {
                 var button = $(this).closest('.btn-group').children('.btn');
                 button.hide();
                 var def = $(this).find(':selected').data('country-code');
-                var flagIcon = "css/flags/" + def + ".png";
+                var flagIcon = "/css/flags/" + def + ".png";
                 button.css("background-size", '20px');
                 button.css("background-position", '10px 9px');
                 button.css("padding-left", '40px');
@@ -1015,7 +1015,7 @@ $(function () {
             countryInput.eq(i).on('change', function () {
                 button = $(this).closest('.btn-group').children('.btn');
                 def = $(this).find(':selected').data('country-code');
-                flagIcon = "css/flags/" + def + ".png";
+                flagIcon = "/css/flags/" + def + ".png";
                 button.css("background-size", '20px');
                 button.css("background-position", '10px 9px');
                 button.css("padding-left", '40px');
