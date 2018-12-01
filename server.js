@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname,'public')));
 
 
 var server = http.createServer(app).listen(app.get('port'),function(){
-    console.log('Express Server listening on port' + app.get('port'));
-
+    console.log('Natanedu demo product');
+    console.log('Express Server listening on port ' + app.get('port'));
 });
 
