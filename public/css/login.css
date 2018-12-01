@@ -107,6 +107,13 @@ a:hover, a:focus {
     color: #ddd;
 }
 
+.login-form .input-country {
+    background: none;
+    height: 44px;
+    color: #000;
+}
+
+
 .login-form .input-group .input-group-addon {
     background: none;
 }
