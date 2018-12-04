@@ -1,46 +1,43 @@
 var isMetamask;
-var isMetamaskUnlocked;
+var isMetamaskLocked;
 var account;
 
-/*
-var web3 = require('web3');
-
-const isWeb3 = function() {
-    if (typeof web3 !== 'undefined') {
-        web3 = new Web3(web3.currentProvider);
-    } else {
-        // set the provider you want from Web3.providers
-        web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/N0tGtDdQUJr70MLNeVod"));
-    }    
-}
-
-module.exports = isWeb3;*/
-var checkMetamask = function() {
+function checkMetamask() {
     try {
         if (typeof web3 !== 'undefined') {
             web3 = new Web3(web3.currentProvider);
         } else {
             // set the provider you want from Web3.providers
             web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/N0tGtDdQUJr70MLNeVod"));
-        }        
+        }  
+        isMetamask = true;  
     }
     catch (e) {
         if (e instanceof ReferenceError) {
             alert("Please install metamask plugin");
+            isMetamask = false;
         }
     }
 }
 
-var checkMetamaskUnlocked = function() {
-        web3.eth.getAccounts(function(error, result) {
-        if(error != null) {
-            alert("Couldn't get accounts");
+//check if metamask is installed
+checkMetamask();
+
+//check if metamask is not locked
+//if so, get account address
+web3.eth.getAccounts(function(err, res) {
+    if(err) {
+        alert("Couldn't get accounts");
+        isMetamaskLocked =  true;
+    }
+    else {
+        if(res[0] == undefined) {
+            alert("Please unlock your Metamask");
+            isMetamaskLocked =  true;
         }
         else {
-            account = result[0];
-            if(account == undefined){
-                alert("Please unlock your Metamask");
-            }
+            account = res[0];
+            isMetamaskLocked = false;
         }
-    });
-}
+    }
+});
