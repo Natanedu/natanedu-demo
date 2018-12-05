@@ -458,20 +458,32 @@ var registerTeacher = function(fName, lName, topic, country) {
             account = res[0];
             console.log(account);
 
-            lectureInstance.registerTeacher(account, fName, lName, country, topic, function(err, res) {
-                if(err != null) {
-                    console.log(err);
+            lectureInstance.listedTeachers(account, function(err, res) {
+              if(err != null) {
+                alert(err);
+              }
+              else {
+                if(res != 0){
+                  alert("User already exist");
                 }
                 else {
-                    lectureInstance.listedTeachers(account, function(err, res) {
+                  lectureInstance.registerTeacher(account, fName, lName, country, topic, function(err, res) {
+                    if(err != null) {
+                        console.log(err);
+                    }
+                    else {
+                      lectureInstance.listedTeachers(account, function(err, res) {
                         if(err != null) {
                             console.log(err);
                         }
                         else {
                             console.log(res);
                         }
-                    });
+                      });
+                    }
+                });
                 }
+              }
             });
         }
     });
