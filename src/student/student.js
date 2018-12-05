@@ -460,28 +460,40 @@ var getLectureId = function() {
 }
 
 var registerStudent = function(fName, lName) {
-    var account;
-    web3.eth.getAccounts(function(err, res) {
-        if(res[0] != undefined) {
-            account = res[0];
-            console.log(account);
+  var account;
+  web3.eth.getAccounts(function(err, res) {
+    if(res[0] != undefined) {
+      account = res[0];
+      console.log(account);
 
-            lectureInstance.registerStudent(account, fName, lName, function(err, res) {
-                if(err != null) {
-                    console.log(err);
-                }
-                else {
-                    console.log(res);
-                    lectureInstance.listedStudents(account, function(err, res) {
-                        if(err != null) {
-                            console.log(err);
-                        }
-                        else {
-                            console.log(res);
-                        }
-                    });
-                }
-            });
+      lectureInstance.listedStudents(account, function(err, res) {
+        if(err != null) {
+          alert(err);
         }
-    });
+        else {
+          if(res != 0){
+            alert("User already exist");
+          }
+          else {
+            lectureInstance.registerStudent(account, fName, lName, function(err, res) {
+              if(err != null) {
+                console.log(err);
+              }
+              else {
+                console.log(res);
+                lectureInstance.listedStudents(account, function(err, res) {
+                    if(err != null) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log(res);
+                    }
+                });
+              }
+            });
+          }
+        }
+      })      
+    }
+  });
 }
