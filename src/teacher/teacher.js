@@ -451,28 +451,19 @@ var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x75f79a47c15babb8f9cedd818e04b112fdcafc6e';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var getLectureId = function() {
-    lectureInstance.lecturesId(function(err, res) {
-        if(res){
-            console.log(res);
-        }
-    });    
-}
-
-var registerStudent = function(fName, lName) {
+var registerTeacher = function(fName, lName, topic, country) {
     var account;
     web3.eth.getAccounts(function(err, res) {
         if(res[0] != undefined) {
             account = res[0];
             console.log(account);
 
-            lectureInstance.registerStudent(account, fName, lName, function(err, res) {
+            lectureInstance.registerTeacher(account, fName, lName, country, topic, function(err, res) {
                 if(err != null) {
                     console.log(err);
                 }
                 else {
-                    console.log(res);
-                    lectureInstance.listedStudents(account, function(err, res) {
+                    lectureInstance.listedTeachers(account, function(err, res) {
                         if(err != null) {
                             console.log(err);
                         }
