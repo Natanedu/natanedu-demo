@@ -459,14 +459,14 @@ var getLectureId = function() {
     });    
 }
 
-var register = function() {
+var register = function(fName, lName) {
     var account;
     web3.eth.getAccounts(function(err, res) {
         if(res[0] != undefined) {
             account = res[0];
             console.log(account);
 
-            lectureInstance.registerStudent(account, "test1", "test1", function(err, res) {
+            lectureInstance.registerStudent(account, fName, lName, function(err, res) {
                 if(err != null) {
                     console.log(err);
                 }
