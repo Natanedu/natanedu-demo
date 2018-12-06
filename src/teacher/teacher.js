@@ -488,3 +488,31 @@ var registerTeacher = function(fName, lName, topic, country) {
         }
     });
 }
+
+var loginTeacher = function() {
+  var account;
+  web3.eth.getAccounts(function(err, res) {
+    if(res[0] != undefined) {
+      account = res[0];
+      console.log(account);
+
+      lectureInstance.listedTeachers(account, function(err, res) {
+        if(err != null) {
+          alert(err);
+        }
+        else {
+          if(res == 0){
+            alert("teacher not found!");
+          }
+          else if (res == 1) {
+            alert("Blacklisted teacher!")
+          }
+          else if ((res == 2) || (res == 3)) {
+            alert("done");
+            //redirect to student dashboard
+          }
+        }
+      })      
+    }
+  });
+}

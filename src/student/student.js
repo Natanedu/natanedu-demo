@@ -498,7 +498,7 @@ var registerStudent = function(fName, lName) {
   });
 }
 
-var login = function() {
+var loginStudent = function() {
   var account;
   web3.eth.getAccounts(function(err, res) {
     if(res[0] != undefined) {
