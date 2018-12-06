@@ -482,18 +482,80 @@ var registerStudent = function(fName, lName) {
               else {
                 console.log(res);
                 lectureInstance.listedStudents(account, function(err, res) {
-                    if(err != null) {
-                        console.log(err);
-                    }
-                    else {
-                        console.log(res);
-                    }
+                  if(err != null) {
+                      console.log(err);
+                  }
+                  else {
+                      console.log(res);
+                  }
                 });
               }
             });
           }
         }
       })      
+    }
+  });
+}
+
+var login = function() {
+  var account;
+  web3.eth.getAccounts(function(err, res) {
+    if(res[0] != undefined) {
+      account = res[0];
+      console.log(account);
+
+      lectureInstance.listedStudents(account, function(err, res) {
+        if(err != null) {
+          alert(err);
+        }
+        else {
+          if(res == 0){
+            alert("student not found!");
+          }
+          else if (res == 1) {
+            alert("Blacklisted student!")
+          }
+          else if ((res == 2) || (res == 3)) {
+            alert("done");
+            //redirect to student dashboard
+          }
+        }
+      })      
+    }
+  });
+}
+
+var toHex = function(message) {
+  return web3.toHex(message);
+}
+
+async function signMessage(data) {
+  var account;
+  web3.eth.getAccounts(function(err, res) {
+    if(res[0] != undefined) {
+      account = res[0];
+      console.log(account);
+
+      web3.eth.sign(account, data, function(err, res) {
+        if(!err) {
+          console.log(res);
+        }
+        else {
+          console.log(err);
+        }
+      });
+    }
+  });
+}
+
+function sign(account, data) {
+  web3.eth.sign(account, data, function(err, res) {
+    if(!err) {
+      return res
+    }
+    else {
+      return err;
     }
   });
 }
