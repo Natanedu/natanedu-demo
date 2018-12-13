@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
         <link href="../css/login.css" rel="stylesheet">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
       
         <!-- web3 -->
         <script src="../web3/web3.js"></script>
@@ -33,7 +34,7 @@
                             <form class="login-form">
                               
                               <div class="form-group sign-btn">
-                                  <input type="submit" class="btn" value="Log in as Teacher">
+                                  <input type="submit" class="btn" onclick="loginTeacher();" value="Log in as Teacher">
                                  
                                  </div> 
                                  <div>
@@ -49,8 +50,5 @@
    
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script>
-        loginTeacher();
-    </script>
     </body>
     </html>

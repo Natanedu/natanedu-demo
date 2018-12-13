@@ -14,7 +14,7 @@ function checkMetamask() {
     }
     catch (e) {
         if (e instanceof ReferenceError) {
-            alert("Please install metamask plugin");
+            swal ( "Oops" ,  "Something went wrong!" ,  "error" );
             isMetamask = false;
         }
     }
@@ -27,12 +27,13 @@ checkMetamask();
 //if so, get account address
 web3.eth.getAccounts(function(err, res) {
     if(err) {
-        alert("Couldn't get accounts");
+        swal ( "Oops" ,  "Couldn't get accounts" ,  "error" );
         isMetamaskLocked =  true;
     }
     else {
         if(res[0] == undefined) {
-            alert("Please unlock your Metamask");
+            swal ( "Oops" , "Please unlock your Metamask" ,  "error" );
+        
             isMetamaskLocked =  true;
         }
         else {

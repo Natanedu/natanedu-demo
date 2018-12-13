@@ -460,11 +460,12 @@ var registerTeacher = function(fName, lName, topic, country) {
 
             lectureInstance.listedTeachers(account, function(err, res) {
               if(err != null) {
-                alert(err);
+                swal ( "Oops" ,  "Something went wrong!" ,  "error" );
               }
               else {
                 if(res != 0){
-                  alert("User already exist");
+                  swal ( "Oops" ,  "User already exist" ,  "error" );
+                
                 }
                 else {
                   lectureInstance.registerTeacher(account, fName, lName, country, topic, function(err, res) {
@@ -498,18 +499,18 @@ var loginTeacher = function() {
 
       lectureInstance.listedTeachers(account, function(err, res) {
         if(err != null) {
-          alert(err);
+          swal ( "Oops" ,  "Something went wrong!" ,  "error" );
         }
         else {
           if(res == 0){
-            alert("teacher not found!");
+            swal ( "Oops" ,  "teacher not found!" ,  "error" );
           }
           else if (res == 1) {
-            alert("Blacklisted teacher!")
+            swal ( "Oops" ,  "Blacklisted teacher!" ,  "error" );
           }
           else if ((res == 2) || (res == 3)) {
-            alert("done");
-            //redirect to student dashboard
+            swal("Good job!", "Done", "success");
+            //redirect to teacher dashboard
           }
         }
       })      
