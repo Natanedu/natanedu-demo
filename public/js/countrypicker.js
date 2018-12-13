@@ -993,7 +993,7 @@ $(function () {
             
             //for each build list with flag
             $.each(countries, function (index, country) {
-                var flagIcon = "css/flags/" + country.code + ".png";
+                var flagIcon = "/css/flags/" + country.code + ".png";
                 countryList += "<option data-country-code='" + country.code + "' data-tokens='" + country.code + " " + country.name + "' style='padding-left:25px; background-position: 4px 7px; background-image:url(" + flagIcon + ");background-repeat:no-repeat;' value='" + country.name + "'>" + country.name + "</option>";
             });
 

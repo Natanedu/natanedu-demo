@@ -459,6 +459,7 @@ var registerTeacher = function() {
     var topic = document.getElementById('teacher_topic').value;
     var country = document.getElementById('teacher_country').value;
 
+
     web3.eth.getAccounts(function(err, res) {
         if(res[0] != undefined) {
             account = res[0];
