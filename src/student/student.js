@@ -459,8 +459,12 @@ var getLectureId = function() {
     });    
 }
 
-var registerStudent = function(fName, lName) {
+var registerStudent = function() {
   var account;
+  //input from studnet-user
+  var fName = document.getElementById('studnet_first_name').value;
+  var lName = document.getElementById('studnet_last_name').value;
+
   web3.eth.getAccounts(function(err, res) {
     if(res[0] != undefined) {
       account = res[0];
@@ -468,11 +472,11 @@ var registerStudent = function(fName, lName) {
 
       lectureInstance.listedStudents(account, function(err, res) {
         if(err != null) {
-          alert(err);
+          swal ( "Oops" ,  "Something went wrong!" ,  "error" );
         }
         else {
           if(res != 0){
-            alert("User already exist");
+            swal ( "Oops" ,  "User already exist" ,  "error" );
           }
           else {
             lectureInstance.registerStudent(account, fName, lName, function(err, res) {
@@ -507,17 +511,17 @@ var loginStudent = function() {
 
       lectureInstance.listedStudents(account, function(err, res) {
         if(err != null) {
-          alert(err);
+          swal ( "Oops" ,  "Something went wrong!" ,  "error" );
         }
         else {
           if(res == 0){
-            alert("student not found!");
+            swal ( "Oops" ,  "Student not found!" ,  "error" );
           }
           else if (res == 1) {
-            alert("Blacklisted student!")
+            swal ( "Oops" ,  "Blacklisted student!" ,  "error" );
           }
           else if ((res == 2) || (res == 3)) {
-            alert("done");
+            swal("Congrats!", "you're logged in", "success");
             //redirect to student dashboard
           }
         }

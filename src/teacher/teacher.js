@@ -451,8 +451,14 @@ var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x75f79a47c15babb8f9cedd818e04b112fdcafc6e';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var registerTeacher = function(fName, lName, topic, country) {
+var registerTeacher = function() {
     var account;
+    //input from teacher-user
+    var fName = document.getElementById('teacher_first_name').value;
+    var lName = document.getElementById('teacher_last_name').value;
+    var topic = document.getElementById('teacher_topic').value;
+    var country = document.getElementById('teacher_country').value;
+
     web3.eth.getAccounts(function(err, res) {
         if(res[0] != undefined) {
             account = res[0];
@@ -509,7 +515,7 @@ var loginTeacher = function() {
             swal ( "Oops" ,  "Blacklisted teacher!" ,  "error" );
           }
           else if ((res == 2) || (res == 3)) {
-            swal("Good job!", "Done", "success");
+            swal("Congrats!", "you're logged in", "success");
             //redirect to teacher dashboard
           }
         }
