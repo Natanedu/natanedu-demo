@@ -14,7 +14,7 @@ function checkMetamask() {
     }
     catch (e) {
         if (e instanceof ReferenceError) {
-            swal ( "Oops" ,  "Please install metamask plugin" ,  "error" );
+            swal( "Oops" ,  "Please install metamask plugin" ,  "error" );
             isMetamask = false;
         }
     }
