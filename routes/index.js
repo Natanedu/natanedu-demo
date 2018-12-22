@@ -25,4 +25,12 @@ router.get('/teacher/signup', function(req, res) {
     res.render('teachersignup', {title: 'Express'});
 });
 
+router.get('/student/dashboard', function(req, res) {
+    res.render('studentdashb', {title: 'Express'});
+});
+
+router.get('/teacher/dashboard', function(req, res) {
+    res.render('teacherdashb', {title: 'Express'});
+});
+
 module.exports = router;
