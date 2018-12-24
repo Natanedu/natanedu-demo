@@ -33,4 +33,7 @@ router.get('/teacher/dashboard', function(req, res) {
     res.render('teacherdashb', {title: 'Express'});
 });
 
+router.get('/webrtc', function(req, res) {
+    res.render('webrtc', {title: 'Express'});
+});
 module.exports = router;
