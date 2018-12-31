@@ -523,6 +523,7 @@ var loginStudent = function() {
           else if ((res == 2) || (res == 3)) {
             swal("Congrats!", "you're logged in", "success");
             //redirect to student dashboard
+            window.location.href="/student/dashboard";
           }
         }
       })      

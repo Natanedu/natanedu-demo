@@ -14,7 +14,14 @@ function checkMetamask() {
     }
     catch (e) {
         if (e instanceof ReferenceError) {
-            swal( "Oops" ,  "Please install metamask plugin" ,  "error" );
+            swal({
+                title: 'Opps',
+                text: "Please install a Metamask",
+                icon: "error",
+                buttons: false,
+                closeOnClickOutside: false
+              });
+        
             isMetamask = false;
         }
     }
@@ -32,12 +39,18 @@ web3.eth.getAccounts(function(err, res) {
     }
     else {
         if(res[0] == undefined) {
-            swal ( "Oops" , "Please unlock your Metamask" ,  "error" );
+            swal({
+                title: 'Opps',
+                text: "Please unlock your Metamask",
+                icon: "error",
+                buttons: false,
+                closeOnClickOutside: false
+              });
         
             isMetamaskLocked =  true;
         }
         else {
-            account = res[0];
+            account = res[0];   
             isMetamaskLocked = false;
         }
     }
