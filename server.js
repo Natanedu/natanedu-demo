@@ -3,6 +3,7 @@ const http = require("http");
 const path = require("path");
 
 const routes = require("./routes/index");
+const Socket_Server = require("./socket_server");
 
 var app = express();
 
@@ -18,7 +19,8 @@ app.use(express.static(path.join(__dirname, "public")));
 //access files inside src
 app.use(express.static(__dirname + "/src"));
 
-var server = http.createServer(app).listen(app.get("port"), function() {
+http.createServer(app).listen(app.get("port"), function() {
   console.log("Natanedu demo product");
   console.log("Express Server listening on port " + app.get("port"));
+  Socket_Server(this);
 });
