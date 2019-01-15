@@ -2,7 +2,11 @@ const Redis = require("ioredis");
 const { Timer } = require("../lib");
 
 // By the moment, only connects to a localhost redis server.
-const redis_server = new Redis();
+let redis_server;
+if (process.env["NODE_ENV"] !== "development") {
+  const Redis = require("ioredis");
+  redis_server = new Redis();
+}
 
 // Timer Manager (Singleton)
 const timerManager = Timer.initialize();

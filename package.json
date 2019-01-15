@@ -4,7 +4,7 @@
   "description": "Online application on blockchain",
   "main": "server.js",
   "scripts": {
-    "start": "npx nodemon ./server.js",
+    "start": "NODE_ENV='development' npx nodemon ./server.js",
     "test:websocket": "npx nodemon ./socket_server/test/index.js"
   },
   "repository": {
