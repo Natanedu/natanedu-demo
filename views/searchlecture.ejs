@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Dashboard</title>
+    <link href="../css/searchtopic.css" rel="stylesheet" />
+  </head>
+  <body>
+    <% include studentdashb %>
+    <main class="l-main">
+      <div class="content-wrapper content-wrapper--with-bg">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+              <form class="example" autocomplete="off" action="#">
+                <div class="autocomplete" style="width:1000px;">
+                  <input
+                    id="myInput"
+                    type="text"
+                    name="myTopics"
+                    placeholder="Topics"
+                  />
+                  <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src="../js/autocomplete.js"></script>
+</html>
