@@ -37,4 +37,8 @@ router.get("/student/search_lecture", function(req, res) {
   res.render("searchlecture", { title: "Express" });
 });
 
+router.get("/student/search_page", function(req, res) {
+  res.render("searchpage", { title: "Express" });
+});
+
 module.exports = router;
