@@ -21,8 +21,8 @@ function checkMetamask() {
         title: "Opps",
         text: "Please install a Metamask",
         icon: "error",
-        buttons: false
-        //closeOnClickOutside: false
+        buttons: false,
+        closeOnClickOutside: false
       });
 
       isMetamask = false;
@@ -45,8 +45,8 @@ web3.eth.getAccounts(function(err, res) {
         title: "Opps",
         text: "Please unlock your Metamask",
         icon: "error",
-        buttons: false
-        //closeOnClickOutside: false
+        buttons: false,
+        closeOnClickOutside: false
       });
 
       isMetamaskLocked = true;

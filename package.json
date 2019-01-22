@@ -22,6 +22,7 @@
   },
   "homepage": "https://gitlab.com/natanedu/natanedudemo#readme",
   "dependencies": {
+    "bootstrap-slider": "^10.6.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "ioredis": "^4.3.0",
