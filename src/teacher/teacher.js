@@ -570,7 +570,7 @@ var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x390d828EBb648EB220eb078a25e61DE3d560b5F4';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var registerTeacher = function(fName,lName,topic,country,language) {
+var registerTeacher = function(fName,lName,country,topic,language) {
     var account;
     //input from teacher-user
   

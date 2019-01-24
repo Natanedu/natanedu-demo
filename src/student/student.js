@@ -623,7 +623,7 @@ var registerStudent = function() {
 
 var loginStudent = function() {
   var account;
-  web3.eth.getAccounts().then(function(err,res){
+  web3.eth.getAccounts(function(err,res){
     if(err != null) {
         swal ( "Oops" ,  "Something went wrong!" ,  "error" );
       }else{
