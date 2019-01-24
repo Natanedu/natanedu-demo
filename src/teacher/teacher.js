@@ -570,14 +570,10 @@ var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x390d828EBb648EB220eb078a25e61DE3d560b5F4';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var registerTeacher = function() {
+var registerTeacher = function(fName,lName,topic,country,language) {
     var account;
     //input from teacher-user
-    var fName = document.getElementById('teacher_first_name').value;
-    var lName = document.getElementById('teacher_last_name').value;
-    var topic = document.getElementById('teacher_topic').value;
-    var country = document.getElementById('teacher_country').value;
-
+  
 
     web3.eth.getAccounts(function(err, res) {
         if(res[0] != undefined) {
@@ -594,7 +590,7 @@ var registerTeacher = function() {
                 
                 }
                 else {
-                  lectureInstance.registerTeacher(account, fName, lName, country, topic, function(err, res) {
+                  lectureInstance.registerTeacher(account, fName, lName, country, topic,language, function(err, res) {
                     if(err != null) {
                         console.log(err);
                     }

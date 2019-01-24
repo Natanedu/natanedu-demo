@@ -623,7 +623,27 @@ var registerStudent = function() {
 
 var loginStudent = function() {
   var account;
-  web3.eth.getAccounts(function(err, res) {
+  web3.eth.getAccounts().then(function(err,res){
+    if(err != null) {
+        swal ( "Oops" ,  "Something went wrong!" ,  "error" );
+      }else{
+        if(res == 0){
+            swal ( "Oops" ,  "Student not found!" ,  "error" );
+          }
+          else if (res == 1) {
+            swal ( "Oops" ,  "Blacklisted student!" ,  "error" );
+          }
+          else if ((res == 2) || (res == 3)) {
+            swal("Congrats!", "you're logged in", "success");
+            //redirect to student dashboard
+            window.location.href="/student/dashboard";
+          }
+      }
+    
+  });
+}
+/*
+function(err, res) {
     if(res[0] != undefined) {
       account = res[0];
       console.log(account);
@@ -647,9 +667,8 @@ var loginStudent = function() {
         }
       })      
     }
-  });
-}
-
+  }
+*/
 var toHex = function(message) {
   return web3.toHex(message);
 }
