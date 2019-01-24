@@ -68,10 +68,12 @@
                
             });
             function login(){
-                var log=$("login-input").val();
+                var log=$("#login-input").val();
                 if(log=="1"){
+                    console.log("teacher login");
                     loginTeacher()
                 }else if(log=="2"){
+                    console.log("student login");
                     loginStudent();
                 }
             }
@@ -84,29 +86,22 @@
                 var topic = $('#teacher_topic').val();
                 var country  = $('#country-input .dropdown-content .selected').text();
                 var language  = $('#language-input .dropdown-content .selected').text();
-                 console.log(country);
-                 if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
-                        registerTeacher(fName,lName,country,topic,language);
-                        
-                 }   
+                if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
+                    registerTeacher(fName,lName,country,topic,language);      
+                }   
                
             }
             
             function signStudent(){
-                var elem=$('#country-input');
-                var instance = M.FormSelect.getInstance(elem);
                 var fName = $('#fistname_student').val();
                 var lName =$('#lastname_student').val();
-                 console.log(country);
-                 if(fName!=""||lName!=""){
-                    registerStudent(fName,lName);
-                        
-                 }  
+                if(fName!=""||lName!=""){
+                registerStudent(fName,lName);
+                    
+                }  
             }
            </script>   
             <script src="../js/countrypicker.js"></script> 
             <script src="../js/spoken-language.js"></script> 
-
-        
     </body>
 </html> 
