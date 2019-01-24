@@ -578,11 +578,9 @@ var getLectureId = function() {
     });    
 }
 
-var registerStudent = function() {
+var registerStudent = function(fName,lName) {
   var account;
-  //input from studnet-user
-  var fName = document.getElementById('studnet_first_name').value;
-  var lName = document.getElementById('studnet_last_name').value;
+
 
   web3.eth.getAccounts(function(err, res) {
     if(res[0] != undefined) {

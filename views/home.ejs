@@ -93,7 +93,15 @@
             }
             
             function signStudent(){
-
+                var elem=$('#country-input');
+                var instance = M.FormSelect.getInstance(elem);
+                var fName = $('#fistname_student').val();
+                var lName =$('#lastname_student').val();
+                 console.log(country);
+                 if(fName!=""||lName!=""){
+                    registerStudent(fName,lName);
+                        
+                 }  
             }
            </script>   
             <script src="../js/countrypicker.js"></script> 
