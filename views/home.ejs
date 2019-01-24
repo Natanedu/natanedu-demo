@@ -95,11 +95,11 @@
             function signStudent(){
                 var elem=$('#country-input');
                 var instance = M.FormSelect.getInstance(elem);
-                var fName = $('#teacher_first_name').val();
-                var lName =$('#teacher_last_name').val();
+                var fName = $('#fistname_student').val();
+                var lName =$('#lastname_student').val();
                  console.log(country);
-                 if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
-                        registerTeacher(fName,lName,topic,country,language);
+                 if(fName!=""||lName!=""){
+                    registerStudent(fName,lName);
                         
                  }  
             }
