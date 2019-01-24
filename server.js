@@ -1,14 +1,30 @@
-const express = require("express");
-const http = require("http");
-const path = require("path");
+var express = require("express");
+var http = require("http");
+var path = require("path");
 
 const routes = require("./routes/index");
 const Socket_Server = require("./socket_server");
 
 var app = express();
 
+
 //all environment
 app.set("port", process.env.PORT || 3000);
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+}).options('*', function(req, res, next){
+  res.end();
+});
+app.use(function(req, res, next) {
+  req.header("Access-Control-Allow-Origin", "*");
+  req.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+}).options('*', function(req, res, next){
+  req.end();
+});
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views" + "/");
 

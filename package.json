@@ -22,7 +22,7 @@
   },
   "homepage": "https://gitlab.com/natanedu/natanedudemo#readme",
   "dependencies": {
-    "bootstrap-slider": "^10.6.0",
+    "cors": "2.8.5",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "ioredis": "^4.3.0",
@@ -30,7 +30,8 @@
     "socket.io": "^2.2.0",
     "supervisor": "^0.12.0",
     "sweetalert": "^2.1.2",
-    "web3": "^1.0.0-beta.36"
+    "web3": "^1.0.0-beta.36",
+    "win-node-env": "^0.4.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
