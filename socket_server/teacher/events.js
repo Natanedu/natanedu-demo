@@ -5,7 +5,10 @@ const { Timer } = require("../lib");
 let redis_server;
 if (process.env["NODE_ENV"] !== "development") {
   const Redis = require("ioredis");
-  redis_server = new Redis();
+  // comment this line if your are not using docker
+  redis_server = new Redis(6379, 'redis');
+  // uncommend this line if your redis in localhost
+  //redis_server = new Redis();
 }
 
 // Timer Manager (Singleton)
