@@ -605,7 +605,7 @@ var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x31701a93877d74656982B9C1E0333F2CD35bf962';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var registerTeacher = function(fName,lName,country,topic,language) {
+var registerTeacher = function(fName,lName,country,topic,language,min,max) {
     var account;
     //input from teacher-user
   
@@ -625,7 +625,7 @@ var registerTeacher = function(fName,lName,country,topic,language) {
                 
                 }
                 else {
-                  lectureInstance.registerTeacher(account, fName, lName, country, topic,language, function(err, res) {
+                  lectureInstance.registerTeacher(account, fName, lName, country, topic,language,min,max, function(err, res) {
                     if(err != null) {
                         console.log(err);
                     }

@@ -2,8 +2,10 @@
 	<head>
        
        <!-- Compiled and minified CSS -->
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link rel="stylesheet" href="../css/home.css"/>
+        
 
         <script src="../web3/web3.js"></script>   
     </head>
@@ -40,12 +42,15 @@
       
           <!-- Compiled and minified JavaScript -->
           <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
           <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
           <!-- web3 -->
           <script src="../web3/web3.js"></script>
           <script src="../teacher/teacher.js"></script>  
           <script src="../student/student.js"></script>  
            <script>
+               var stepmax=10;
+               var max=10;
                $(document).ready(function(){
                 M.AutoInit();
                 var el=document.querySelectorAll("ul.tabs");
@@ -65,9 +70,54 @@
                 M.Dropdown.init(elems, {});
                 var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
                 M.Dropdown.init(elems_lang, {});
-                $(".carousel-slider").css("height","70%");
-               
+                $(".carousel-slider").css("height","72%");
+
+                var slider = document.getElementById('money-slider');
+                noUiSlider.create(slider, {
+                    start: [0.2,3],
+                    step:0.1,
+                    behaviour: 'drag',
+                    connect: true,
+                    orientation: 'horizontal',
+                    range: {
+                        'min': [0],
+                        'max': [10]
+                    }
+                });
+                slider.noUiSlider.on('update', function( values, handle ) {
+                    if(handle==0){
+                            $("#min-money").val(values[handle]);
+                            $("#money-val-min").text(values[handle])
+                    }else if(handle==1){
+                        $("#max-money").val(values[handle]);
+                        $("#money-val-max").text(values[handle]+" eth")
+                    }
+                   
+                });
+                slider.noUiSlider.on('change', function( values, handle ) {
+                    // on change of the slider, find the next element and set its value
+                   
+                    if(values[handle]==max){
+                    
+                        
+                        max=max+stepmax;
+                        slider.noUiSlider.updateOptions({
+                            start: [$("#min-money").val(),$("#max-money").val()],
+                            step:0.1,
+                            behaviour: 'drag',
+                            connect: true,
+                            orientation: 'horizontal',
+                            range: {
+                                'min': [0],
+                                'max': [max]
+                            }
+                        });
+                    }
+                    
+                    
+                });
             });
+
             function login(){
                 var log=$("#login-input").val();
                 if(log=="1"){
@@ -87,8 +137,10 @@
                 var topic = $('#teacher_topic').val();
                 var country  = $('#country-input .dropdown-content .selected').text();
                 var language  = $('#language-input .dropdown-content .selected').text();
+                var min=$("#min-money").val();
+                var max=$("#max-money").val();
                 if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
-                    registerTeacher(fName,lName,country,topic,language);      
+                    registerTeacher(fName,lName,country,topic,language,min,max);      
                 }   
                
             }
