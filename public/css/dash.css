@@ -21,3 +21,11 @@ body{
 .item-list{
     height: 105px;
 }
+.denied-btn{
+    background-color: transparent
+}
+.denied-btn:hover {
+
+    background-color: #2bbbad33;
+
+}

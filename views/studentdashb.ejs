@@ -41,7 +41,7 @@
                                   <div class="row"> 
                                       <div class="input-field col s8">
                                           <input id="topic" type="text" class="validate">
-                                          <label for="topic">Topic</label>
+                                          <label for="topic">Subject</label>
                                         </div> 
                                         <div class="col s4"></div>                                  
                                   </div>
@@ -53,7 +53,12 @@
                                       </div>
                                       <div class="col s4"></div>
                                   </div>
-                                    
+                                  <div class="row">
+                                    <div class="input-field col s12">
+                                      <textarea id="chapitre" class="materialize-textarea"></textarea>
+                                      <label for="chapitre">Chaptire you want to learn</label>
+                                    </div>
+                                  </div>
                                       
                                 </div>
                                 <div class="col s2"></div>
@@ -76,6 +81,7 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../js/makenotifcation.js"></script>
     <!-- web3 -->
     <script src="../web3/web3.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
@@ -92,7 +98,10 @@
                     console.log("ready");
                   })
                 socket.on("teacher-not-found",function(data){
-                      console.log("teacher-not found")
+                  createNotification("Alert","Opps!No teacher avaible for now!")
+                    });
+                    socket.on("teacher-found",function(){
+                     
                     });
                 function search(){
                   socket.emit("search-class", {

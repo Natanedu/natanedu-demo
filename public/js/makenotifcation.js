@@ -1,6 +1,6 @@
 // function for creating the notification
-function createNotification(title,data) {
-  var text = 'The student  ' + data.student_name + ' want a course in '+data.topic;
+function createNotification(title,text) {
+  
     // Let's check if the browser supports notifications
     if (!"Notification" in window) {
       console.log("This browser does not support notifications.");
