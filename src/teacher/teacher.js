@@ -676,3 +676,17 @@ var loginTeacher = function() {
     }
   });
 }
+
+function getCurrentTeacher(){
+    lectureInstance.teachers(account, function(err, res) {
+        if(!err) {
+            //res = Array<String firstName, String lastName>
+            console.log(res);
+        }
+        else {
+            console.log(err);
+        }
+    });
+}
+
+getCurrentTeacher();
