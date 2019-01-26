@@ -23,6 +23,11 @@ router.get("/webrtc", function(req, res) {
   res.render("webrtc", { title: "Express" });
 });
 
+// Route to conferences room
+router.get("/room/:id", function(req, res) {
+  res.send(200, "Here goes the room for the videocall");
+});
+
 router.get("/videocall", function(req, res) {
   res.render("videocall", { title: "Express" });
 });

@@ -1,4 +1,6 @@
 const Redis = require("ioredis");
+const objectHash = require("object-hash");
+
 const { Timer } = require("../lib");
 
 // By the moment, only connects to a localhost redis server.
@@ -17,7 +19,7 @@ const timerManager = Timer.initialize();
 const onTryToJoin = teacher => async ({ wallet, topic, country } = {}) => {
   console.log("Teacher: Joining room and saving teacher's data...");
   try {
-    await redis_server.set(wallet, { topic, country });
+    if (redis_server) await redis_server.set(wallet, { topic, country });
     teacher.join(topic);
     teacher.emit("joined", true);
   } catch (error) {
@@ -29,11 +31,17 @@ const onTryToJoin = teacher => async ({ wallet, topic, country } = {}) => {
   }
 };
 
-const onClassAccepted = student_nsp => student_id => {
+const onClassAccepted = (student_nsp, { url, socket } = {}) => student_id => {
   console.log("Teacher: Class accepted, joining room...");
   timerManager.clearTimeout(student_id);
 
-  student_nsp.to(student_id).emit("teacher-found");
+  const room_url = `${url}/room/${objectHash({
+    id: socket.id,
+    date: new Date().getMilliseconds()
+  })}`;
+
+  student_nsp.to(student_id).emit("teacher-found", room_url);
+  socket.emit("joining-room", room_url);
 };
 
 module.exports = { onTryToJoin, onClassAccepted };
