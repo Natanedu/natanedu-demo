@@ -68,6 +68,49 @@ var NatanLectureABI = [
         {
             "name": "_lastName",
             "type": "string"
+        },
+        {
+            "name": "_region",
+            "type": "string"
+        },
+        {
+            "name": "_topic",
+            "type": "string"
+        },
+        {
+            "name": "_language",
+            "type": "string"
+        },
+        {
+            "name": "_minPrice",
+            "type": "uint256"
+        },
+        {
+            "name": "_maxPrice",
+            "type": "uint256"
+        }
+        ],
+        "name": "registerTeacher",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x2667b14a"
+    },
+    {
+        "constant": false,
+        "inputs": [
+        {
+            "name": "_add",
+            "type": "address"
+        },
+        {
+            "name": "_name",
+            "type": "string"
+        },
+        {
+            "name": "_lastName",
+            "type": "string"
         }
         ],
         "name": "registerStudent",
@@ -242,39 +285,19 @@ var NatanLectureABI = [
         "signature": "0xaa1db8f6"
     },
     {
-        "constant": false,
-        "inputs": [
+        "constant": true,
+        "inputs": [],
+        "name": "getTeachersCount",
+        "outputs": [
         {
-            "name": "_add",
-            "type": "address"
-        },
-        {
-            "name": "_name",
-            "type": "string"
-        },
-        {
-            "name": "_lastName",
-            "type": "string"
-        },
-        {
-            "name": "_region",
-            "type": "string"
-        },
-        {
-            "name": "_topic",
-            "type": "string"
-        },
-        {
-            "name": "_language",
-            "type": "string"
+            "name": "",
+            "type": "uint256"
         }
         ],
-        "name": "registerTeacher",
-        "outputs": [],
         "payable": false,
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function",
-        "signature": "0xc7736878"
+        "signature": "0xaace7180"
     },
     {
         "constant": true,
@@ -335,6 +358,14 @@ var NatanLectureABI = [
         {
             "name": "language",
             "type": "string"
+        },
+        {
+            "name": "minPrice",
+            "type": "uint256"
+        },
+        {
+            "name": "maxPrice",
+            "type": "uint256"
         }
         ],
         "payable": false,
@@ -538,6 +569,10 @@ var NatanLectureABI = [
             "type": "uint256"
         },
         {
+            "name": "_student",
+            "type": "address"
+        },
+        {
             "name": "_teacher",
             "type": "address"
         }
@@ -547,7 +582,7 @@ var NatanLectureABI = [
         "payable": true,
         "stateMutability": "payable",
         "type": "function",
-        "signature": "0xffc88355"
+        "signature": "0x70690a72"
     },
     {
         "constant": false,
@@ -567,7 +602,7 @@ var NatanLectureABI = [
 ]
 
 var lectureContract = web3.eth.contract(NatanLectureABI);
-var contractAddress = '0x390d828EBb648EB220eb078a25e61DE3d560b5F4';
+var contractAddress = '0x31701a93877d74656982B9C1E0333F2CD35bf962';
 var lectureInstance = lectureContract.at(contractAddress);
 
 var registerTeacher = function(fName,lName,country,topic,language) {
