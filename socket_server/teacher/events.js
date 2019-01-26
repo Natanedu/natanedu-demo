@@ -3,13 +3,13 @@ const { Timer } = require("../lib");
 
 // By the moment, only connects to a localhost redis server.
 let redis_server;
-if (process.env["NODE_ENV"] !== "development") {
-  const Redis = require("ioredis");
+
   // comment this line if your are not using docker
   redis_server = new Redis(6379, 'redis');
+  console.log(redis_server.status)
   // uncommend this line if your redis in localhost
   //redis_server = new Redis();
-}
+
 
 // Timer Manager (Singleton)
 const timerManager = Timer.initialize();

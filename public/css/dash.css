@@ -1,0 +1,20 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400);
+body{
+    background-color: #fbfbfb;
+}
+.logo-nav{
+    width: 20%;
+    padding-left: 2%;
+}
+.title-center{
+    text-align: center;
+}
+.nav-natanedu{
+    background-color: #253E5D;
+}
+.accent-color{
+    background-color: #00B694;
+}
+.pad-l-5{
+    padding-left: 5px;
+}

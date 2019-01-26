@@ -3,90 +3,110 @@
   <head>
     <meta charset="UTF-8" />
     <title>Student Dashboard</title>
-    <link
-      rel="stylesheet prefetch"
-      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
-    />
-    <link
-      rel="stylesheet prefetch"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet prefetch"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
-    />
-    <link
-      href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-      rel="stylesheet"
-      id="bootstrap-css"
-    />
-    <link href="../css/dashboard.css" rel="stylesheet" />
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../css/dash.css">
 
-    <style class="cp-pen-styles">
-      @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700&subset=latin-ext");
-    </style>
-    <!-- web3 -->
-    <script src="../web3/web3.js"></script>
+   
   </head>
 
-  <body class="sidebar-is-reduced">
-    <header class="l-header">
-      <div class="l-header__inner clearfix">
-        <div class="c-header-icon js-hamburger">
-          <div class="hamburger-toggle">
-            <span class="bar-top"></span><span class="bar-mid"></span
-            ><span class="bar-bot"></span>
-          </div>
-        </div>
-        <div class="c-header-icon has-dropdown">
-          <span
-            class="c-badge
-                        c-badge--header-icon animated shake"
-            >12</span
-          ><i class="fa fa-bell"></i>
-          <div class="c-dropdown c-dropdown--notifications">
-            <div class="c-dropdown__header"></div>
-            <div class="c-dropdown__content"></div>
-          </div>
-        </div>
+  <body>
+      <div class="navbar-fixed">
+          <nav class="nav-natanedu">
+              <div class="nav-wrapper">
+                <a href="#" class="brand-logo"> 
+                  <img src="../img/logo.png" class="size-35 logo-nav"/>
+                </a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                  <li><a href="/profile">profile</a></li>
+                  
+                </ul>
+              </div>
+              
+            </nav>
+      
       </div>
-    </header>
-    <div class="l-sidebar">
-      <div class="logo"><div class="logo__txt">S</div></div>
-      <div class="l-sidebar__content">
-        <nav class="c-menu js-menu">
-          <ul class="u-list">
-            <li class="c-menu__item" data-toggle="tooltip" title="Profile">
-              <a class="nav-link" href="/student/dashboard">
-                <div class="c-menu__item__inner">
-                  <i class="fa fa-file-text-o"></i>
-                  <div class="c-menu-item__title"><span>Profile</span></div>
-                </div>
-              </a>
-            </li>
-            <li
-              class="c-menu__item has-submenu"
-              data-toggle="tooltip"
-              title="Lecture"
-            >
-              <a class="nav-link" href="/student/search_lecture">
-                <div class="c-menu__item__inner">
-                  <i class="fa fa-caret-square-o-right"></i>
+      <div class="contaier" id="main">
+          <div class="row">
+              <div class="col s12">
+                    <div class="row col s3"></div>
+                    <div class="row col s6">
+                        <div class="card">
+                          <div  class="card-title title-center"><span>Search for course</span></div>
+                            
+                          
+                          <div class="card-content">
+                            <div class="row">
+                              <div class="col s2"></div>
+                                <div class="col s10">
+                                  <div class="row"> 
+                                      <div class="input-field col s8">
+                                          <input id="topic" type="text" class="validate">
+                                          <label for="topic">Topic</label>
+                                        </div> 
+                                        <div class="col s4"></div>                                  
+                                  </div>
+                                  <div class="row">
+                                      <div class="input-field col s8"  id="language-input">
+                                          <select id="languagepicker" >
+                                              <option value="" disabled selected>Choose language of course</option>
+                                          </select>
+                                      </div>
+                                      <div class="col s4"></div>
+                                  </div>
+                                    
+                                      
+                                </div>
+                                <div class="col s2"></div>
+                            </div>
+                              
+                          </div>
+                          <div class="card-action">
+                            <button class="waves-effect waves-light btn" onclick="search()">Search</button>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row col s3"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
 
-                  <div class="c-menu-item__title"><span>Lecture</span></div>
-                </div>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- web3 -->
+    <script src="../web3/web3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+
+    <script>
+      $( document ).ready(function() {
+        var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
+                M.Dropdown.init(elems_lang, {});
+
+               
+    });
+              var socket = io.connect('http://localhost:8080/students');
+              socket.on("ready",function(){
+                    console.log("ready");
+                  })
+                socket.on("teacher-not-found",function(data){
+                      console.log("teacher-not found")
+                    });
+                function search(){
+                  socket.emit("search-class", {
+                    room_url: "http://example.com/call",
+                    student_name: "dali",
+                    topic: "math",
+                    prize: "0.2 eth",
+                    country: "tunisia"
+
+                  });
+                }
+    
+    </script>
+    
+    <script src="../js/spoken-language.js"></script> 
   </body>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <script src="https://use.fontawesome.com/2188c74ac9.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="../js/dashboard.js"></script>
 </html>
