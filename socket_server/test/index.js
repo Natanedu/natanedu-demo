@@ -14,7 +14,8 @@ const Socket_Server = require("../");
 
 const Server = http.createServer(() => console.log("Creating Server..."));
 Server.listen(3030, () => console.log("Server up on http://localhost:3030"));
-Socket_Server(Server);
+const URL = "http://localhost:3030";
+Socket_Server(URL, Server);
 
 /**
  * In the client side, you don't need to join this way.
@@ -54,25 +55,25 @@ teacher.on("joined", (isJoined, error) => {
  * The client it's going to receive the following data to show it to the Teacher
  * Now the Teacher can decide if they wants to accept the class or not.
  */
-teacher.on(
-  "class-available",
-  ({ student_name, id, prize, country, room_url }) => {
-    console.log("Server: Class Available for teacher");
-    console.log("Teacher: Data received:", {
-      student_name,
-      id,
-      prize,
-      country,
-      room_url
-    });
+teacher.on("class-available", ({ student_name, id, prize, country }) => {
+  console.log("Server: Class Available for teacher");
+  console.log("Teacher: Data received:", {
+    student_name,
+    id,
+    prize,
+    country
+  });
 
-    /**
-     * If the Teacher accepts the class, it's going to emit
-     * the event "class-accepted" with the parameter id that the Teacher receive
-     * in the "class-available" event
-     */
-    teacher.emit("class-accepted", id);
-  }
+  /**
+   * If the Teacher accepts the class, it's going to emit
+   * the event "class-accepted" with the parameter id that the Teacher receive
+   * in the "class-available" event
+   */
+  teacher.emit("class-accepted", id);
+});
+
+teacher.on("joining-room", url =>
+  console.log("Teacher: Joining room for videocall...", url)
 );
 
 // The setTimeout it's only for demo purposes
@@ -96,10 +97,10 @@ setTimeout(() => {
 
   /**
    * If the server find a Teacher, it's going to emit the event "teacher-found",
-   * telling the Student that a Teacher it's going to teach him something */
+   * telling the Student that a Teacher it's going to teach him something with an attached URL */
 
-  student.on("teacher-found", () =>
-    console.log("Student: Teacher found, joining to the room...")
+  student.on("teacher-found", url =>
+    console.log("Student: Teacher found, joining to the room...", url)
   );
 
   /**
@@ -107,7 +108,6 @@ setTimeout(() => {
    * data to do a search.
    */
   student.emit("search-class", {
-    room_url: "http://example.com/call",
     student_name: "Charlie",
     topic: "Spanish",
     prize: "$58 USD",

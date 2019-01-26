@@ -3,7 +3,6 @@ const { Timer } = require("../lib");
 const timerManager = Timer.initialize();
 
 const onSearchClass = (teachers_nsp, student_socket) => ({
-  room_url,
   student_name,
   topic,
   prize,
@@ -19,7 +18,6 @@ const onSearchClass = (teachers_nsp, student_socket) => ({
     id: student_socket.id,
     prize,
     country,
-    room_url
   });
 
   // Sets a timer. If the not teacher found, emits the event 'teacher-not-found'
@@ -30,8 +28,7 @@ const onSearchClass = (teachers_nsp, student_socket) => ({
     student_socket.emit("teacher-not-found", {
       student_name,
       prize,
-      country,
-      room_url
+      country
     });
   });
 };

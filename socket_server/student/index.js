@@ -1,6 +1,6 @@
 const Events = require("./events");
 
-module.exports = (io, teacher_nsp) => {
+module.exports = (io, teacher_nsp, { url } = {}) => {
   io.on("connection", socket => {
     console.log(
       `Student: Socket (${socket.id}) connected to Students notification system`
