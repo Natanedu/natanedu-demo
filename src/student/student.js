@@ -666,17 +666,17 @@ var loginStudent = function() {
             swal ( "Oops" ,  "Something went wrong!" ,  "error" );
             }
             else {
-            if(res == 0){
-                swal ( "Oops" ,  "Student not found!" ,  "error" );
-            }
-            else if (res == 1) {
-                swal ( "Oops" ,  "Blacklisted student!" ,  "error" );
-            }
-            else if ((res == 2) || (res == 3)) {
-                swal("Congrats!", "you're logged in", "success");
-                //redirect to student dashboard
-                window.location.href="/student/dashboard";
-            }
+                if(res == 0){
+                    swal ( "Oops" ,  "Student not found!" ,  "error" );
+                }
+                else if (res == 1) {
+                    swal ( "Oops" ,  "Blacklisted student!" ,  "error" );
+                }
+                else if ((res == 2) || (res == 3)) {
+                    swal("Congrats!", "you're logged in", "success");
+                    //redirect to student dashboard
+                    window.location.href="/student/dashboard";
+                }
             }
         })      
     }    
@@ -715,4 +715,16 @@ function sign(account, data) {
       return err;
     }
   });
+}
+
+function getCurrentStudent(){
+    lectureInstance.students(account, function(err, res) {
+        if(!err) {
+            //res = Array<String firstName, String lastName>
+            console.log(res);
+        }
+        else {
+            console.log(err);
+        }
+    });
 }
