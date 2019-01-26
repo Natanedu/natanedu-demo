@@ -6,8 +6,6 @@ module.exports = (io, student_nsp, { url } = {}) => {
       `Teacher: Socket (${socket.id}) connected to Teachers Namespace`
     );
 
-    // console.log(url);
-
     socket.on("try-to-join", Events.onTryToJoin(socket));
 
     // When a Class is available on a specific topic room
