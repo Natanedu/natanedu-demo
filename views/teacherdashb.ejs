@@ -63,33 +63,34 @@
     <!-- web3 -->
     <script src="../js/makenotifcation.js"></script>
     <script src="../web3/web3.js"></script> 
+    <script src="../teacher/teacher.js"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     
     <script>
       $( document ).ready(function() {
+        
         var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
                 M.Dropdown.init(elems_lang, {});
 
                
             });
-            var topic="math";
-                var min_price=0.1;
-                var max_price=0.6;
-                var lang="Arabic";
-              var data;
+            var topic;
+            var min_price=0.1;
+            var max_price=0.6;
+            var lang;
+            var data;
             var socket = io.connect('http://localhost:8080/teachers');
               socket.on('ready', function(){
                   const hash = account;
-                  console.log(hash);
-                  const data = { wallet: hash, topic: topic, country: "tunisia",lang:lang,min:min_price,max:max_price };
-
-                  socket.emit("try-to-join", data);
+                  getCurrentTeacher(hash);
+                  
+                  
                  
                     
                 });
                 socket.on('joined', function(data){
                   console.log(data);
-                 
+                  console.log(topic);
                     
                 });
                
@@ -106,7 +107,7 @@
                       $("#empty-notif").addClass("hide");
                       }
                     $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
-                      '<span class="title " style="font-size:20px;">'+topic+'</span>'+
+                      '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
                       ' <p class="grey-text">'+
                           data.student_name+' want a course with '+data.prize+'<br/>'+
                           'detail: '+data.chapitre+
