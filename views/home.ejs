@@ -2,12 +2,15 @@
 	<head>
        
        <!-- Compiled and minified CSS -->
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <link rel="stylesheet" href="../css/home.css"/>
         <link rel="stylesheet" href="../css/uirange.css"/>
 
-        <script src="../web3/web3.js"></script>   
+        <!-- web3 -->
+        <script src="../web3/web3.js"></script>
+        <script src="../teacher/teacher.js"></script>  
+        <script src="../student/student.js"></script>   
     </head>
     <body>
         <div class="row row-index">
@@ -44,10 +47,7 @@
           <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
           <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-          <!-- web3 -->
-          <script src="../web3/web3.js"></script>
-          <script src="../teacher/teacher.js"></script>  
-          <script src="../student/student.js"></script>  
+           
            <script>
                var stepmax=10;
                var max=10;
@@ -140,7 +140,7 @@
                 var min=$("#min-money").val();
                 var max=$("#max-money").val();
                 if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
-                    registerTeacher(fName,lName,country,topic,language,min,max);      
+                    registerTeacher(fName,lName,country,topic,language,web3.toWei(min, 'ether'),web3.toWei(max, 'ether'));      
                 }   
                
             }

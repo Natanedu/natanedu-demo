@@ -7,8 +7,17 @@
     <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="../js/makenotifcation.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+    <!-- web3 -->
+    <script src="../web3/web3.js"></script> 
+    <script src="../teacher/teacher.js"></script> 
+
     
 
 </head>
@@ -54,18 +63,7 @@
             </div>
         </div>
     </div>
-              
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <!-- web3 -->
-    <script src="../js/makenotifcation.js"></script>
-    <script src="../web3/web3.js"></script> 
-    <script src="../teacher/teacher.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    
+                  
     <script>
       $( document ).ready(function() {
         
@@ -75,8 +73,9 @@
                
             });
             var topic;
-            var min_price=0.1;
-            var max_price=0.6;
+            //TODO change dynamic
+            //var min_price=0.1;
+            //var max_price=0.6;
             var lang;
             var data;
             var socket = io.connect('http://localhost:8080/teachers');
