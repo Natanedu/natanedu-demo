@@ -716,16 +716,3 @@ function sign(account, data) {
     }
   });
 }
-
-function getCurrentStudent(account){
-    lectureInstance.students(account, function(err, res) {
-        if(!err) {
-            name = res[0] +" "+ res[1];
-        }
-        else {
-            console.log(err);
-            return "";
-        }
-        return "";
-    });
-}

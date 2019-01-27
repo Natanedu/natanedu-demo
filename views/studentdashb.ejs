@@ -7,21 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
     <link rel="stylesheet" href="/css/uirange.css"/>
-      
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="../js/makenotifcation.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-    <script src="../js/spoken-language.js"></script> 
 
     <!-- web3 -->
     <script src="../web3/web3.js"></script> 
-    <script src="../teacher/teacher.js"></script> 
-  </head>
+    <script src="../student/student.js"></script> 
+
+    </head>
 
   <body>
         <div class="navbar-fixed">
@@ -110,11 +101,18 @@
             </div>
         </div>
 
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="../js/makenotifcation.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+        <script src="../js/spoken-language.js"></script> 
+        
+
         <script>
-                console.log(account);
-            var firstName;
-            var lastName;
-            var studentName;
             var stepmax=10;
             var max=10;
             $( document ).ready(function() {
@@ -209,9 +207,8 @@
             });
         
             var socket = io.connect('http://localhost:3000/students');
-            socket.on("ready",function(){
-                console.log("ready");
-                //studentName =  getCurrentStudent(account);
+            socket.on("ready",function(studentName){
+                console.log("ready");              
             })
             socket.on("teacher-not-found",function(data){
                 createNotification("Alert","Opps!No teacher avaible for now!")
@@ -219,27 +216,31 @@
             socket.on("teacher-found",function(){
                 
             });
+
             function search(){
-                var topic=$("#topic").val();
-                var chapitres=$("#chapitre").val();
-                var price=$("#money").val();
-                var hour=$("#time").val();
-                var language  = $('#language-input .dropdown-content .selected').text();
-                if(topic==""||language=="Choose language of course"){
-                    alert("empty fields!");
-                }else{
-                    console.log(firstName +" "+ lastName);
-                    socket.emit("search-class", {
-                        chapitre: chapitres,
-                        student_name: "dali",
-                        topic: topic,
-                        prize: web3.toWei(price, 'ether'),
-                        lang: language,
-                        hour:hour
-                    });
-                }    
+                lectureInstance.students(account, function(err, res) {
+                    studentName = res[0] +" "+ res[1];
+                    console.log(studentName);
+
+                    var topic=$("#topic").val();
+                    var chapitres=$("#chapitre").val();
+                    var price=$("#money").val();
+                    var hour=$("#time").val();
+                    var language  = $('#language-input .dropdown-content .selected').text();
+                    if(topic==""||language=="Choose language of course"){
+                        alert("empty fields!");
+                    }else{
+                        socket.emit("search-class", {
+                            chapitre: chapitres,
+                            student_name: studentName,
+                            topic: topic,
+                            prize: web3.toWei(price, 'ether'),
+                            lang: language,
+                            hour:hour
+                        });
+                    }    
+                });
             }
-            </script>
-        
+            </script>        
     </body>
 </html>

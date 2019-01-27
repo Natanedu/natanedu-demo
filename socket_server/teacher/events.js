@@ -7,8 +7,8 @@ const { Timer } = require("../lib");
 let redis_server;
 
   // comment this line if your are not using docker
-  redis_server = new Redis(6379, 'redis');
-  console.log(redis_server.status)
+  //redis_server = new Redis(6379, 'redis');
+  //console.log(redis_server.status)
   // uncommend this line if your redis in localhost
   //redis_server = new Redis();
 

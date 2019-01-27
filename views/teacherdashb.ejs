@@ -92,8 +92,8 @@
 
                 $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
                   '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
-                  ' <p class="grey-text">'+
-                      data.student_name+' want a course with '+ web3.fromWei(data.prize, "ether")+'<br/>'+
+                  ' <p class="grey-text"> The student '+
+                      data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
                       'detail: '+data.chapitre+
                     '</p><br/>'+
                     '<div class="row">'+
