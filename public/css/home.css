@@ -140,31 +140,3 @@
 .select-wrapper input.select-dropdown:focus {
     border-bottom: 0px ;
 }
-.noUi-target {
-    background: #bbbbbb;
-    border-radius: 4px;
-     border: 0px;
-     box-shadow: 0px;
-}
-html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
-    right: 0px;
-    left: auto;
-}
-
-.noUi-horizontal {
-    height: 7px;
-}
-.noUi-horizontal .noUi-handle {
-    width: 10px;
-    height: 10px;
-    left: -17px;
-    top: -2px;
-}
-.noUi-handle:before, .noUi-handle:after {
-    width: 17px;
-    content: none;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    display: block;
-}

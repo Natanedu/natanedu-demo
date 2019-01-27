@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
-
+    <link rel="stylesheet" href="/css/uirange.css"/>
    
   </head>
 
@@ -54,19 +55,39 @@
                                       <div class="col s4"></div>
                                   </div>
                                   <div class="row">
-                                    <div class="input-field col s12">
+                                    <div class="input-field col s8">
                                       <textarea id="chapitre" class="materialize-textarea"></textarea>
                                       <label for="chapitre">Chaptire you want to learn</label>
                                     </div>
+                                    <div class="col s4"></div>
                                   </div>
-                                      
+                                  <div class="row">
+                                      <div  class="input-field col s6 " style="margin-bottom:0px">
+                                          <label style="top:-32px;">
+                                              <span>Time of course</span>
+                                          </label>
+                                        <div class="range-field" id="time-slider" style="margin-top: 5px;margin-left: 5px;"></div>
+                                        <input type="hidden" id="time" value="1"/>
+                                        <span id="time-val"></span>
+                                      </div>
+                                   </div>
+                                  <div class="row">
+                                      <div  class="input-field col s6 " style="margin-bottom:0px">
+                                          <label style="top:-32px;">
+                                              <span>Price</span>
+                                          </label>
+                                        <div class="range-field" id="price-slider" style="margin-top: 5px;margin-left: 5px;"></div>
+                                        <input type="hidden" id="money" value="0.2"/>
+                                        <span id="money-val"></span>
+                                      </div>
+                                   </div> 
                                 </div>
                                 <div class="col s2"></div>
                             </div>
                               
                           </div>
                           <div class="card-action">
-                            <button class="waves-effect waves-light btn" onclick="search()">Search</button>
+                            <button class="waves-effect waves-light btn" onclick="search()">Find natan</button>
                           </div>
                         </div>
                     </div>
@@ -80,6 +101,7 @@
       
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="../js/makenotifcation.js"></script>
     <!-- web3 -->
@@ -87,12 +109,101 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 
     <script>
+      var stepmax=10;
+               var max=10;
       $( document ).ready(function() {
         var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
                 M.Dropdown.init(elems_lang, {});
 
                
-    });
+         });
+                var slider = document.getElementById('price-slider');
+                noUiSlider.create(slider, {
+                    start: [0.2],
+                    step:0.1,
+                    margin: 0.2,
+                    orientation: 'horizontal',
+                    range: {
+                        'min': 0,
+                        'max': 10
+                    }
+                });
+                var timerslider = document.getElementById('time-slider');
+                noUiSlider.create(timerslider, {
+                    start: [1],
+                    step:1,
+                    behaviour: 'drag',
+                    connect: true,
+                    orientation: 'horizontal',
+                    range: {
+                        'min': 0,
+                        'max': 10
+                    }
+                });
+                slider.noUiSlider.on('update', function( values, handle ) {
+                    
+                            $("#money").val(values[handle]);
+                            $("#money-val").text(values[handle]+" eth")
+                   
+                   
+                });
+                slider.noUiSlider.on('change', function( values, handle ) {
+                    // on change of the slider, find the next element and set its value
+                   
+                    if(values[handle]==max){
+                    
+                        
+                        max=max+stepmax;
+                        slider.noUiSlider.updateOptions({
+                            start: [$("#money").val()],
+                            step:0.1,
+                            behaviour: 'drag',
+                            connect: true,
+                            margin: 0.2,
+                            orientation: 'horizontal',
+                            range: {
+                                'min': [0],
+                                'max': [max]
+                            }
+                        });
+                    }
+                    
+                    
+                });
+                
+                timerslider.noUiSlider.on('update', function( values, handle ) {
+                    
+                            $("#time").val(values[handle]);
+                            $("#time-val").text(values[handle]+" hour")
+                   
+                   
+                });
+                timerslider.noUiSlider.on('change', function( values, handle ) {
+                    // on change of the slider, find the next element and set its value
+                   
+                    if(values[handle]==max){
+                    
+                        
+                        max=max+stepmax;
+                        timerslider.noUiSlider.updateOptions({
+                            start: [$("#time").val()],
+                            step:1,
+                            behaviour: 'drag',
+                            connect: [true],
+                            orientation: 'horizontal',
+                            range: {
+                                'min': [0],
+                                'max': [max]
+                            }
+                        });
+                    }
+                    
+                    
+                });
+          
+
+
+
               var socket = io.connect('http://localhost:8080/students');
               socket.on("ready",function(){
                     console.log("ready");
@@ -104,14 +215,24 @@
                      
                     });
                 function search(){
-                  socket.emit("search-class", {
-                    room_url: "http://example.com/call",
+                  var topic=$("#topic").val();
+                  var chapitres=$("#chapitre").val();
+                  var price=$("#money").val();
+                  var hour=$("#time").val();
+                  var language  = $('#language-input .dropdown-content .selected').text();
+                  if(topic==""||language=="Choose language of course"){
+                      alert("empty fields!");
+                  }else{
+                    socket.emit("search-class", {
+                    chapitre: chapitres,
                     student_name: "dali",
-                    topic: "math",
-                    prize: "0.2 eth",
-                    country: "tunisia"
-
+                    topic: topic,
+                    prize: price,
+                    lang: language,
+                    hour:hour
                   });
+                  }
+                  
                 }
     
     </script>

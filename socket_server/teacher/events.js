@@ -16,10 +16,10 @@ let redis_server;
 // Timer Manager (Singleton)
 const timerManager = Timer.initialize();
 
-const onTryToJoin = teacher => async ({ wallet, topic, country } = {}) => {
+const onTryToJoin = teacher => async ({ wallet, topic, country,lang,min,max } = {}) => {
   console.log("Teacher: Joining room and saving teacher's data...");
   try {
-    if (redis_server) await redis_server.set(wallet, { topic, country });
+    if (redis_server) await redis_server.set(wallet, { topic, country,lang,min,max });
     teacher.join(topic);
     teacher.emit("joined", true);
   } catch (error) {
