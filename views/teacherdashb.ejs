@@ -16,10 +16,7 @@
     
     <!-- web3 -->
     <script src="../web3/web3.js"></script> 
-    <script src="../teacher/teacher.js"></script> 
-
-    
-
+    <script src="../teacher/teacher.js"></script>    
 </head>
 
 <body >
@@ -65,91 +62,64 @@
     </div>
                   
     <script>
-      $( document ).ready(function() {
-        
+      $( document ).ready(function() { 
         var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
-                M.Dropdown.init(elems_lang, {});
-
-               
-            });
-            var topic;
-            //TODO change dynamic
-            //var min_price=0.1;
-            //var max_price=0.6;
-            var lang;
-            var data;
-            var socket = io.connect('http://localhost:8080/teachers');
-              socket.on('ready', function(){
-                  const hash = account;
-                  getCurrentTeacher(hash);
-                  
-                  
-                 
-                    
-                });
-                socket.on('joined', function(data){
-                  console.log(data);
-                  console.log(topic);
-                    
-                });
-               
-                var title="Your courses";
-                socket.on("class-available", function(student){
-                  console.log(student);
-                 
-                  data=student;//JSON.parse(student);
-                  if(data.prize<=max_price&&data.prize>=min_price&&data.lang==lang){
-                    var d = new Date();
-                    var id = d.getTime();
-                    if (document.getElementById("notification").hasChildNodes()) {
-                      $("#notification").removeClass("hide");
-                      $("#empty-notif").addClass("hide");
-                      }
-                    $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
-                      '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
-                      ' <p class="grey-text">'+
-                          data.student_name+' want a course with '+data.prize+'<br/>'+
-                          'detail: '+data.chapitre+
-                        '</p><br/>'+
-                        '<div class="row">'+
-                            '<button onclick="accecpt()" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
-                          '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
-                        '</div>'+
-                        '<div class="secondary-content">'+
-                            parseInt(data.hour)+'hour'+
-                      '</div>'+
-                      '</li>');
-                      data.topic=topic;
-                  var text = 'The student  ' + data.student_name + ' want a course in '+data.topic;
-                  createNotification(title,text);
+          M.Dropdown.init(elems_lang, {});
+        });
+            
+        var socket = io.connect('http://localhost:3000/teachers');
+          socket.on('ready', function(){
+            getCurrentTeacher(account);            
+          });
+          socket.on('joined', function(data){
+            console.log(data);
+            console.log(topic);
+              
+          });
+            
+            var title="Your courses";
+            socket.on("class-available", function(student){
+              console.log(student);
+              
+              data=student;
+              if(data.prize<=max_price&&data.prize>=min_price&&data.lang==lang){
+                var d = new Date();
+                var id = d.getTime();
+                if (document.getElementById("notification").hasChildNodes()) {
+                  $("#notification").removeClass("hide");
+                  $("#empty-notif").addClass("hide");
                   }
-                 
-                  /*$("#notification").append('<div class="row">'+
-                                              '<div class="col s12 m12">'+
-                                                '<div class="card blue-grey lighten-5">'+
-                                                  '<div class="card-content black-text">'+
-                                                    '<span class="card-title title-center">new course in '+topic+'</span>'+
-                                                        '<div class="row"><p class="pad-l-5">'+data.student_name+' want a course with '+data.prize+'</p></div>'+
-                                                    '</div>'+
-                                                  '<div class="card-action">'+
-                                                    '<button class="waves-effect waves-light btn-flat ">denied</button>'+
-                                                    '<button class="waves-effect waves-teal btn accent-color">accept</button>'+
-                                                  '</div></div></div></div>'
-                                             )*/
-                  
-                    
-                });
-                function denied(id){
-                  $("#"+id).remove();
-                  if (document.getElementById("notification").hasChildNodes()) {
-                      $("#notification").addClass("hide");
-                      $("#empty-notif").removeClass("hide");
-                      }
-                }
-                function accecpt(){
-                  
-                  socket.emit("class-accepted", data.id);
-                }
+
+                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
+                  '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
+                  ' <p class="grey-text">'+
+                      data.student_name+' want a course with '+ web3.fromWei(data.prize, "ether")+'<br/>'+
+                      'detail: '+data.chapitre+
+                    '</p><br/>'+
+                    '<div class="row">'+
+                        '<button onclick="accecpt()" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
+                      '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
+                    '</div>'+
+                    '<div class="secondary-content">'+
+                        parseInt(data.hour)+'hour'+
+                  '</div>'+
+                  '</li>');
+                  data.topic=topic;
+                var text = 'The student  ' + data.student_name + ' want a course in '+data.topic;
+                createNotification(title,text);
+              }           
+                
+            });
+            function denied(id){
+              $("#"+id).remove();
+              if (document.getElementById("notification").hasChildNodes()) {
+                  $("#notification").addClass("hide");
+                  $("#empty-notif").removeClass("hide");
+                  }
+            }
+            function accecpt(){
+              socket.emit("class-accepted", data.id);
+            }
     </script>
  
 </body>

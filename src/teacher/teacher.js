@@ -680,13 +680,10 @@ var loginTeacher = function() {
 function getCurrentTeacher(account){
     lectureInstance.teachers(account, function(err, res) {
         if(!err) {
-            //res = Array<String firstName, String lastName>
-            //console.log(res[6].toNumber());
             topic=res[3];
             lang=res[4];
             min_price=res[5].toNumber()
             max_price=res[6].toNumber()
-            //console.log(account);
             const data = { wallet: account, topic: topic, country: res[2],lang:lang,min:min_price,max:max_price };
 
             socket.emit("try-to-join", data);

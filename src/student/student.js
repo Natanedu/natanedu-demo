@@ -717,14 +717,15 @@ function sign(account, data) {
   });
 }
 
-function getCurrentStudent(){
+function getCurrentStudent(account){
     lectureInstance.students(account, function(err, res) {
         if(!err) {
-            //res = Array<String firstName, String lastName>
-            console.log(res);
+            name = res[0] +" "+ res[1];
         }
         else {
             console.log(err);
+            return "";
         }
+        return "";
     });
 }

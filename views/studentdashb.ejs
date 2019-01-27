@@ -16,10 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="../js/spoken-language.js"></script> 
 
     <!-- web3 -->
-    <script src="../web3/web3.js"></script>
-    <script src="../student/student.js"></script>   
+    <script src="../web3/web3.js"></script> 
+    <script src="../teacher/teacher.js"></script> 
   </head>
 
   <body>
@@ -110,130 +111,135 @@
         </div>
 
         <script>
-        var stepmax=10;
-        var max=10;
-        $( document ).ready(function() {
-            var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
-            M.Dropdown.init(elems_lang, {});
-        });
-        var slider = document.getElementById('price-slider');
-        noUiSlider.create(slider, {
-            start: [0.2],
-            step:0.1,
-            margin: 0.2,
-            orientation: 'horizontal',
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        });
-        var timerslider = document.getElementById('time-slider');
-        noUiSlider.create(timerslider, {
-            start: [1],
-            step:1,
-            behaviour: 'drag',
-            connect: true,
-            orientation: 'horizontal',
-            range: {
-                'min': 0,
-                'max': 10
-            }
-        });
-
-        slider.noUiSlider.on('update', function( values, handle ) {
-            
-                    $("#money").val(values[handle]);
-                    $("#money-val").text(values[handle]+" eth")
-            
-            
-        });
-
-        slider.noUiSlider.on('change', function( values, handle ) {
-            // on change of the slider, find the next element and set its value
-            
-            if(values[handle]==max){
-            
-                
-                max=max+stepmax;
-                slider.noUiSlider.updateOptions({
-                    start: [$("#money").val()],
-                    step:0.1,
-                    behaviour: 'drag',
-                    connect: true,
-                    margin: 0.2,
-                    orientation: 'horizontal',
-                    range: {
-                        'min': [0],
-                        'max': [max]
-                    }
-                });
-            }
-            
-            
-        });
+                console.log(account);
+            var firstName;
+            var lastName;
+            var studentName;
+            var stepmax=10;
+            var max=10;
+            $( document ).ready(function() {
+                var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
+                M.Dropdown.init(elems_lang, {});
+            });
+            var slider = document.getElementById('price-slider');
+            noUiSlider.create(slider, {
+                start: [0.2],
+                step:0.1,
+                margin: 0.2,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0,
+                    'max': 10
+                }
+            });
+            var timerslider = document.getElementById('time-slider');
+            noUiSlider.create(timerslider, {
+                start: [1],
+                step:1,
+                behaviour: 'drag',
+                connect: true,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0,
+                    'max': 10
+                }
+            });
         
-        timerslider.noUiSlider.on('update', function( values, handle ) {
-            
-                    $("#time").val(values[handle]);
-                    $("#time-val").text(values[handle]+" hour")
-            
-            
-        });
-
-        timerslider.noUiSlider.on('change', function( values, handle ) {
-            // on change of the slider, find the next element and set its value
-            
-            if(values[handle]==max){
-            
+            slider.noUiSlider.on('update', function( values, handle ) {
                 
-                max=max+stepmax;
-                timerslider.noUiSlider.updateOptions({
-                    start: [$("#time").val()],
-                    step:1,
-                    behaviour: 'drag',
-                    connect: [true],
-                    orientation: 'horizontal',
-                    range: {
-                        'min': [0],
-                        'max': [max]
-                    }
-                });
+                        $("#money").val(values[handle]);
+                        $("#money-val").text(values[handle]+" eth")
+                
+                
+            });
+        
+            slider.noUiSlider.on('change', function( values, handle ) {
+                // on change of the slider, find the next element and set its value
+                
+                if(values[handle]==max){
+                
+                    
+                    max=max+stepmax;
+                    slider.noUiSlider.updateOptions({
+                        start: [$("#money").val()],
+                        step:0.1,
+                        behaviour: 'drag',
+                        connect: true,
+                        margin: 0.2,
+                        orientation: 'horizontal',
+                        range: {
+                            'min': [0],
+                            'max': [max]
+                        }
+                    });
+                }
+                
+                
+            });
+            
+            timerslider.noUiSlider.on('update', function( values, handle ) {
+                
+                        $("#time").val(values[handle]);
+                        $("#time-val").text(values[handle]+" hour")
+                
+                
+            });
+        
+            timerslider.noUiSlider.on('change', function( values, handle ) {
+                // on change of the slider, find the next element and set its value
+                
+                if(values[handle]==max){
+                
+                    
+                    max=max+stepmax;
+                    timerslider.noUiSlider.updateOptions({
+                        start: [$("#time").val()],
+                        step:1,
+                        behaviour: 'drag',
+                        connect: [true],
+                        orientation: 'horizontal',
+                        range: {
+                            'min': [0],
+                            'max': [max]
+                        }
+                    });
+                }
+                
+                
+            });
+        
+            var socket = io.connect('http://localhost:3000/students');
+            socket.on("ready",function(){
+                console.log("ready");
+                //studentName =  getCurrentStudent(account);
+            })
+            socket.on("teacher-not-found",function(data){
+                createNotification("Alert","Opps!No teacher avaible for now!")
+            });
+            socket.on("teacher-found",function(){
+                
+            });
+            function search(){
+                var topic=$("#topic").val();
+                var chapitres=$("#chapitre").val();
+                var price=$("#money").val();
+                var hour=$("#time").val();
+                var language  = $('#language-input .dropdown-content .selected').text();
+                if(topic==""||language=="Choose language of course"){
+                    alert("empty fields!");
+                }else{
+                    console.log(firstName +" "+ lastName);
+                    socket.emit("search-class", {
+                        chapitre: chapitres,
+                        student_name: "dali",
+                        topic: topic,
+                        prize: web3.toWei(price, 'ether'),
+                        lang: language,
+                        hour:hour
+                    });
+                }    
             }
-            
-            
-        });
-
-        var socket = io.connect('http://localhost:8080/students');
-        socket.on("ready",function(){
-            console.log("ready");
-            getCurrentStudent();
-        })
-        socket.on("teacher-not-found",function(data){
-            createNotification("Alert","Opps!No teacher avaible for now!")
-        });
-        socket.on("teacher-found",function(){
-            
-        });
-        function search(){
-            var topic=$("#topic").val();
-            var chapitres=$("#chapitre").val();
-            var price=$("#money").val();
-            var hour=$("#time").val();
-            var language  = $('#language-input .dropdown-content .selected').text();
-            if(topic==""||language=="Choose language of course"){
-                alert("empty fields!");
-            }else{
-                socket.emit("search-class", {
-                    chapitre: chapitres,
-                    student_name: "dali",
-                    topic: topic,
-                    prize: web3.toWei(price, 'ether'),
-                    lang: language,
-                    hour:hour
-                });
-            }    
-        }
-        </script>
-        <script src="../js/spoken-language.js"></script> 
+            </script>
+        
     </body>
 </html>
