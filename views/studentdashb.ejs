@@ -1,63 +1,246 @@
-
 <!DOCTYPE html>
-<html lang="en" >
-
-<head>
-    <meta charset="UTF-8">
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
     <title>Student Dashboard</title>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="../css/dashboard.css" rel="stylesheet">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    
-    
-    <style class="cp-pen-styles">@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700&subset=latin-ext");
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../css/dash.css">
+    <link rel="stylesheet" href="/css/uirange.css"/>
 
     <!-- web3 -->
-    <script src="../web3/web3.js"></script>   
+    <script src="../web3/web3.js"></script> 
+    <script src="../student/student.js"></script> 
 
-</head>
+    </head>
 
-<body class="sidebar-is-reduced">
-  <header class="l-header">
-    <div class="l-header__inner clearfix">
-      <div class="c-header-icon js-hamburger">
-        <div class="hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
-      </div>
-      <div class="c-header-icon has-dropdown"><span class="c-badge c-badge--header-icon animated shake">12</span><i class="fa fa-bell"></i>
-        <div class="c-dropdown c-dropdown--notifications">
-          <div class="c-dropdown__header"></div>
-          <div class="c-dropdown__content"></div>
+  <body>
+        <div class="navbar-fixed">
+            <nav class="nav-natanedu">
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo"> 
+                    <img src="../img/logo.png" class="size-35 logo-nav"/>
+                    </a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="/profile">profile</a></li>
+                    
+                    </ul>
+                </div>
+                
+                </nav>
+        
         </div>
-    </div>
-    </div>
-  </header>
-  <div class="l-sidebar">
-    <div class="logo">
-      <div class="logo__txt">S</div>
-    </div>
-    <div class="l-sidebar__content">
-      <nav class="c-menu js-menu">
-        <ul class="u-list">
-          <li class="c-menu__item is-active" data-toggle="tooltip" title="Proposals">
-            <div class="c-menu__item__inner"><i class="fa fa-file-text-o"></i>
-              <div class="c-menu-item__title"><span>Profile</span></div>
+        <div class="contaier" id="main">
+            <div class="row">
+                <div class="col s12">
+                        <div class="row col s3"></div>
+                        <div class="row col s6">
+                            <div class="card">
+                            <div  class="card-title title-center"><span>Search for course</span></div>
+                                
+                            
+                            <div class="card-content">
+                                <div class="row">
+                                <div class="col s2"></div>
+                                    <div class="col s10">
+                                    <div class="row"> 
+                                        <div class="input-field col s8">
+                                            <input id="topic" type="text" class="validate">
+                                            <label for="topic">Subject</label>
+                                            </div> 
+                                            <div class="col s4"></div>                                  
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s8"  id="language-input">
+                                            <select id="languagepicker" >
+                                                <option value="" disabled selected>Choose language of course</option>
+                                            </select>
+                                        </div>
+                                        <div class="col s4"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s8">
+                                        <textarea id="chapitre" class="materialize-textarea"></textarea>
+                                        <label for="chapitre">Chaptire you want to learn</label>
+                                        </div>
+                                        <div class="col s4"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div  class="input-field col s6 " style="margin-bottom:0px">
+                                            <label style="top:-32px;">
+                                                <span>Time of course</span>
+                                            </label>
+                                            <div class="range-field" id="time-slider" style="margin-top: 5px;margin-left: 5px;"></div>
+                                            <input type="hidden" id="time" value="1"/>
+                                            <span id="time-val"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div  class="input-field col s6 " style="margin-bottom:0px">
+                                            <label style="top:-32px;">
+                                                <span>Price</span>
+                                            </label>
+                                            <div class="range-field" id="price-slider" style="margin-top: 5px;margin-left: 5px;"></div>
+                                            <input type="hidden" id="money" value="0.2"/>
+                                            <span id="money-val"></span>
+                                        </div>
+                                    </div> 
+                                    </div>
+                                    <div class="col s2"></div>
+                                </div>
+                                
+                            </div>
+                            <div class="card-action">
+                                <button class="waves-effect waves-light btn" onclick="search()">Find natan</button>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row col s3"></div>
+                    </div>
+                </div>
             </div>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-</body>
-<main class="l-main">
-  <div class="content-wrapper content-wrapper--with-bg">
-    
-    
-    
-  </div>
-</main>
-<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script><script src='https://use.fontawesome.com/2188c74ac9.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src="../js/dashboard.js"></script>
-</body></html>
+        </div>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="../js/makenotifcation.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+        <script src="../js/spoken-language.js"></script> 
+        
+
+        <script>
+            var stepmax=10;
+            var max=10;
+            $( document ).ready(function() {
+                var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
+                M.Dropdown.init(elems_lang, {});
+            });
+            var slider = document.getElementById('price-slider');
+            noUiSlider.create(slider, {
+                start: [0.2],
+                step:0.1,
+                margin: 0.2,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0,
+                    'max': 10
+                }
+            });
+            var timerslider = document.getElementById('time-slider');
+            noUiSlider.create(timerslider, {
+                start: [1],
+                step:1,
+                behaviour: 'drag',
+                connect: true,
+                orientation: 'horizontal',
+                range: {
+                    'min': 0,
+                    'max': 10
+                }
+            });
+        
+            slider.noUiSlider.on('update', function( values, handle ) {
+                
+                        $("#money").val(values[handle]);
+                        $("#money-val").text(values[handle]+" eth")
+                
+                
+            });
+        
+            slider.noUiSlider.on('change', function( values, handle ) {
+                // on change of the slider, find the next element and set its value
+                
+                if(values[handle]==max){
+                
+                    
+                    max=max+stepmax;
+                    slider.noUiSlider.updateOptions({
+                        start: [$("#money").val()],
+                        step:0.1,
+                        behaviour: 'drag',
+                        connect: true,
+                        margin: 0.2,
+                        orientation: 'horizontal',
+                        range: {
+                            'min': [0],
+                            'max': [max]
+                        }
+                    });
+                }
+                
+                
+            });
+            
+            timerslider.noUiSlider.on('update', function( values, handle ) {
+                
+                        $("#time").val(values[handle]);
+                        $("#time-val").text(values[handle]+" hour")
+                
+                
+            });
+        
+            timerslider.noUiSlider.on('change', function( values, handle ) {
+                // on change of the slider, find the next element and set its value
+                
+                if(values[handle]==max){
+                
+                    
+                    max=max+stepmax;
+                    timerslider.noUiSlider.updateOptions({
+                        start: [$("#time").val()],
+                        step:1,
+                        behaviour: 'drag',
+                        connect: [true],
+                        orientation: 'horizontal',
+                        range: {
+                            'min': [0],
+                            'max': [max]
+                        }
+                    });
+                }
+                
+                
+            });
+        
+            var socket = io.connect('http://localhost:3000/students');
+            socket.on("ready",function(studentName){
+                console.log("ready");              
+            })
+            socket.on("teacher-not-found",function(data){
+                createNotification("Alert","Opps!No teacher avaible for now!")
+            });
+            socket.on("teacher-found",function(){
+                
+            });
+
+            function search(){
+                lectureInstance.students(account, function(err, res) {
+                    studentName = res[0] +" "+ res[1];
+                    console.log(studentName);
+
+                    var topic=$("#topic").val();
+                    var chapitres=$("#chapitre").val();
+                    var price=$("#money").val();
+                    var hour=$("#time").val();
+                    var language  = $('#language-input .dropdown-content .selected').text();
+                    if(topic==""||language=="Choose language of course"){
+                        alert("empty fields!");
+                    }else{
+                        socket.emit("search-class", {
+                            chapitre: chapitres,
+                            student_name: studentName,
+                            topic: topic,
+                            prize: web3.toWei(price, 'ether'),
+                            lang: language,
+                            hour:hour
+                        });
+                    }    
+                });
+            }
+            </script>        
+    </body>
+</html>

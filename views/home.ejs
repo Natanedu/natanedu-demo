@@ -1,58 +1,160 @@
 <html>
 	<head>
-        <link href="../css/home.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    </head>
-    <body>
-        <% include header %>
-        <header>
-            <div class="video-container">
-                <div>
-                    <p class="h1"> Welcome to Natanedu </p>
-                </div>
-                <iframe  src="https://www.youtube.com/embed/-EK3qOl-RMQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
-            </div>
-        </header>
-        <section class="wrapper">
-            <div class="container-fostrap">
-                <div>
-                    <img src="../img/N.png" class="fostrap-logo"/>
-                    <h1 class="heading">Choose one</h1>
-                </div>
-                <div class="content">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="card">
-                                    <a class="img-card" href="/teacher/login">
-                                        <img src="../img/teacher.svg" />
-                                    </a>
-                                    <div class="card-read-more">
-                                        <a href="/teacher/login" class="btn btn-link btn-block">I'm Teacher</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="card">
-                                    <a class="img-card" href="/student/login">
-                                        <img src="../img/std.svg" />
-                                    </a>
-                                    <div class="card-read-more">
-                                        <a href="/student/login" class="btn btn-link btn-block">I'm Student</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Bootstrap core JavaScript -->
-        <script src="../jquery/jquery.min.js"></script>
-        <script src="../js/bootstrap.bundle.min.js"></script>  
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+       
+       <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="../css/home.css"/>
+        <link rel="stylesheet" href="../css/uirange.css"/>
+
         <!-- web3 -->
         <script src="../web3/web3.js"></script>
-        <script src="../home/home.js"></script>            
+        <script src="../teacher/teacher.js"></script>  
+        <script src="../student/student.js"></script>   
+    </head>
+    <body>
+        <div class="row row-index">
+            <div class="col s8 main">
+                <div class="row">
+                        <div class="col s12">
+                                <img src="../img/logo.png" class="size-35 img-logo"/>
+                        </div>
+                        <div class="col s12">
+
+                                <iframe class="video-intro" src="https://www.youtube.com/embed/-EK3qOl-RMQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
+                        </div>
+                </div>
+               
+            </div>
+            <div class="col s4 core-form" style="padding: 0px;">
+                <nav class="nav-extended nav-color z-depth-0">
+                    <div class="nav-content ">
+                      <ul class="tabs">
+                        <li class="tab tab-size-50"><a class="active"  href="#Teacher">Teacher</a></li>
+                        <li class="tab tab-size-50"><a  href="#Student">Student</a></li>
+                      </ul>
+                    </div>
+                  </nav>
+                  <%- include('teacher') %>
+                  <%- include('student') %>
+               
+                <%- include('login') %>
+            </div>
+          </div>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      
+          <!-- Compiled and minified JavaScript -->
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
+          <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+           
+           <script>
+               var stepmax=10;
+               var max=10;
+               $(document).ready(function(){
+                M.AutoInit();
+                var el=document.querySelectorAll("ul.tabs");
+                var instance = M.Tabs.init(el,{
+                  swipeable :true,
+                  onShow:function(elem){
+                     var text="login as ";
+                      $("#label-login-bt").text(text+elem.id)
+                      if(elem.id=="Teacher"){
+                            $("#login-input").val(1);
+                      }else if(elem.id=="Student"){
+                            $("#login-input").val(2);
+                      }
+                  }
+                  });
+                var elems = document.querySelectorAll('#country-input .dropdown-trigger');
+                M.Dropdown.init(elems, {});
+                var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
+                M.Dropdown.init(elems_lang, {});
+                $(".carousel-slider").css("height","72%");
+
+                var slider = document.getElementById('money-slider');
+                noUiSlider.create(slider, {
+                    start: [0.2,3],
+                    step:0.1,
+                    behaviour: 'drag',
+                    connect: true,
+                    orientation: 'horizontal',
+                    range: {
+                        'min': [0],
+                        'max': [10]
+                    }
+                });
+                slider.noUiSlider.on('update', function( values, handle ) {
+                    if(handle==0){
+                            $("#min-money").val(values[handle]);
+                            $("#money-val-min").text(values[handle])
+                    }else if(handle==1){
+                        $("#max-money").val(values[handle]);
+                        $("#money-val-max").text(values[handle]+" eth")
+                    }
+                   
+                });
+                slider.noUiSlider.on('change', function( values, handle ) {
+                    // on change of the slider, find the next element and set its value
+                   
+                    if(values[handle]==max){
+                    
+                        
+                        max=max+stepmax;
+                        slider.noUiSlider.updateOptions({
+                            start: [$("#min-money").val(),$("#max-money").val()],
+                            step:0.1,
+                            behaviour: 'drag',
+                            connect: true,
+                            orientation: 'horizontal',
+                            range: {
+                                'min': [0],
+                                'max': [max]
+                            }
+                        });
+                    }
+                    
+                    
+                });
+            });
+
+            function login(){
+                var log=$("#login-input").val();
+                if(log=="1"){
+                    console.log("teacher login");
+                    loginTeacher()
+                }else if(log=="2"){
+                    console.log("student login");
+                    loginStudent();
+                }
+            }
+            function signTeacher(){
+                
+                var elem=$('#country-input');
+                var instance = M.FormSelect.getInstance(elem);
+                var fName = $('#teacher_first_name').val();
+                var lName =$('#teacher_last_name').val();
+                var topic = $('#teacher_topic').val();
+                var country  = $('#country-input .dropdown-content .selected').text();
+                var language  = $('#language-input .dropdown-content .selected').text();
+                var min=$("#min-money").val();
+                var max=$("#max-money").val();
+                if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
+                    registerTeacher(fName,lName,country,topic,language,web3.toWei(min, 'ether'),web3.toWei(max, 'ether'));      
+                }   
+               
+            }
+            
+            function signStudent(){
+                var fName = $('#fistname_student').val();
+                var lName =$('#lastname_student').val();
+                if(fName!=""||lName!=""){
+                registerStudent(fName,lName);
+                    
+                }  
+            }
+           </script>   
+            <script src="../js/countrypicker.js"></script> 
+            <script src="../js/spoken-language.js"></script> 
     </body>
 </html> 

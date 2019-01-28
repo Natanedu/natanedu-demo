@@ -5,59 +5,122 @@
 <head>
     <meta charset="UTF-8">
     <title>Teacher Dashboard</title>
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="../css/dashboard.css" rel="stylesheet">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../css/dash.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="../js/makenotifcation.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
-    
-    <style class="cp-pen-styles">@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700&subset=latin-ext");
-</style>
-
     <!-- web3 -->
     <script src="../web3/web3.js"></script> 
-
+    <script src="../teacher/teacher.js"></script>    
 </head>
 
-<body class="sidebar-is-reduced">
-  <header class="l-header">
-    <div class="l-header__inner clearfix">
-      <div class="c-header-icon js-hamburger">
-        <div class="hamburger-toggle"><span class="bar-top"></span><span class="bar-mid"></span><span class="bar-bot"></span></div>
-      </div>
-      <div class="c-header-icon has-dropdown"><span class="c-badge c-badge--header-icon animated shake">12</span><i class="fa fa-bell"></i>
-        <div class="c-dropdown c-dropdown--notifications">
-          <div class="c-dropdown__header"></div>
-          <div class="c-dropdown__content"></div>
-        </div>
-      </div>
+<body >
 
-    </div>
-  </header>
-  <div class="l-sidebar">
-    <div class="logo">
-      <div class="logo__txt">T</div>
-    </div>
-    <div class="l-sidebar__content">
-      <nav class="c-menu js-menu">
-        <ul class="u-list">
-          <li class="c-menu__item is-active" data-toggle="tooltip" title="Proposals">
-            <div class="c-menu__item__inner"><i class="fa fa-file-text-o"></i>
-              <div class="c-menu-item__title"><span>Profile</span></div>
+    <div class="navbar-fixed">
+        <nav class="nav-natanedu">
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo"> 
+                <img src="../img/logo.png" class="size-35 logo-nav"/>
+              </a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/profile">profile</a></li>
+                <li><a href="#logout">logout</a></li>
+              </ul>
             </div>
-          </li>
-        </ul>
-      </nav>
+            
+          </nav>
+    
     </div>
-  </div>
+    <div class="contaier" id="main">
+        <div class="row">
+            <div class="col s12">
+                <div class="row">
+                  <div class="col s4"></div>
+                  
+                  <div class="col s4">
+                     
+                          <ul class="collection hide" id="notification">
+                          </ul>
+                          <div class="grey-text lighten-3-text" style="margin-top:45%;text-align:center;" id="empty-notif">
+                              <span  class="material-icons" style="font-size:38px">
+                                  notifications</span><br/>
+                              <span>No notification for now!</span>
+                          </div>
+                      
+                  </div>
+                  
+                  <div class="col s4"></div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+                  
+    <script>
+      $( document ).ready(function() { 
+        var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
+          M.Dropdown.init(elems_lang, {});
+        });
+            
+        var socket = io.connect('http://localhost:3000/teachers');
+          socket.on('ready', function(){
+            getCurrentTeacher(account);            
+          });
+          socket.on('joined', function(data){
+            console.log(data);
+            console.log(topic);
+              
+          });
+            
+            var title="Your courses";
+            socket.on("class-available", function(student){
+              console.log(student);
+              
+              data=student;
+              if(data.prize<=max_price&&data.prize>=min_price&&data.lang==lang){
+                var d = new Date();
+                var id = d.getTime();
+                if (document.getElementById("notification").hasChildNodes()) {
+                  $("#notification").removeClass("hide");
+                  $("#empty-notif").addClass("hide");
+                  }
+
+                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
+                  '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
+                  ' <p class="grey-text"> The student '+
+                      data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
+                      'detail: '+data.chapitre+
+                    '</p><br/>'+
+                    '<div class="row">'+
+                        '<button onclick="accecpt()" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
+                      '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
+                    '</div>'+
+                    '<div class="secondary-content">'+
+                        parseInt(data.hour)+'hour'+
+                  '</div>'+
+                  '</li>');
+                  data.topic=topic;
+                var text = 'The student  ' + data.student_name + ' want a course in '+data.topic;
+                createNotification(title,text);
+              }           
+                
+            });
+            function denied(id){
+              $("#"+id).remove();
+              if (document.getElementById("notification").hasChildNodes()) {
+                  $("#notification").addClass("hide");
+                  $("#empty-notif").removeClass("hide");
+                  }
+            }
+            function accecpt(){
+              socket.emit("class-accepted", data.id);
+            }
+    </script>
+ 
 </body>
-<main class="l-main">
-  <div class="content-wrapper content-wrapper--with-bg">
-    
-    
-  </div>
-</main>
-<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script><script src='https://use.fontawesome.com/2188c74ac9.js'></script><script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src="../js/dashboard.js"></script>
-</body></html>
+</html>

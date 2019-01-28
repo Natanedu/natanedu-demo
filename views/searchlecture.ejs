@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Student Dashboard</title>
+    <link
+      rel="stylesheet prefetch"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <link rel="stylesheet prefetch"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"/> 
+    <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/css/bootstrap-slider.css"/>
+    <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/css/bootstrap-slider.min.css"/>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/bootstrap-slider.js"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.0/bootstrap-slider.min.js"></script>
+  
+    <link
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+    rel="stylesheet"
+    id="bootstrap-css"
+  />
+
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <link href="../css/searchlecture.css" rel="stylesheet" />
+    <link href="../css/dashboard.css" rel="stylesheet" />
+    <link href="../css/searchtopic.css" rel="stylesheet" />
+
+
+    
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+   
+
+   
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <style>
+      .searchable-container {
+        margin: 20px 0 0 0;
+      }
+      .searchable-container label.btn-default.active {
+        background-color: #007ba7;
+        color: #fff;
+      }
+      .searchable-container label.btn-default {
+        width: 90%;
+        border: 1px solid #efefef;
+        margin: 5px;
+        box-shadow: 5px 8px 8px 0 #ccc;
+      }
+      .searchable-container label .bizcontent {
+        width: 100%;
+      }
+      .searchable-container .btn-group {
+        width: 90%;
+      }
+      .searchable-container .btn span.glyphicon {
+        opacity: 0;
+      }
+      .searchable-container .btn.active span.glyphicon {
+        opacity: 1;
+      }
+    </style>
+    <!-- web3 -->
+    <script src="../web3/web3.js"></script>
+  </head>
+
+  <body class="sidebar-is-reduced">
+    <header class="l-header">
+      <div class="l-header__inner clearfix">
+        <div class="c-header-icon js-hamburger">
+          <div class="hamburger-toggle">
+            <span class="bar-top"></span><span class="bar-mid"></span
+            ><span class="bar-bot"></span>
+          </div>
+        </div>
+        <div class="c-header-icon has-dropdown">
+          <span
+            class="c-badge
+                        c-badge--header-icon animated shake"
+            >12</span
+          ><i class="fa fa-bell"></i>
+          <div class="c-dropdown c-dropdown--notifications">
+            <div class="c-dropdown__header"></div>
+            <div class="c-dropdown__content"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="l-sidebar">
+      <div class="logo"><div class="logo__txt">S</div></div>
+      <div class="l-sidebar__content">
+        <nav class="c-menu js-menu">
+          <ul class="u-list">
+            <li class="c-menu__item" data-toggle="tooltip" title="Profile">
+              <a class="nav-link" href="/student/dashboard">
+                <div class="c-menu__item__inner">
+                  <i class="fa fa-file-text-o"></i>
+                  <div class="c-menu-item__title"><span>Profile</span></div>
+                </div>
+              </a>
+            </li>
+            <li
+              class="c-menu__item has-submenu"
+              data-toggle="tooltip"
+              title="Search Lecture"
+            >
+              <a class="nav-link" href="/student/search_lecture">
+                <div class="c-menu__item__inner">
+                  <i class="fa fa-caret-square-o-right"></i>
+
+                  <div class="c-menu-item__title">
+                    <span>Search Lecture</span>
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <section class="wrapper">
+          <div class="content">
+              <div class="container">
+                  <div class="row">
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="card">
+                            <form class="example" autocomplete="off" action="#">
+                              <div class="autocomplete" style="width:125%;">
+                                <input
+                                  id="myInput"
+                                  type="text"
+                                  name="myTopics"
+                                  placeholder="What would you like to learn today?"
+                                />
+                                <!-- <button type="submit"><i class="fa fa-search"></i></button> -->
+                              </div>
+                
+                              <div class="form">
+                                <h4>Availablity</h4>
+                                <div class="inputGroup">
+                                  <input id="morn" name="morn" type="checkbox" />
+                                  <label for="morn">Morning</label>
+                                </div>
+                
+                                <div class="inputGroup">
+                                  <input id="after" name="after" type="checkbox" />
+                                  <label for="after">Afternoon</label>
+                                </div>
+                
+                                <div class="inputGroup">
+                                  <input id="nigh" name="nigh" type="checkbox" />
+                                  <label for="nigh">Night</label>
+                                </div>
+                
+                                <div class="inputGroup">
+                                  <input id="week" name="week" type="checkbox" />
+                                  <label for="week">Weekends</label>
+                                </div>
+                
+                                <h4>Max. rate per hour</h4>
+                                
+                                <div class="group"  style="width:100%;">
+                                  <div class="sidebar">
+                                    <input id="ex13" type="text" data-slider-ticks="[10, 20, 30, 40, 50, 60]" data-slider-ticks-snap-bounds="0" data-slider-ticks-labels='["$10", "$20", "$30", "$40", "$50", "$60"]'/>
+                                  </div>
+                                   </div>
+                
+                                <h4>Tutor Speaks</h4>
+                
+                                   <div class="autocomplete" style="width:125%;">
+                                      <input
+                                        id="myLang"
+                                        type="text"
+                                        name="myTopics"
+                                        placeholder="English, Spanish, French..."
+                                      />
+                                    </div>
+                
+                                    <div>
+                                    <button type="button" class="btn btn-btmexpert btn-sm sharp  col-sm-offset-4">Find an Expert</button>
+                                  </div>
+                              </div>
+                
+                              
+                            </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+  </section>
+    <!-- <main class="l-main">
+      <div class="content-wrapper content-wrapper--with-bg">
+        <div class="container">
+          <div class="panel panel-default" style="width: 30%;">
+            <form class="example" autocomplete="off" action="#">
+              <div class="autocomplete" style="width:125%;">
+                <input
+                  id="myInput"
+                  type="text"
+                  name="myTopics"
+                  placeholder="What would you like to learn today?"
+                /> -->
+                <!-- <button type="submit"><i class="fa fa-search"></i></button>
+              </div>
+
+              <div class="form">
+                <h4>Availablity</h4>
+                <div class="inputGroup">
+                  <input id="morn" name="morn" type="checkbox" />
+                  <label for="morn">Morning</label>
+                </div>
+
+                <div class="inputGroup">
+                  <input id="after" name="after" type="checkbox" />
+                  <label for="after">Afternoon</label>
+                </div>
+
+                <div class="inputGroup">
+                  <input id="nigh" name="nigh" type="checkbox" />
+                  <label for="nigh">Night</label>
+                </div>
+
+                <div class="inputGroup">
+                  <input id="week" name="week" type="checkbox" />
+                  <label for="week">Weekends</label>
+                </div>
+
+                <h4>Max. rate per hour</h4>
+                
+                <div class="group">
+                    <input id="ex13" type="text" data-slider-ticks="[10, 20, 30, 40, 50, 60]" data-slider-ticks-snap-bounds="0" data-slider-ticks-labels='["$10", "$20", "$30", "$40", "$50", "$60"]'/>
+     
+                   </div>
+
+                <h4>Tutor Speaks</h4>
+
+                   <div class="autocomplete" style="width:125%;">
+                      <input
+                        id="myLang"
+                        type="text"
+                        name="myTopics"
+                        placeholder="English, Spanish, French..."
+                      />
+                    </div>
+
+                    <div>
+                    <button type="button" class="btn btn-btmexpert btn-lg sharp  col-sm-offset-2">Find an Expert</button>
+                  </div>
+              </div>
+
+              
+            </form>
+          </div>
+                      <h2>Radio Buttons</h2>
+                      <div class="inputGroup">
+                        <input id="radio1" name="radio" type="radio"/>
+                        <label for="radio1">Yes</label>
+                      </div>
+                      <div class="inputGroup">
+                        <input id="radio2" name="radio" type="radio"/>
+                        <label for="radio2">No</label>
+                      </div> -->
+        <!-- </div>
+      </div>
+    </main> -->
+  </body>
+
+  <script>
+      // With JQuery
+    // $("#ex13").slider({
+    //     ticks: [10, 20, 30, 40, 50, 60],
+    //     ticks_labels: ['$10/h', '$20/h', '$30/h', '$40/h', '$50/h', '$60/h'],
+    //     ticks_snap_bounds: 0
+    // });
+    
+    // Without JQuery
+    var slider = new Slider("#ex13", {
+        ticks: [10, 20, 30, 40, 50, 60],
+        ticks_labels: ['$10', '$20', '$30', '$40', '$50', '$60'],
+        ticks_snap_bounds: 0
+    });</script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://use.fontawesome.com/2188c74ac9.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/autocomplete.js"></script>
+  <script src="../js/language.js"></script>
+
+</html>
