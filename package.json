@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/natanedu/natanedudemo.git"
+    "url": "git+https://github.com/Natanedu/natanedu-demo.git"
   },
   "keywords": [
     "Nodejs",
@@ -18,7 +18,7 @@
   "author": "Hrsikesh Brahmbhatt",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/natanedu/natanedudemo/issues"
+    "url": "https://github.com/Natanedu/natanedu-demo/issues"
   },
   "homepage": "https://gitlab.com/natanedu/natanedudemo#readme",
   "dependencies": {
