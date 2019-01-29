@@ -218,6 +218,7 @@
             });
 
             function search(){
+                
                 lectureInstance.students(account, function(err, res) {
                     studentName = res[0] +" "+ res[1];
                     console.log(studentName);
@@ -228,15 +229,34 @@
                     var hour=$("#time").val();
                     var language  = $('#language-input .dropdown-content .selected').text();
                     if(topic==""||language=="Choose language of course"){
-                        alert("empty fields!");
-                    }else{
-                        socket.emit("search-class", {
-                            chapitre: chapitres,
-                            student_name: studentName,
-                            topic: topic,
-                            prize: web3.toWei(price, 'ether'),
-                            lang: language,
-                            hour:hour
+                        swal({
+                            title: "Invalid inputs",
+                            text: "Correct inputs",
+                            icon: "error",
+                            button: "Ok",
+                            closeOnClickOutside: false
+                        });
+                    }else {
+                        web3.eth.getBalance(account, function(err, res) {
+                            if(res.toNumber() < web3.toWei(price, 'ether')) {
+                                swal({
+                                    title: "Insufficient Balance",
+                                    text: "Please check your balance",
+                                    icon: "error",
+                                    button: "Ok",
+                                    closeOnClickOutside: false
+                                });
+                            }
+                            else {
+                                socket.emit("search-class", {
+                                    chapitre: chapitres,
+                                    student_name: studentName,
+                                    topic: topic,
+                                    prize: web3.toWei(price, 'ether'),
+                                    lang: language,
+                                    hour:hour
+                                });
+                            }
                         });
                     }    
                 });
