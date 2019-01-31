@@ -4,22 +4,22 @@ module.exports = io => {
   io.on("connection", socket => {
     console.log(`Socket ${socket.id} connected to Conferences Namespace`);
 
-    const { sockets } = io;
+   
 
-    socket.on("create-or-join", Events.onCreateOrJoin(sockets)(socket));
+    socket.on("create-or-join", Events.onCreateOrJoin(io)(socket));
 
-    socket.on("offer", Events.onOffer(sockets));
+    socket.on("offer", Events.onOffer(io));
 
-    socket.on("answer", Events.onAnswer(sockets));
+    socket.on("answer", Events.onAnswer(io));
 
-    socket.on("ICE-candidate", Events.onICECandidate(sockets));
+    socket.on("ICE-candidate", Events.onICECandidate(io));
 
-    socket.on("success", Events.onSuccess(sockets));
+    socket.on("success", Events.onSuccess(io));
 
-    socket.on("hang-up", Events.onHangUp(sockets)(socket));
+    socket.on("hang-up", Events.onHangUp(io)(socket));
 
     socket.on("ipaddr", Events.onIPAddr(socket));
 
-    socket.on("disconnection", Events.onDisconnecting(sockets)(socket));
+    socket.on("disconnection", Events.onDisconnecting(io)(socket));
   });
 };
