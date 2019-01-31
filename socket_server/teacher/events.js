@@ -34,14 +34,16 @@ const onTryToJoin = teacher => async ({ wallet, topic, country,lang,min,max } = 
 const onClassAccepted = (student_nsp, { url, socket } = {}) => student_id => {
   console.log("Teacher: Class accepted, joining room...");
   timerManager.clearTimeout(student_id);
-
-  const room_url = `${url}/room/${objectHash({
+  var hash=objectHash({
     id: socket.id,
     date: new Date().getMilliseconds()
-  })}`;
-
-  student_nsp.to(student_id).emit("teacher-found", room_url);
-  socket.emit("joining-room", room_url);
+  })
+  const student_room_url = `${url}/room/student/${hash}`;
+  
+  const teacher_room_url = `${url}/room/teacher/${hash}`;
+  socket.emit("joining-room", teacher_room_url);
+  student_nsp.to(student_id).emit("teacher-found", student_room_url);
+  
 };
 
 module.exports = { onTryToJoin, onClassAccepted };

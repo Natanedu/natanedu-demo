@@ -76,7 +76,11 @@
             console.log(topic);
               
           });
-            
+            socket.on("joining-room",function(url){
+                console.log(url)
+                // Sets the new href (URL) for the current window.
+                window.location.href = url;
+            })
             var title="Your courses";
             socket.on("class-available", function(student){
               console.log(student);

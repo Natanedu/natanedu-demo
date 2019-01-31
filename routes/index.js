@@ -24,8 +24,10 @@ router.get("/webrtc", function(req, res) {
 });
 
 // Route to conferences room
-router.get("/room/:id", function(req, res) {
-  res.render("conference", { title: "Express" });
+router.get("/room/:type/:id", function(req, res) {
+  var id=req.params.id;
+  var type=req.params.type;
+  res.render("course", { id:id,type,tpype });
 });
 
 router.get("/videocall", function(req, res) {

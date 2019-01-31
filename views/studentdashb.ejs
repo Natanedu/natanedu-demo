@@ -213,8 +213,8 @@
             socket.on("teacher-not-found",function(data){
                 createNotification("Alert","Opps!No teacher avaible for now!")
             });
-            socket.on("teacher-found",function(){
-                
+            socket.on("teacher-found",function(url){
+                window.location.href = url;
             });
 
             function search(){
