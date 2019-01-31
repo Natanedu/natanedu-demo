@@ -214,9 +214,18 @@
                 createNotification("Alert","Opps!No teacher avaible for now!")
             });
             socket.on("teacher-found",function(url){
-                await sleep(3000);
-                window.location.href = url;
+                // Usage!
+                sleep(2000).then(() => {
+                    // Do something after the sleep!
+                    window.location.href = url;
+                });
+                
             });
+            // sleep time expects milliseconds
+        function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
 
             function search(){
                 lectureInstance.students(account, function(err, res) {
