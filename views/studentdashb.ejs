@@ -214,6 +214,7 @@
                 createNotification("Alert","Opps!No teacher avaible for now!")
             });
             socket.on("teacher-found",function(url){
+                await sleep(3000);
                 window.location.href = url;
             });
 

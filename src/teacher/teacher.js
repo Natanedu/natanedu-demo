@@ -685,7 +685,7 @@ function getCurrentTeacher(account){
             min_price=res[5].toNumber()
             max_price=res[6].toNumber()
             const data = { wallet: account, topic: topic, country: res[2],lang:lang,min:min_price,max:max_price };
-
+            
             socket.emit("try-to-join", data);
         }
         else {
