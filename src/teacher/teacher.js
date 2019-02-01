@@ -680,6 +680,9 @@ var loginTeacher = function() {
 function getCurrentTeacher(account){
     lectureInstance.teachers(account, function(err, res) {
         if(!err) {
+            console.log(res)
+            name=res[0];
+            last_name=res[1];
             topic=res[3];
             lang=res[4];
             min_price=res[5].toNumber()

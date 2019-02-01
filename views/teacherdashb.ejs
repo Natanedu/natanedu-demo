@@ -66,8 +66,9 @@
         var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
           M.Dropdown.init(elems_lang, {});
         });
-            
-        var socket = io.connect('https://webrtc.alpha-beta.ovh/teachers');
+        
+        var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+        var socket = io.connect(server+'/teachers');
           socket.on('ready', function(){
             getCurrentTeacher(account);            
           });

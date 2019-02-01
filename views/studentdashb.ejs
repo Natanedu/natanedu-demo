@@ -205,10 +205,11 @@
                 
                 
             });
-        
-            var socket = io.connect('https://webrtc.alpha-beta.ovh/students');
+            var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+            var socket = io.connect(server+'/students');
             socket.on("ready",function(studentName){
-                console.log("ready");              
+                console.log("ready");     
+                        
             })
             socket.on("teacher-not-found",function(data){
                 createNotification("Alert","Opps!No teacher avaible for now!")

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title>Realtime communication with WebRTC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="../css/dash.css">
-    <link rel="stylesheet" href="../css/conference.css">
+    <link rel="stylesheet" href="../../css/dash.css">
+    <link rel="stylesheet" href="../../css/conference.css">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="../web3/web.js"></script>
   </head>
 
   <body>
@@ -13,10 +16,13 @@
                 <nav class="nav-natanedu">
                     <div class="nav-wrapper">
                         <a href="#" class="brand-logo"> 
-                        <img src="../img/logo.png" class="size-35 logo-nav"/>
+                          
+                        <img src="../../img/logo.png" class="size-35 logo-nav"/>
+                        <span id="timer" class="center"></span>
                         </a>    
+                       
                         <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="/<%=type %>/dashboad">end th course </a></li>
+                        <li><a id="backtodash" class="waves-effect waves-light btn red lighten-1" href="/<%=type %>/dashboard">end the course </a></li>
                         
                         </ul>
                     </div>
@@ -24,16 +30,23 @@
                     </nav>
             
             </div>
-            <div class="contaier" id="main">
+            <div class="container" id="main" style="height: 500px;margin-top: 4%;">
                     <div class="row">
                             <div id="videos" class="conference">
-                                    <div  id="localVideo" class="col s3 local">
+                                    <div  id="remoteVideo" class="col s6 remote"style="width:100%">
+                              
+                                        </div>
+                                    <div  id="localVideo" class="col s3 offset-s2 local" >
                               
                                     </div>
-                                    <div  id="remoteVideo" class="col s3 remote">
-                              
-                                    </div>
+                                    
                             </div>
+                            <div class="grey-text lighten-3-text hide" style="margin-top:15%;text-align:center;" id="stream-end">
+                                    <span  class="material-icons" style="font-size:38px">
+                                            cast</span><br/>
+                                    <span id="stream_info"></span><br/>
+                                    <a href="/<%=type %>/dashboard" class="waves-effect waves-light btn">close</a>
+                                </div>
                     </div>
             </div>
   
@@ -43,11 +56,55 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
-    <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+   <!--  <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>-->
+    <%if(type=='student'){ %>
+        <script src="../../student/student.js"></script>
+        <script>
+            var name;
+            
+        </script>
+    <% }else{  %>
+
+        <script src="../../teacher/teacher.js"></script>
+        <script>
+            
+            var name,last_name;
+            // Set the date we're counting down to
+            var now =  Date.now();
+            var new_min=now.getMinutes()+3
+            console.log(new_min);
+            var countDownDate=now.setMinutes(new_min);
+
+                // Update the count down every 1 second
+                var x = setInterval(function() {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now and the count down date
+                var distance = countDownDate - now;
+
+                // Time calculations for days, hours, minutes and seconds
+                
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+                document.getElementById("timer").innerHTML =  minutes + "m " + seconds + "s ";
+                        console.log(minutes + "m " + seconds + "s ");
+                // If the count down is finished, write some text 
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.getElementById("demo").innerHTML = "You are payed";
+                }
+                }, 1000);
+        </script>
+        <% } %>
     <script>
         
         var connection = new RTCMultiConnection();
-
+        var predefinedRoomId = "<%= id %>";
         // this line is VERY_important
         connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
 
@@ -62,7 +119,10 @@
             OfferToReceiveAudio: true,
             OfferToReceiveVideo: true
         };
-
+        var socket;
+        var type="<%=type %>";
+        
+        connection.socketCustomEvent = 'leave-room-'+predefinedRoomId;
         connection.onstream = function(event) {
             if(event.type==="local"){
                 document.getElementById("localVideo").appendChild( event.mediaElement );
@@ -72,7 +132,19 @@
             }
            
         };
-        var predefinedRoomId = "<%= id %>";
+        connection.onmessage = function(event) {
+                var message = event.data;
+                if(message.shareYourCameraWithMe) {
+                    connection.dontAttachStream = false;
+                    connection.renegotiate(event.userid); // share only with single user
+                }
+
+                if(message.shareYourCameraWithAllUsers) {
+                    connection.dontAttachStream = false;
+                    connection.renegotiate(); // share with all users
+                }
+        }
+       
         connection.checkPresence(predefinedRoomId, function(isRoomEists, roomid) {
             if(isRoomEists) {
                 connection.join(roomid);
@@ -80,22 +152,39 @@
             else {
                 connection.open(roomid);
             }
+            
+            connection.socket.on(connection.socketCustomEvent, function(message) {
+                console.log(message);
+                $("#videos").addClass("hide");
+                $("#stream-end").removeClass("hide");
+                $("#stream_info").html(message.msg);
+                $("#backtodash").addClass("hide");
+            });
         });
-        var type = "<%=type%>";
-        console.log(type);
+
+     
         if(type=="student"){
             var timer=setTimeout(payMoney, 3*60*1000)
         }
         function payMoney() {
-            alert('Hello');
+            //alert('Hello');
             clearTimeout(timer);
             }
+            document.getElementById("backtodash").addEventListener('click',function(event){
+                if(type=="student"){
+                        lectureInstance.students(account, function(err, res) {
+                        name = res[0] +" "+ res[1];
+                            console.log(name);
+                            var msg=name +" has leave the course";
+                        connection.socket.emit(connection.socketCustomEvent, {msg:msg,type:type});
+                        window.location.href="/<%=type %>/dashboard";
+                        $("#backtodash").addClass("hide");
+                        });
+                }
+                        
+                
+            })
     </script>
-    <%if(type=='student'){ %>
-        <script>
-        // Usage!
-        
-        </script>
-    <% } %>
+    
   </body>
 </html>
