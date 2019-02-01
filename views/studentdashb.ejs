@@ -206,7 +206,7 @@
                 
             });
         
-            var socket = io.connect('http://localhost:3000/students');
+            var socket = io.connect('https://webrtc.alpha-beta.ovh/students');
             socket.on("ready",function(studentName){
                 console.log("ready");              
             })
