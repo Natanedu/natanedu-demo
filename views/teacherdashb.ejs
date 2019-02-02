@@ -66,17 +66,23 @@
         var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
           M.Dropdown.init(elems_lang, {});
         });
-            
-        var socket = io.connect('http://localhost:3000/teachers');
+        
+        var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+        var socket = io.connect(server+'/teachers');
           socket.on('ready', function(){
             getCurrentTeacher(account);            
           });
           socket.on('joined', function(data){
             console.log(data);
             console.log(topic);
+            console.log(min_price);
               
           });
-            
+            socket.on("joining-room",function(url){
+                console.log(url)
+                // Sets the new href (URL) for the current window.
+                window.location.href = url;
+            })
             var title="Your courses";
             socket.on("class-available", function(student){
               console.log(student);

@@ -8,7 +8,7 @@ module.exports = (url, app) => {
   const io = app ? new Socket_Server(app) : new Socket_Server(3030);
 
   console.log(
-    `WebSocket Server listening on URL http://localhost:${process.env.PORT ||
+    `WebSocket Server listening on URL https://webrtc.alpha-beta.ovh:${process.env.PORT ||
       3000}`
   );
 

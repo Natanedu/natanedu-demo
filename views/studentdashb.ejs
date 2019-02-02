@@ -205,17 +205,28 @@
                 
                 
             });
-        
-            var socket = io.connect('http://localhost:3000/students');
+            var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+            var socket = io.connect(server+'/students');
             socket.on("ready",function(studentName){
-                console.log("ready");              
+                console.log("ready");     
+                        
             })
             socket.on("teacher-not-found",function(data){
                 createNotification("Alert","Opps!No teacher avaible for now!")
             });
-            socket.on("teacher-found",function(){
+            socket.on("teacher-found",function(url){
+                // Usage!
+                sleep(2000).then(() => {
+                    // Do something after the sleep!
+                    window.location.href = url;
+                });
                 
             });
+            // sleep time expects milliseconds
+        function sleep (time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+        }
+
 
             function search(){
                 

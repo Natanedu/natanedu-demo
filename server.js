@@ -51,7 +51,7 @@ http.createServer(app).listen(app.get("port"), function() {
   console.log("Natanedu demo product");
   console.log("Express Server listening on port " + app.get("port"));
 
-  const URL = process.env["URL"] || "http://localhost:3000";
+  const URL = process.env["URL"] || "http://localhost:3000"; //"https://webrtc.alpha-beta.ovh";
 
   Socket_Server(URL, this);
 });
