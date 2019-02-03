@@ -716,3 +716,40 @@ function sign(account, data) {
     }
   });
 }
+
+function getAllStudents() {
+    //get number of teachers
+    lectureInstance.getTeachersCount(function(err, res) {
+        var teachersCount = res.toNumber();
+        //get all teachers addresses
+        for(i=0; i<teachersCount; i++) {
+            lectureInstance.teachersAddress(i, function(err, res){
+                teachersAddresses.push(res);
+                lectureInstance.listedTeachers(res, function(err, status) {
+                    switch(status.toNumber()) {
+                        case 1:
+                            blacklistedTeachersAddresses.push(res);
+                            lectureInstance.teachers(res, function(err, res) {
+                                blacklistedTeachers.push(res);
+                            });
+                            break;
+                        case 2:
+                            inprocessTeacherAddresses.push(res);
+                            lectureInstance.teachers(res, function(err, res) {
+                                inprocessTeachers.push(res);
+                            });
+                            break;
+                        case 3: 
+                            whitelistedTeachersAddresses.push(res);
+                            lectureInstance.teachers(res, function(err, res) {
+                                whitelistedTeachers.push(res);
+                            });
+                            break;
+                        default:
+                            console.log("unknown status teacher");
+                    }
+                });
+            });
+        }
+    });
+}

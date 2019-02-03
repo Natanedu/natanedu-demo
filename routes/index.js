@@ -9,8 +9,6 @@ router.get("/home", function(req, res) {
   res.render("home", { title: "Express" });
 });
 
-
-
 router.get("/student/dashboard", function(req, res) {
   res.render("studentdashb", { title: "Express" });
 });
@@ -40,6 +38,15 @@ router.get("/student/search_lecture", function(req, res) {
 
 router.get("/student/search_page", function(req, res) {
   res.render("searchpage", { title: "Express" });
+});
+
+//Admin routes
+router.get("/owner/login", function(req, res) {
+  res.render("owner", { title: "Express" })
+});
+
+router.get("/owner/dashboard", function(req, res) {
+  res.render("ownerdashboard", { title: "Express" });
 });
 
 module.exports = router;

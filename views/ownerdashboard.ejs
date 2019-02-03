@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <!-- web3 -->
+        <script src="../web3/web3.js"></script>
+        <script src="../owner/owner.js"></script>
+        <script src="../teacher/teacher.js"></script>
+        <script src="../student/student.js"></script> 
+        
+        <script>
+            //teachers addresses
+            var teachersAddresses = [];
+            var whitelistedTeachersAddresses = [];
+            var blacklistedTeachersAddresses = [];
+            var inprocessTeacherAddresses = [];
+            //teachers object
+            blacklistedTeachers = [];
+            whitelistedTeachers = [];
+            inprocessTeachers = [];
+
+            //get all teachers
+            getAllTeachers();
+        </script>
+
+        <script>
+            //for students;
+
+            //students addresses
+            var studentsAddresses = [];
+            var whitelistedStudentsAddresses = [];
+            var blacklistedStudentsAddresses = [];
+            var inprocessStudentsAddresses = [];
+            //teachers object
+            blacklistedStudents = [];
+            whitelistedStudents = [];
+            inprocessStudents = [];
+
+            //get all teachers
+            getAllStudents();
+        </script>
+    </head>
+
+    <body>
+
+
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+            //in process teachers addresses
+            console.log(inprocessTeacherAddresses);
+            //blacklisted teacher addresses
+            console.log(blacklistedTeachersAddresses);
+            //whitelisted teacher addresses
+            console.log(whitelistedTeachersAddresses);
+
+            console.log(inprocessTeachers);
+        </script>
+
+    </body>
+</html>
