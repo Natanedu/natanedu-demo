@@ -108,7 +108,8 @@ var loginOwner = function() {
                 if(err != null) {
                     swal( "Oops" ,  "Something went wrong!" ,  "error" );
                 }
-                else {               
+                else {      
+                    console.log(res);         
                     if(res){
                         swal("Congrats!", "you're logged in", "success");
                         //redirect to owner dashboard             
@@ -121,5 +122,58 @@ var loginOwner = function() {
             })      
         }    
     });
-  }
-  
+} 
+
+var addOwner = function(newOwnerAddress) {
+    web3.eth.getAccounts(function(err, res) {
+        if(res[0] != undefined) {
+            owner = res[0];
+            adminInstance.addAdmin(newOwnerAddress, { from: owner }, function(err, res) {
+                if(!err) {
+                    swal({
+                        title: "Success",
+                        text: "Owner added!",
+                        icon: "success",
+                        button: "Ok"
+                    });
+                } 
+                else {
+                    swal({
+                        title: "Error",
+                        text: "error!",
+                        icon: "error",
+                        button: "Cancel"
+                    });
+                }
+            });
+        }
+    });
+}
+
+var removeOwner = function(ownerAddress) {
+    web3.eth.getAccounts(function(err, res) {
+        if(res[0] != undefined) {
+            owner = res[0];
+            adminInstance.removeAdmin(ownerAddress, { from: owner }, function(err, res) {
+                if(!err) {
+                    swal({
+                        title: "Success",
+                        text: "Owner removed!",
+                        icon: "success",
+                        button: "Ok"
+                    });
+                } 
+                else {
+                    swal({
+                        title: "Error",
+                        text: "error!",
+                        icon: "error",
+                        button: "Cancel"
+                    });
+                }
+            });
+        }
+    });
+}
+
+
