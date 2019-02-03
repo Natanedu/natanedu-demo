@@ -753,3 +753,55 @@ function getAllStudents() {
         }
     });
 }
+
+function whitelistStudent(studentAddress) {
+    web3.eth.getAccounts(function(err, res) {
+        if(res[0] != undefined) {
+            owner = res[0];
+            lectureInstance.whiteListStudent(studentAddress, { from: owner }, function(err, res) {
+                if(!err) {
+                    swal({
+                        title: "Whitelisted",
+                        text: "Student whitelisted!",
+                        icon: "success",
+                        button: "Ok"
+                    });
+                } 
+                else {
+                    swal({
+                        title: "Error",
+                        text: "error!",
+                        icon: "error",
+                        button: "Cancel"
+                    });
+                }
+            });
+        }
+    });
+}
+
+function blacklistStudent(studentAddress) {
+    web3.eth.getAccounts(function(err, res) {
+        if(res[0] != undefined) {
+            owner = res[0];
+            lectureInstance.blackListStudent(studentAddress, { from: owner }, function(err, res) {
+                if(!err) {
+                    swal({
+                        title: "Blacklisted",
+                        text: "Student blacklisted!",
+                        icon: "success",
+                        button: "Ok"
+                    });
+                } 
+                else {
+                    swal({
+                        title: "Error",
+                        text: "error!",
+                        icon: "error",
+                        button: "Cancel"
+                    });
+                }
+            });
+        }
+    });
+}
