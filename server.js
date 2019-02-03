@@ -6,6 +6,9 @@ const url = require("url");
 const routes = require("./routes/index");
 const Socket_Server = require("./socket_server");
 
+var server_url="http://localhost:3000";
+//var server_url="https://webrtc.alpha-beta.ovh";
+
 var app = express();
 
 //all environment
@@ -51,7 +54,7 @@ http.createServer(app).listen(app.get("port"), function() {
   console.log("Natanedu demo product");
   console.log("Express Server listening on port " + app.get("port"));
 
-  const URL = process.env["URL"] || "http://localhost:3000"; //"https://webrtc.alpha-beta.ovh";
+  const URL = process.env["URL"] ||  server_url;
 
   Socket_Server(URL, this);
 });

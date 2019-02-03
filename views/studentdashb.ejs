@@ -205,7 +205,7 @@
                 
                 
             });
-            var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+            var server="https://webrtc.alpha-beta.ovh";//"http://localhost:3000";//";
             var socket = io.connect(server+'/students');
             socket.on("ready",function(studentName){
                 console.log("ready");     
