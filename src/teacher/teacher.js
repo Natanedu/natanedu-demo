@@ -727,9 +727,65 @@ function getAllTeachers() {
                             break;
                         default:
                             console.log("unknown status teacher");
+                            console.log(status.toNumber());
                     }
                 });
             });
         }
     });
 }
+
+
+var whitelistTeacher = function(teacherAddress) {
+    web3.eth.getAccounts(function(err, res) {
+        if(res[0] != undefined) {
+            owner = res[0];
+            lectureInstance.whiteListTeacher(teacherAddress, { from: owner }, function(err, res) {
+                if(!err) {
+                    swal({
+                        title: "Whitelisted",
+                        text: "Teacher whitelisted!",
+                        icon: "success",
+                        button: "Ok"
+                    });
+                } 
+                else {
+                    swal({
+                        title: "Error",
+                        text: "error!",
+                        icon: "error",
+                        button: "Cancel"
+                    });
+                }
+            });
+        }
+    });
+}
+
+var blacklistTeacher = function(teacherAddress) {
+    web3.eth.getAccounts(function(err, res) {
+        if(res[0] != undefined) {
+            owner = res[0];
+            lectureInstance.blackListTeacher(teacherAddress, { from: owner }, function(err, res) {
+                if(!err) {
+                    swal({
+                        title: "Blacklisted",
+                        text: "Teacher blacklisted!",
+                        icon: "success",
+                        button: "Ok"
+                    });
+                } 
+                else {
+                    swal({
+                        title: "Error",
+                        text: "error!",
+                        icon: "error",
+                        button: "Cancel"
+                    });
+                }
+            });
+        }
+    });
+}
+
+
