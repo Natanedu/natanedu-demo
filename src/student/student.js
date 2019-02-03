@@ -719,30 +719,30 @@ function sign(account, data) {
 
 function getAllStudents() {
     //get number of teachers
-    lectureInstance.getTeachersCount(function(err, res) {
-        var teachersCount = res.toNumber();
+    lectureInstance.getStudentsCount(function(err, res) {
+        var studentsCount = res.toNumber();
         //get all teachers addresses
-        for(i=0; i<teachersCount; i++) {
-            lectureInstance.teachersAddress(i, function(err, res){
-                teachersAddresses.push(res);
-                lectureInstance.listedTeachers(res, function(err, status) {
+        for(i=0; i<studentsCount; i++) {
+            lectureInstance.studentsAddress(i, function(err, res){
+                studentsAddresses.push(res);
+                lectureInstance.listedStudents(res, function(err, status) {
                     switch(status.toNumber()) {
                         case 1:
-                            blacklistedTeachersAddresses.push(res);
-                            lectureInstance.teachers(res, function(err, res) {
-                                blacklistedTeachers.push(res);
+                            blacklistedStudentsAddresses.push(res);
+                            lectureInstance.students(res, function(err, res) {
+                                blacklistedStudents.push(res);
                             });
                             break;
                         case 2:
-                            inprocessTeacherAddresses.push(res);
-                            lectureInstance.teachers(res, function(err, res) {
-                                inprocessTeachers.push(res);
+                            inprocessStudentsAddresses.push(res);
+                            lectureInstance.students(res, function(err, res) {
+                                inprocessStudents.push(res);
                             });
                             break;
                         case 3: 
-                            whitelistedTeachersAddresses.push(res);
-                            lectureInstance.teachers(res, function(err, res) {
-                                whitelistedTeachers.push(res);
+                            whitelistedStudentsAddresses.push(res);
+                            lectureInstance.students(res, function(err, res) {
+                                whitelistedStudents.push(res);
                             });
                             break;
                         default:
