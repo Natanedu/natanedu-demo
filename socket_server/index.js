@@ -14,7 +14,7 @@ module.exports = (url, app) => {
   const Teacher_Nsp = io.of("/teachers");
   const Default_Nsp = io.of("/students");
   const Conferences_Nsp = io.of("/conferences");
-
+    const webrtc=io.of("/webrtc");
   Teachers_Socket(Teacher_Nsp, Default_Nsp, { url });
   Students_Socket(Default_Nsp, Teacher_Nsp, { url });
   Conferences_Socket(Conferences_Nsp);

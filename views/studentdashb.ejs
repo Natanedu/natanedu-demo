@@ -142,18 +142,22 @@
                 
                 
             });
-            var server="https://webrtc.alpha-beta.ovh";//"http://localhost:3000";//";
+            //var server="https://webrtc.alpha-beta.ovh";
+            var server="http://localhost:3000";
             var socket = io.connect(server+'/students');
             socket.on("ready",function(studentName){
                 console.log("ready");     
                         
             })
             socket.on("teacher-not-found",function(data){
+                $("#search-core").removeClass("hide");
+                $("#waiting-core").addClass("hide");
                 createNotification("Alert","Opps!No teacher avaible for now!")
             });
             socket.on("teacher-found",function(url){
                 // Usage!
-                sleep(2000).then(() => {
+                $("#msg").text("connecting with teacher....")
+                sleep(20*1000).then(() => {
                     // Do something after the sleep!
                     window.location.href = url;
                 });
@@ -198,8 +202,8 @@
                             else {
                                 lectureInstance.generateLectureId(function(err, res) {
                                     if(!err) {
-                                        console.log(res.toNumber());
-
+                                        console.log(res);
+                                        var idlect=res.toNumber();
                                         $("#search-core").addClass("hide");
                                         $("#waiting-core").removeClass("hide");
                                         socket.emit("search-class", {

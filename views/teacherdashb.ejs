@@ -74,7 +74,8 @@
           M.Dropdown.init(elems_lang, {});
         });
         
-        var server="https://webrtc.alpha-beta.ovh";//"http://localhost:3000";//";
+        //var server="https://webrtc.alpha-beta.ovh";
+         var server="http://localhost:3000";
         var socket = io.connect(server+'/teachers');
           socket.on('ready', function(){
             getCurrentTeacher(account);            
