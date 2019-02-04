@@ -112,8 +112,10 @@ var loginOwner = function() {
                     console.log(res);         
                     if(res){
                         swal("Congrats!", "you're logged in", "success");
-                        //redirect to owner dashboard             
-                        window.location.href="/owner/dashboard";
+                        setTimeout(function(){ 
+                            //redirect to owner dashboard            
+                            window.location.href="/owner/dashboard";
+                        }, 1000);
                     }
                     else {
                         swal( "Oops" ,  "You don't have admin access" ,  "error" );
