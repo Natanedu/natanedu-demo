@@ -660,7 +660,7 @@ var registerTeacher = function(fName,lName,country,topic,language,min,max) {
                 
                 }
                 else {
-                  lectureInstance.registerTeacher(account, fName, lName, country, topic,language,min,max, function(err, res) {
+                  lectureInstance.registerTeacher(account, fName, lName, country, topic, language, min, max, function(err, res) {
                     if(err != null) {
                         console.log(err);
                     }
@@ -798,29 +798,55 @@ var whitelistTeacher = function(teacherAddress) {
 }
 
 var blacklistTeacher = function(teacherAddress) {
-    web3.eth.getAccounts(function(err, res) {
-        if(res[0] != undefined) {
-            owner = res[0];
-            lectureInstance.blackListTeacher(teacherAddress, { from: owner }, function(err, res) {
-                if(!err) {
-                    swal({
-                        title: "Blacklisted",
-                        text: "Teacher blacklisted!",
-                        icon: "success",
-                        button: "Ok"
-                    });
-                } 
-                else {
-                    swal({
-                        title: "Error",
-                        text: "error!",
-                        icon: "error",
-                        button: "Cancel"
-                    });
-                }
-            });
-        }
-    });
+  web3.eth.getAccounts(function(err, res) {
+      if(res[0] != undefined) {
+          owner = res[0];
+          lectureInstance.blackListTeacher(teacherAddress, { from: owner }, function(err, res) {
+              if(!err) {
+                  swal({
+                      title: "Blacklisted",
+                      text: "Teacher blacklisted!",
+                      icon: "success",
+                      button: "Ok"
+                  });
+              } 
+              else {
+                  swal({
+                      title: "Error",
+                      text: "error!",
+                      icon: "error",
+                      button: "Cancel"
+                  });
+              }
+          });
+      }
+  });
+}
+
+var withdrawMoney = function(_amount) {
+  web3.eth.getAccounts(function(err, res) {
+    if(res[0] != undefined) {
+      teacher = res[0];
+      lectureInstance.transfer(_amount, { from: teacher }, function(err, res) {
+          if(!err) {
+              swal({
+                  title: "Done",
+                  text: "Ether transfered to your wallet!",
+                  icon: "success",
+                  button: "Ok"
+              });
+          } 
+          else {
+              swal({
+                  title: "Error",
+                  text: "error!",
+                  icon: "error",
+                  button: "Cancel"
+              });
+          }
+      });
+    }
+  });
 }
 
 
