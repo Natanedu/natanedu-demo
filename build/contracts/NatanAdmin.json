@@ -1793,12 +1793,12 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0xA5dc286EE9DdB375ABBbfEf614305Dceed7652b7",
-      "transactionHash": "0xae46e3303674d38a131d0fd35962930f7de9b51a82c6a1d3324250e1d1841d49"
+      "address": "0x9075a17b12183C17A3E6c0CaF669a128Aa8189b6",
+      "transactionHash": "0x64713fd0f52812d9831c7a96f20b3a19690a2f8e07d0cea4a67088585533dc2a"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2019-02-04T12:10:36.721Z",
+  "updatedAt": "2019-02-04T15:44:02.232Z",
   "devdoc": {
     "methods": {
       "addAdmin(address)": {

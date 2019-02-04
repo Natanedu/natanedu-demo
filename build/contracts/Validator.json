@@ -4031,12 +4031,12 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0xC0D250598616dd5eb977c4f32490dF75b6BE883C",
-      "transactionHash": "0x8b62574a87e9275b6b45cd636bae6f4853e8d11cc72cbb60fdc887a971facda1"
+      "address": "0x8aAF5E82d96dDb517B39f46e2B587CE2B47970ba",
+      "transactionHash": "0x286019a92a18df11edb0c06537693b379bd092013569286fb9d3d625efa422f4"
     }
   },
   "schemaVersion": "3.0.1",
-  "updatedAt": "2019-02-04T12:10:36.725Z",
+  "updatedAt": "2019-02-04T15:44:02.236Z",
   "devdoc": {
     "methods": {
       "isSigned(uint256,uint256,bytes)": {

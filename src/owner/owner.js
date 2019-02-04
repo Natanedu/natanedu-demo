@@ -93,7 +93,7 @@ var NatanAdminABI = [
 ]
 
 var adminContract = web3.eth.contract(NatanAdminABI);
-var contractAddress = '0xA5dc286EE9DdB375ABBbfEf614305Dceed7652b7';
+var contractAddress = '0x9075a17b12183C17A3E6c0CaF669a128Aa8189b6';
 var adminInstance = adminContract.at(contractAddress);
 
 
@@ -114,7 +114,7 @@ var loginOwner = function() {
                         swal("Congrats!", "you're logged in", "success");
                         setTimeout(function(){ 
                             //redirect to owner dashboard            
-                            window.location.href="/owner/dashboard";
+                            //window.location.href="/owner/dashboard";
                         }, 1000);
                     }
                     else {

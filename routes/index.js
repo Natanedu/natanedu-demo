@@ -32,17 +32,15 @@ router.get("/videocall", function(req, res) {
   res.render("videocall", { title: "Express" });
 });
 
-
-
-
-
 //Admin routes
 router.get("/owner/login", function(req, res) {
   res.render("owner", { title: "Express" })
 });
 
+/*
 router.get("/owner/dashboard", function(req, res) {
   res.render("ownerdashboard", { title: "Express" });
 });
+*/
 
 module.exports = router;
