@@ -849,4 +849,20 @@ var withdrawMoney = function(_amount) {
   });
 }
 
+var getBalance = function() {
+  web3.eth.getAccounts(function(err, res) {
+    if(res[0] != undefined) {
+      teacher = res[0];
+      lectureInstance.teacherBalance(teacher, function(err, res) {
+        if(!err) {
+          teacherBalance = web3.fromWei(res.toNumber(), "ether");
+        }
+        else {
+          console.log(err);
+        }
+      });
+    }
+  });
+}
+
 
