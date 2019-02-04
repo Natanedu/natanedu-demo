@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- script js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script src="../js/makenotifcation.js"></script>
@@ -67,7 +68,7 @@
           M.Dropdown.init(elems_lang, {});
         });
         
-        var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+        var server="https://webrtc.alpha-beta.ovh";//"http://localhost:3000";//";
         var socket = io.connect(server+'/teachers');
           socket.on('ready', function(){
             getCurrentTeacher(account);            

@@ -32,13 +32,9 @@ router.get("/videocall", function(req, res) {
   res.render("videocall", { title: "Express" });
 });
 
-router.get("/student/search_lecture", function(req, res) {
-  res.render("searchlecture", { title: "Express" });
-});
 
-router.get("/student/search_page", function(req, res) {
-  res.render("searchpage", { title: "Express" });
-});
+
+
 
 //Admin routes
 router.get("/owner/login", function(req, res) {

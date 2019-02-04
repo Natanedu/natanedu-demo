@@ -28,3 +28,8 @@ body{
     background-color: #2bbbad33;
 
 }
+.waiting-search{
+    left: 40%;
+    position: relative;
+    margin-top: 16%;
+}

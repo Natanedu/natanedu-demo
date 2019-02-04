@@ -1,5 +1,9 @@
 <html>
     <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link rel="stylesheet" href="../../css/ownerdash.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
         <!-- web3 -->
         <script src="../web3/web3.js"></script>
         <script src="../owner/owner.js"></script>
@@ -32,25 +36,60 @@
 
             //get all teachers
             getAllStudents();
-            
         </script>
     </head>
 
     <body>
+        <div class="navbar-fixed">
+            <nav class="nav-color"> 
+                <div class="nav-wrapper">
+                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <a href="#!" class="brand-logo logo"><img src="../../img/logo.png" class="logo-size"></a>
+                <ul class="right hide-on-med-and-down">
+                    <li class="active"><a href="#Student" >Student</a></li>
+                    <li><a href="#Teacher">Teacher</a></li>
+                </ul>
+                </div>
+            </nav>
+        </div>
+        <ul class="sidenav" id="mobile-demo">
+            <li class="active"><a href="#Student" >Student</a></li>
+            <li><a href="#Teacher">Teacher</a></li>
+        </ul>
+
+        <ul id="slide-out" class="sidenav sidenav-fixed sidenav-custom hide-on-med-and-down" style="left: 3%;padding-left:12px">
+            <li><a class="subheader center">Menu</a></li>
+            <li><a href="#!"><i class="material-icons">assignment_turned_in</i>White List</a></li>
+            <li><a href="#!"><i class="material-icons">assignment_late</i>Black List </a></li>
+            <li><div class="divider"></div></li>
+            <li><a href="#!"><i class="material-icons">assignment</i>In Progress</a></li>
+        </ul>
 
 
+        <div class="container" id="main" style="height: 100%;">
+            <div class="row">        
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         <script>
-
+            $('.sidenav').sidenav();
+            var elems = document.getElementById('slide-out');
+            var instances = M.Sidenav.init(elems,{
+                draggable:false,
+                preventScrolling:false
+            });
+            instances.open();
             //in process teachers addresses
             console.log(inprocessTeacherAddresses);
             //blacklisted teacher addresses
             console.log(blacklistedTeachersAddresses);
             //whitelisted teacher addresses
             console.log(whitelistedTeachersAddresses);
-            
-            console.log(inprocessStudentsAddresses);
-        </script>
 
+            console.log(inprocessTeachers);
+        </script>
     </body>
 </html>
