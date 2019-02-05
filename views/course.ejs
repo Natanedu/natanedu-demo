@@ -28,6 +28,7 @@
                             <i class="material-icons">
                                 attach_file
                             </i>
+                            <input type="file" class="hide" id="file" />
                         </a>
                     </li>
                     <li>
@@ -198,12 +199,12 @@
     <% } %>
 
     <script>
-        function chat(title, msg, sender) {
+        function chat(msg, sender) {
             var d = new Date();
             var t = d.getTime();
             var time = d.getHours() + ":" + d.getMinutes();
-            var block = '<li id="item-msg-' + t + '" class="collection-item"><span class="title">' + title + '</span>';
-            block = block + '<p id="msg-text">' + msg + '</p>';
+            var block = '<li id="item-msg-' + t + '" class="collection-item"><span class="title">' + msg + '</span>';
+
             block = block + '<span class="secondary-content second-chat-zone">' + time + '</span></li>';
 
             $("#chatbox").append(block);
@@ -211,22 +212,37 @@
                 $("#item-msg-" + t).addClass("container-chat-sender");
             } else {
 
-                $("#item-msg-" + t).addClass("container-chat-sender");
+                $("#item-msg-" + t).addClass("container-chat-receiver");
+
             }
             $("#chatbox").scrollTop($("#chatbox").height());
+
         }
 
-        function send(){
-          
-                var text = $("#msg").val();
+        function send() {
+
+            var text = $("#msg").val();
+            console.log(text);
+            if (text != '') {
                 console.log(text);
-                if (text != '') {
-                    console.log(text);
-                    chat("me", text, "me");
-                    $("#msg").val("");
-                }
-                
+                chat(text, "me");
+                connection.send({ text: text });
+                $("#msg").val("");
+            }
+
         }
+
+        $("#filesend").click(function (event) {
+            event.preventDefault();
+            $("#file").click();
+        })
+        $('input[type=file]').change(function (e) {
+            file = document.getElementById('file').files[0];
+        });
+    </script>
+
+    <script>
+
         var begin = true;
 
 
@@ -245,7 +261,8 @@
 
         connection.session = {
             audio: true,
-            video: true
+            video: true,
+            data: true
         };
 
         connection.sdpConstraints.mandatory = {
@@ -284,7 +301,7 @@
         connection.onmessage = function (event) {
             console.log("onmessage");
             var message = event.data;
-            console.log(message);
+            console.log(message.text);
             if (message.leave == "true") {
                 console.log(message);
                 instances.close();
@@ -294,8 +311,9 @@
                 connection.closeSocket();
                 clearInterval(x);
             }
-            if (message.text) {
-
+            if (message.text != "") {
+                console.log(message.text)
+                chat(message.text, "other");
             }
             /*if (message.shareYourCameraWithMe) {
                 connection.dontAttachStream = false;
