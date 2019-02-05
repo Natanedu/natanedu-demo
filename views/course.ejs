@@ -24,11 +24,13 @@
 
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a id="filesend" class="waves-effect waves-light btn-flat white-text " href="#!">
+                        <a id="filesend" onclick="openfile()" class="waves-effect waves-light btn-flat white-text "
+                            href="#!">
                             <i class="material-icons">
                                 attach_file
                             </i>
-                            <input type="file" class="hide" id="file" />
+                            <input type="file" class="hide" id="file" accept="application/msword, application/vnd.ms-powerpoint,
+                            text/plain, application/pdf, image/jpeg,image/png" />
                         </a>
                     </li>
                     <li>
@@ -104,7 +106,9 @@
         </div>
     </div>
 
+    <div id="filecontainer" class="hide">
 
+    </div>
 
     <!-- This file is automatically added/served when running "node index.js". -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -113,6 +117,7 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>-->
     <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
     <script src="https://cdn.webrtc-experiment.com/FileBufferReader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.js"></script>
     <script>
         var elems = document.getElementById('videos');
         var instances = M.Sidenav.init(elems, { edge: "right", draggable: true });
@@ -144,29 +149,29 @@
     <script src="../lecture/lecture.js"></script>
 
     <script>
-        var wallet="<%= teacher %>";
-        var lectureid= "<%=lecture%>";
-        var price;
+        var wallet = "<%=teacher %>";
+        var lectureid = "<%=lecture%>";
+        var price = "<%= price %>";
         function payMoney() {
-            web3.eth.getAccounts(function(err, res) {
-                if(res[0] != undefined) {
+            web3.eth.getAccounts(function (err, res) {
+                if (res[0] != undefined) {
                     _student = res[0];
                     payLecture(
                         lectureid,
                         price,
                         student,
                         wallet,
-                        {value: price}
+                        { value: price }
                     );
                 }
             });
-            
+
             clearTimeout(timer);
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
 
-        var wallet = "<%= teacher %>"
-        var price="<%= price %>"
+
+
     </script>
     <% }else{  %>
 
@@ -237,19 +242,19 @@
 
         }
 
-        function FileChat(uid, name,progress,sender) {
+        function FileChat(uid, name, progress, sender) {
 
-            var block = '<li id="item-' + uid + '" class="collection-item"><span class="title">' + name  + '<span>( '+progress+' % )</span></span>';
-            block = block + '<div class="progress">';
-            block=block+'<div class="determinate" id="progress-'+uid+'" style="width: 0%"></div></div>'    
-            block = block + '<span class="secondary-content second-chat-zone">' + time + '</span></li>';
+            var block = '<li id="item-' + uid + '" class="collection-item"><span class="title" >' + name + '<span id="val">( ' + progress + ' % )</span></span>';
+            block = block + '<div class="progress" >';
+            block = block + '<div class="determinate" id="progress-' + uid + '" style="width: 0%"></div></div></li>';
+            //block = block + '<span class="secondary-content second-chat-zone">' + time + '</span>';
 
             $("#chatbox").append(block);
             if (sender == "me") {
-                $("#item-msg-" + t).addClass("container-chat-sender");
+                $("#item-" + uid).addClass("container-chat-sender");
             } else {
 
-                $("#item-msg-" + t).addClass("container-chat-receiver");
+                $("#item-" + uid).addClass("container-chat-receiver");
 
             }
             $("#chatbox").scrollTop($("#chatbox").height());
@@ -268,12 +273,13 @@
 
         }
 
-        $("#filesend").click(function (event) {
-            event.preventDefault();
-            $("#file").click();
-        })
-        $('input[type=file]').change(function (e) {
+        function openfile(event) {
+            //event.preventDefault();
+            document.getElementById('file').click();
+        }
+        $('#file').change(function (e) {
             file = document.getElementById('file').files[0];
+            connection.shareFile(file,otherid)
         });
     </script>
 
@@ -319,7 +325,7 @@
             })
 
         });
-
+        connection.filesContainer = document.getElementById("filecontainer");
 
         connection.setCustomSocketEvent(leave_channel);
 
@@ -363,7 +369,11 @@
         }
         connection.onUserStatusChanged = function (event) {
             console.log(event);
-
+            if (connection.userid != event.userid) {
+                if (begin) {
+                    otherid = event.userid;
+                }
+            }
             if (event.status == "offline" && otherid == event.userid) {
                 $("#videos").addClass("hide");
                 $("#stream-end").removeClass("hide");
@@ -440,7 +450,7 @@
 
         })
     </script>
-
+    <script src="../../js/fileshare.js"></script>
 
 </body>
 
