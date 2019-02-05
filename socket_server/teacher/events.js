@@ -1,6 +1,8 @@
 const objectHash = require("object-hash");
 
+
 const { Timer } = require("../lib");
+
 
 // Timer Manager (Singleton)
 const timerManager = Timer.initialize();
@@ -19,18 +21,18 @@ const onTryToJoin = teacher => async ({ wallet, topic, country,lang,min,max } = 
   }
 };
 
-const onClassAccepted = (student_nsp, { url, socket } = {}) => student_id => {
+const onClassAccepted = (student_nsp, { url, socket } = {}) => ({id,lecture,wallet}) => {
   console.log("Teacher: Class accepted, joining room...");
-  timerManager.clearTimeout(student_id);
+  timerManager.clearTimeout(id);
   var hash=objectHash({
     id: socket.id,
     date: new Date().getMilliseconds()
   })
-  const student_room_url = `${url}/room/student/${hash}`;
+  const student_room_url = `${url}/room/student/${hash}?id=${lecture}&teacher=${wallet}`;
   
-  const teacher_room_url = `${url}/room/teacher/${hash}`;
+  const teacher_room_url = `${url}/room/teacher/${hash}?id=${lecture}`;
   socket.emit("joining-room", teacher_room_url);
-  student_nsp.to(student_id).emit("teacher-found", student_room_url);
+  student_nsp.to(id).emit("teacher-found", student_room_url);
   
 };
 

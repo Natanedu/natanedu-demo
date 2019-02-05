@@ -80,16 +80,17 @@
           socket.on('ready', function(){
             getCurrentTeacher(account);            
           });
-          socket.on('joined', function(data){
-            console.log(data);
+          socket.on('joined', function(d){
+            console.log(d);
             console.log(topic);
             console.log(min_price);
               
           });
             socket.on("joining-room",function(url){
-                console.log(url)
+                console.log(url);
+                console.log(data)
                 // Sets the new href (URL) for the current window.
-                window.location.href = url;
+                window.location.href = url;//+"?id="+data.id;
             })
             var title="Your courses";
             socket.on("class-available", function(student){
@@ -132,7 +133,8 @@
                   }
             }
             function accecpt(){
-              socket.emit("class-accepted", data.id);
+              console.log(account);
+              socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account});
             }
     </script>
  

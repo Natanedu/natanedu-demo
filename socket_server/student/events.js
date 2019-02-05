@@ -3,6 +3,7 @@ const { Timer } = require("../lib");
 const timerManager = Timer.initialize();
 
 const onSearchClass = (teachers_nsp, student_socket) => ({
+  lectureId,
   chapitre,
   student_name,
   topic,
@@ -16,6 +17,7 @@ const onSearchClass = (teachers_nsp, student_socket) => ({
 
   // Tells to the Client (Teacher) for a Student looking for a Class
   teachers_nsp.to(topic).emit("class-available", {
+    lectureId,
     chapitre,
     student_name,
     id: student_socket.id,

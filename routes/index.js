@@ -22,10 +22,19 @@ router.get("/webrtc", function(req, res) {
 });
 
 // Route to conferences room
-router.get("/room/:type/:id", function(req, res) {
-  var id=req.params.id;
+router.get("/room/:type/:hash", function(req, res) {
+  var hash=req.params.hash;
   var type=req.params.type;
-  res.render("course", { id:id,type,type });
+  var id=req.params.id;
+  if(req.params.teacher){
+    var teacher=req.params.teacher;
+    res.render("course", { id:hash,type:type,lecture:id,teacher:teacher });
+  }else{
+    res.render("course", { id:hash,type:type,lecture:id });
+  }
+  
+  
+  
 });
 
 router.get("/videocall", function(req, res) {

@@ -52,6 +52,7 @@
         <script>
             var stepmax=10;
             var max=10;
+            var lecture;
             $( document ).ready(function() {
                 var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
                 M.Dropdown.init(elems_lang, {});
@@ -159,7 +160,7 @@
                 $("#msg").text("connecting with teacher....")
                 sleep(20*1000).then(() => {
                     // Do something after the sleep!
-                    window.location.href = url;
+                    window.location.href = url;//+"?id="+lecture;
                 });
                 
             });
@@ -202,7 +203,8 @@
                                 lectureInstance.generateLectureId(function(err, res) {
                                     if(!err) {
                                         lectureInstance.generateLectureId.call(function(err, id) {
-                                            console.log(id.toNumber());
+                                            lecture=id.toNumber();
+                                            console.log(lecture);
                                             $("#search-core").addClass("hide");
                                             $("#waiting-core").removeClass("hide");
                                             socket.emit("search-class", {
