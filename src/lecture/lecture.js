@@ -641,7 +641,7 @@ var contractAddress = '0x724079b9E905D515399dd4510744D5150629515d';
 var lectureInstance = lectureContract.at(contractAddress);
 
 var payLecture = function(_lectureId, _price, _studentAddress, _teacherAddress) {
-    lectureInstance.payLecture(_lectureId, _price, _studentAddress, _teacherAddress, { from: _studentAddress}, function(err, res) {
+    lectureInstance.payLecture(_lectureId, _price, _studentAddress, _teacherAddress, {from: _studentAddress, value: _price}, function(err, res) {
         if(!err) {
             //show success alert in teacher frontend
         }
