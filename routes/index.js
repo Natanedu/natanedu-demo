@@ -28,7 +28,8 @@ router.get("/room/:type/:hash", function(req, res) {
   var id=req.params.id;
   if(req.params.teacher){
     var teacher=req.params.teacher;
-    res.render("course", { id:hash,type:type,lecture:id,teacher:teacher });
+    var price=req.params.price;
+    res.render("course", { id:hash,type:type,lecture:id,teacher:teacher,price:price });
   }else{
     res.render("course", { id:hash,type:type,lecture:id });
   }

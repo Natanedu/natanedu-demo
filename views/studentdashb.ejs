@@ -160,7 +160,8 @@
                 $("#msg").text("connecting with teacher....")
                 sleep(20*1000).then(() => {
                     // Do something after the sleep!
-                    window.location.href = url;//+"?id="+lecture;
+                    var price=$("#money").val();
+                    window.location.href = url+"?price="+web3.toWei(price, 'ether');//+"?id="+lecture;
                 });
                 
             });
