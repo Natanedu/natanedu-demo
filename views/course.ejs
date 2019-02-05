@@ -146,7 +146,7 @@
     <script>
         var wallet="<%= teacher %>";
         var lectureid= "<%=lecture%>";
-        var price;
+        var price="<%= price %>"
         function payMoney() {
             web3.eth.getAccounts(function(err, res) {
                 var _student = res[0];
@@ -160,10 +160,7 @@
             });            
             clearTimeout(timer);
         }
-        var setpayed = new Interval(payMoney, 3 * 60 * 1000);
-
-        var wallet = "<%= teacher %>"
-        var price="<%= price %>"
+        var setpayed = new Interval(payMoney, 3 * 60 * 1000);        
     </script>
     <% }else{  %>
 
