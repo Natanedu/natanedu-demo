@@ -149,18 +149,15 @@
         var price;
         function payMoney() {
             web3.eth.getAccounts(function(err, res) {
-                if(res[0] != undefined) {
-                    _student = res[0];
-                    payLecture(
-                        lectureid,
-                        price,
-                        student,
-                        wallet,
-                        {value: price}
-                    );
-                }
-            });
-            
+                var _student = res[0];
+                payLecture(
+                    lectureid,
+                    price,
+                    _student,
+                    wallet,
+                    {value: price}
+                );
+            });            
             clearTimeout(timer);
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
