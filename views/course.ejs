@@ -141,15 +141,29 @@
     </script>
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
+    <script src="../lecture/lecture.js"></script>
 
     <script>
-        var name;
+        var wallet="<%= teacher %>";
+        var lectureid= "<%=lecture%>";
+        var price;
         function payMoney() {
-            //alert('Hello');
+            web3.eth.getAccounts(function(err, res) {
+                if(res[0] != undefined) {
+                    _student = res[0];
+                    payLecture(
+                        lectureid,
+                        price,
+                        student,
+                        wallet,
+                        {value: price}
+                    );
+                }
+            });
+            
             clearTimeout(timer);
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
-        var wallet="<%= teacher %>"
     </script>
     <% }else{  %>
 
