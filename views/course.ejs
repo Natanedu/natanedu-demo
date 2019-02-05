@@ -164,6 +164,9 @@
             clearTimeout(timer);
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
+
+        var wallet = "<%= teacher %>"
+        var price="<%= price %>"
     </script>
     <% }else{  %>
 
@@ -234,6 +237,24 @@
 
         }
 
+        function FileChat(uid, name,progress,sender) {
+
+            var block = '<li id="item-' + uid + '" class="collection-item"><span class="title">' + name  + '<span>( '+progress+' % )</span></span>';
+            block = block + '<div class="progress">';
+            block=block+'<div class="determinate" id="progress-'+uid+'" style="width: 0%"></div></div>'    
+            block = block + '<span class="secondary-content second-chat-zone">' + time + '</span></li>';
+
+            $("#chatbox").append(block);
+            if (sender == "me") {
+                $("#item-msg-" + t).addClass("container-chat-sender");
+            } else {
+
+                $("#item-msg-" + t).addClass("container-chat-receiver");
+
+            }
+            $("#chatbox").scrollTop($("#chatbox").height());
+
+        }
         function send() {
 
             var text = $("#msg").val();
@@ -257,7 +278,7 @@
     </script>
 
     <script>
-        
+
         var begin = true;
 
 

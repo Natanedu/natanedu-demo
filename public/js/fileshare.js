@@ -8,15 +8,13 @@ connection.onFileProgress = function (chunk, uuid) {
 };
 
 connection.onFileStart = function (file) {
-    var div = document.createElement('div');
-    div.title = file.name;
-    div.innerHTML = '<label>0%</label> <progress></progress>';
-    document.body.appendChild(div);
-    progressHelper[file.uuid] = {
-        div: div,
-        progress: div.querySelector('progress'),
-        label: div.querySelector('label')
-    };
+    if(file.usedid==connection.userid){
+        FileChat(file.uuid,file.name,0,"me")
+    }else{
+        
+        FileChat(file.uuid,file.name,0,"other")
+    }
+    
     progressHelper[file.uuid].progress.max = file.maxChunks;
 };
 
