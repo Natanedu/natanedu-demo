@@ -164,13 +164,12 @@
                 
             });
             // sleep time expects milliseconds
-        function sleep (time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-        }
+            function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+            }
 
 
             function search(){
-                
                 lectureInstance.students(account, function(err, res) {
                     studentName = res[0] +" "+ res[1];
                     console.log(studentName);
@@ -202,18 +201,19 @@
                             else {
                                 lectureInstance.generateLectureId(function(err, res) {
                                     if(!err) {
-                                        console.log(res);
-                                        var idlect=res.toNumber();
-                                        $("#search-core").addClass("hide");
-                                        $("#waiting-core").removeClass("hide");
-                                        socket.emit("search-class", {
-                                            lectureId: res.toNumber(),
-                                            chapitre: chapitres,
-                                            student_name: studentName,
-                                            topic: topic,
-                                            prize: web3.toWei(price, 'ether'),
-                                            lang: language,
-                                            hour:hour
+                                        lectureInstance.generateLectureId.call(function(err, id) {
+                                            console.log(id.toNumber());
+                                            $("#search-core").addClass("hide");
+                                            $("#waiting-core").removeClass("hide");
+                                            socket.emit("search-class", {
+                                                lectureId: id.toNumber(),
+                                                chapitre: chapitres,
+                                                student_name: studentName,
+                                                topic: topic,
+                                                prize: web3.toWei(price, 'ether'),
+                                                lang: language,
+                                                hour:hour
+                                            });
                                         });
                                     }
                                 });
@@ -222,6 +222,6 @@
                     }    
                 });
             }
-            </script>        
+        </script>        
     </body>
 </html>
