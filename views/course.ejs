@@ -150,32 +150,30 @@
 
     <script>
 
-        var wallet = "<%=teacher %>";
+        var _teacher = "<%=teacher %>";
         var lectureid = "<%=lecture%>";
         var price = "<%= price %>";
-        function payMoney() {
-            alert("payment started!!!!!!!!!!!!!!");
-            /*
+        function payMoney() {           
             web3.eth.getAccounts(function (err, res) {
                 if (res[0] != undefined) {
                     _student = res[0];
+                    console.log(lectureid);
+                    console.log(price);
+                    console.log(_student);
+                    console.log(_teacher);
                     payLecture(
                         lectureid,
                         price,
-                        student,
-                        wallet,
+                        _student,
+                        _teacher,
                         { value: price }
                     );
                 }
             });
-            */
 
             clearTimeout(timer);
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
-
-
-
 
     </script>
     <% }else{  %>
