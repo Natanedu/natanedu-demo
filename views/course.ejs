@@ -154,6 +154,8 @@
         var lectureid = "<%=lecture%>";
         var price = "<%= price %>";
         function payMoney() {
+            alert("payment started!!!!!!!!!!!!!!");
+            /*
             web3.eth.getAccounts(function (err, res) {
                 if (res[0] != undefined) {
                     _student = res[0];
@@ -166,6 +168,7 @@
                     );
                 }
             });
+            */
 
             clearTimeout(timer);
         }
