@@ -108,14 +108,14 @@
                   $("#empty-notif").addClass("hide");
                   }
 
-                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;height:auto">'+
+                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;height:auto;padding-bottom: 1px;">'+
                   '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
                   ' <p class="grey-text"> The student '+
                       data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
                       'detail: '+data.chapitre+
                     '</p><br/>'+
                     '<div class="row">'+
-                        '<button onclick="accecpt()" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
+                        '<button onclick="accecpt('+data.hour+')" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
                       '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
                     '</div>'+
                     '<div class="secondary-content">'+
@@ -135,7 +135,8 @@
                   $("#empty-notif").removeClass("hide");
                   }
             }
-            function accecpt(){
+            function accecpt(time){
+              sessionStorage.coursetime=time;
               console.log(account);
               socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account});
             }

@@ -30,10 +30,6 @@ router.get("/room/:type/:hash", function(req, res) {
   if(type=="teacher"){
     res.render("course", { id:hash,type:type,lecture:id });
   }else{
-    console.log(req.params)
-  console.log(req.query)
-   
-    
     var teacher=req.query.teacher;
     var price=req.query.price;
     res.render("course", { id:hash,type:type,lecture:id,teacher:teacher,price:price });

@@ -10,11 +10,16 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="../../web3/web3.js"></script>
-    
+
 </head>
 
 <body>
-    <div class="navbar-fixed">
+    <div id="waiting" class="container">
+        <div class="row">
+            <%- include('waiting') %>
+        </div>
+    </div>
+    <div class="navbar-fixed hide" id="navbar">
         <nav class="nav-natanedu">
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">
@@ -22,18 +27,21 @@
                     <img src="../../img/logo.png" class="size-35 logo-nav" />
                     <span id="timer" class="center counter"></span>
                 </a>
-                
+
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a id="record" onclick="record()" class="waves-effect waves-light btn-flat white-text " href="#!">
+                        <a id="record" onclick="record()" class="waves-effect waves-light btn-flat white-text "
+                            href="#!">
                             <i class="material-icons">
-                                    fiber_manual_record<!-- fiber_smart_record -->
+                                fiber_manual_record
+                                <!-- fiber_smart_record -->
                             </i>
-                            
+
                         </a>
                     </li>
                     <li>
-                        <a id="filesend" onclick="openfile()" class="waves-effect waves-light btn-flat white-text " href="#!">
+                        <a id="filesend" onclick="openfile()" class="waves-effect waves-light btn-flat white-text "
+                            href="#!">
                             <i class="material-icons">
                                 attach_file
                             </i>
@@ -67,7 +75,7 @@
         </nav>
 
     </div>
-    <ul id="videos" class="sidenav sidenav-fixed text-zone chat-sidebar">
+    <ul id="videos" class="sidenav sidenav-fixed text-zone chat-sidebar hide">
         <li>
             <div class="row ">
                 <div class="col s6">
@@ -85,7 +93,7 @@
 
 
         </li>
-        <li class="mesage-container">
+        <li class="message-container">
             <ul class="collection message-box" id="chatbox">
 
 
@@ -105,10 +113,8 @@
 
 
     </ul>
-    <div class="container" id="chat">
 
-    </div>
-    <div class="container" id="main">
+    <div class="container hide" id="main">
         <div class="row">
 
             <div class="grey-text lighten-3-text hide" style="margin-top:15%;text-align:center;" id="stream-end">
@@ -123,19 +129,27 @@
     <div id="filecontainer" class="hide">
 
     </div>
+    <div id="recorder-container" class="hide">
+
+    </div>
 
     <!-- This file is automatically added/served when running "node index.js". -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        var elems = document.getElementById('videos');
+        var instances = M.Sidenav.init(elems, { edge: "right", draggable: true });
+        instances.close();
+        $("#msg-waiting").text("preparing course...");
+        $("#waiting-core").removeClass("hide");
+    </script>
     <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>-->
     <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
     <script src="https://cdn.webrtc-experiment.com/FileBufferReader.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.js"></script>
     <script>
-        var elems = document.getElementById('videos');
-        var instances = M.Sidenav.init(elems, { edge: "right", draggable: true });
-        instances.close();
+
         function Interval(fn, time) {
             var timer = false;
             this.start = function () {
@@ -157,10 +171,25 @@
                 return timer !== false;
             };
         }
+        var name, last_name;
+        // Set the date we're counting down to
+        var _now = new Date();
+
+
+        var new_min = _now.getMinutes() + sessionStorage.coursetime
+
+
+        console.log(new_min);
+        _now.setMinutes(new_min);
+        var countDownDate = _now.getTime();
+    </script>
+    <script src="../../js/timer.js"></script>
+    <script>
+        var timecourse = new Interval(caluclate, 1000);
     </script>
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
-    
+
     <script src="../../lecture/lecture.js"></script>
     <script>
 
@@ -170,6 +199,7 @@
         function payMoney() {
             web3.eth.getAccounts(function (err, res) {
                 if (res[0] != undefined) {
+                    alert("payed")
                     _student = res[0];
                     console.log(lectureid);
                     console.log(price);
@@ -187,55 +217,13 @@
 
             clearTimeout(timer);
         }
-        var setpayed = new Interval(payMoney,1000); //3 * 60 * 1000);
+        var setpayed = new Interval(payMoney, 1000);// 3 * 60 * 1000);
 
     </script>
     <% }else{  %>
 
     <script src="../../teacher/teacher.js"></script>
-    <script>
 
-        var name, last_name;
-        // Set the date we're counting down to
-        var _now = new Date();
-
-        console.log(_now);
-        var new_min = _now.getMinutes() + 3
-        console.log(new_min);
-        _now.setMinutes(new_min);
-        var countDownDate = _now.getTime();
-
-
-
-
-
-        function caluclate() {
-            // Get todays date and time
-            var now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            if (distance > 0) {
-                // Display the result in the element with id="demo"
-                document.getElementById("timer").innerHTML = minutes + "m " + seconds + "s ";
-                console.log(minutes + "m " + seconds + "s ");
-            }
-            // If the count down is finished, write some text 
-            if (distance == 0) {
-                clearInterval(x);
-                document.getElementById("timer").innerHTML = "payament done!"
-                //document.getElementById("demo").innerHTML = "You are payed";
-            }
-        }
-        var getpayed = new Interval(caluclate, 1000);
-
-    </script>
     <% } %>
 
     <script>
@@ -333,26 +321,35 @@
             audio: 50,  // 50 kbps
             video: 256 // 256 kbps
         };
-
+        connection.setCustomSocketEvent(leave_channel);
         connection.connectSocket(function (socket) {
-            connection.socket.on(connection.socketCustomEvent, function () {
+            connection.socket.on(connection.socketCustomEvent, function (data) {
+                console.log(data)
                 // stop all local cameras
                 connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
                 });
-
+                instances.close();
+                $("#stream-end").removeClass("hide");
+                $("#stream_info").html(data.msg);
+                $("#backtodash").addClass("hide");
                 // close socket.io connection
                 connection.closeSocket();
+                connection.getAllParticipants().forEach(function (participantId) {
+                    connection.disconnectWith(participantId);
+                });
             })
 
         });
         connection.filesContainer = document.getElementById("filecontainer");
 
-        connection.setCustomSocketEvent(leave_channel);
+
 
         connection.onstream = function (event) {
             if (event.type === "local") {
                 instances.open();
+
+
                 document.getElementById("localVideo").appendChild(event.mediaElement);
             }
             if (event.type === "remote") {
@@ -372,7 +369,7 @@
                 $("#stream_info").html(message.msg);
                 $("#backtodash").addClass("hide");
                 connection.closeSocket();
-                clearInterval(x);
+                timecourse.stop();
             }
             if (message.text != "") {
                 console.log(message.text)
@@ -393,35 +390,41 @@
             if (connection.userid != event.userid) {
                 if (begin) {
                     otherid = event.userid;
+                    $("#main").removeClass("hide");
+                    $("#videos").removeClass("hide");
+                    $("#navbar").removeClass("hide");
+                    $("#waiting").addClass("hide");
+
                 }
             }
             if (event.status == "offline" && otherid == event.userid) {
-                $("#videos").addClass("hide");
-                $("#stream-end").removeClass("hide");
-                $("#stream_info").html(message.msg);
-                $("#backtodash").addClass("hide");
-                if (type == "teacher") {
 
-                    getpayed.stop();
 
-                }
+
+                timecourse.stop();
+
+
                 if (type == "student") {
                     setpayed.stopTimeout();
                 }
-            }
-            if (begin) {
-                otherid = event.userid;
-                if (type == "teacher") {
+                connection.getAllParticipants().forEach(function (participantId) {
+                    connection.disconnectWith(participantId);
+                });
+            } else if (event.status == "online" && otherid == event.userid) {
+                if (begin) {
+
+
                     // Update the count down every 1 second
-                    getpayed.start();
-                }
-                if (type == "student") {
-                    setpayed.startTimeout();
+                    timecourse.start();
+
+                    if (type == "student") {
+                        setpayed.startTimeout();
+                    }
+                    begin = false;
 
                 }
-                begin = false;
-
             }
+
         };
 
 
@@ -445,10 +448,10 @@
             if (event.userid == otherid) {
 
                 //console.log(message);
-                /*$("#videos").addClass("hide");
+                $("#videos").addClass("hide");
                 $("#stream-end").removeClass("hide");
-                $("#stream_info").html(message.msg);
-                $("#backtodash").addClass("hide");*/
+                $("#stream_info").html("Course was finished");
+                $("#backtodash").addClass("hide");
             }
 
         };
@@ -461,15 +464,70 @@
                     name = res[0] + " " + res[1];
                     console.log(name);
                     var msg = name + " has leave the course";
-                    connection.send({ msg: msg, type: type, leave: "true" });
+                    //connection.send({ msg: msg, type: type, leave: "true" });
                     connection.socket.emit(connection.socketCustomEvent, { msg: msg, type: type, leave: "true" })
+                    //connection.disconnectWith( otherid );
                     //window.location.href = "/<%=type %>/dashboard";
                     $("#backtodash").addClass("hide");
                 });
+            } else {
+
+                console.log(name);
+                var msg = name + " has leave the course";
+                //connection.send({ msg: msg, type: type, leave: "true" });
+                connection.socket.emit(connection.socketCustomEvent, { msg: msg, type: type, leave: "true" })
+                //connection.disconnectWith( otherid );
+                //window.location.href = "/<%=type %>/dashboard";
+                $("#backtodash").addClass("hide");
+
             }
 
 
         })
+    </script>
+    <script>
+        var record = false;
+        function record() {
+            if (record == false) {
+
+                $("#record").removeClass("white-text");
+                $("#record").addClass("red-text");
+                $("#record .material-icons").html("fiber_smart_record")
+                if (navigator.userAgent.search("Chrome") == 0) {
+                    connection.streamEvents[otherid].startRecording({
+                        audio: true,
+                        video: true
+                    });
+                }
+                //Check if browser is Firefox 
+                else if (navigator.userAgent.search("Firefox") == 0) {
+                    // insert conditional Firefox Code here
+                    connection.streamEvents[otherid].stream.startRecording({
+                        audio: true
+                    });
+                }
+
+            } else {
+                $("#record").removeClass("white-text");
+                $("#record").addClass("red-text");
+                $("#record .material-icons").html("fiber_manual_record")
+                connection.streamEvents['stream-id'].stream.stopRecording(function (blob) {
+                    if (navigator.userAgent.search("Chrome") == 0) {
+                        var mediaElement = document.createElement('video');
+                        mediaElement.src = URL.createObjectURL(blob);
+                        $("#recorder-container").append(mediaElement);
+                    }
+                    //Check if browser is Firefox 
+                    else if (navigator.userAgent.search("Firefox") == 0) {
+
+                        var mediaElement = document.createElement('audio');
+                        mediaElement.src = URL.createObjectURL(blob.audio);
+                        $("#recorder-container").append(mediaElement);
+                    }
+                });
+            }
+
+        }
     </script>
     <script src="../../js/fileshare.js"></script>
 

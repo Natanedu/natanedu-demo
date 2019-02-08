@@ -71,7 +71,7 @@
             });
             var timerslider = document.getElementById('time-slider');
             noUiSlider.create(timerslider, {
-                start: [5],
+                start: [10],
                 step:5,
                 behaviour: 'drag',
                 connect: true,
@@ -162,10 +162,11 @@
             });
             socket.on("teacher-found",function(url){
                 // Usage!
-                $("#msg").text("connecting with teacher....")
+                $("#msg-waiting").text("connecting with teacher....")
                 sleep(20*1000).then(() => {
                     // Do something after the sleep!
                     var price=$("#money").val();
+                    sessionStorage.coursetime=$("#time").val();
                     window.location.href = url+"&price="+web3.toWei(price, 'ether');//+"?id="+lecture;
                 });
                 
@@ -212,7 +213,9 @@
                                             lecture=id.toNumber();
                                             console.log(lecture);
                                             $("#search-core").addClass("hide");
+                                            $("#msg-waiting").text("searching for teacher...")
                                             $("#waiting-core").removeClass("hide");
+
                                             socket.emit("search-class", {
                                                 lectureId: id.toNumber(),
                                                 chapitre: chapitres,
