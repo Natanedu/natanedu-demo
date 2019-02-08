@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="../../web3/web3.js"></script>
+    <script src="../lecture/lecture.js"></script>
 </head>
 
 <body>
@@ -159,7 +160,7 @@
     </script>
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
-    <script src="../lecture/lecture.js"></script>
+    
 
     <script>
 
@@ -352,14 +353,6 @@
         connection.onstream = function (event) {
             if (event.type === "local") {
                 instances.open();
-                if (type == "teacher") {
-                    // Update the count down every 1 second
-                    getpayed.start();
-                }
-                if (type == "student") {
-                    setpayed.startTimeout();
-
-                }
                 document.getElementById("localVideo").appendChild(event.mediaElement);
             }
             if (event.type === "remote") {
@@ -418,7 +411,14 @@
             }
             if (begin) {
                 otherid = event.userid;
+                if (type == "teacher") {
+                    // Update the count down every 1 second
+                    getpayed.start();
+                }
+                if (type == "student") {
+                    setpayed.startTimeout();
 
+                }
                 begin = false;
 
             }

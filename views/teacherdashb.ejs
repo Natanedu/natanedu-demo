@@ -108,7 +108,7 @@
                   $("#empty-notif").addClass("hide");
                   }
 
-                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
+                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;height:auto">'+
                   '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
                   ' <p class="grey-text"> The student '+
                       data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
@@ -119,7 +119,7 @@
                       '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
                     '</div>'+
                     '<div class="secondary-content">'+
-                        parseInt(data.hour)+'hour'+
+                        parseInt(data.hour)+'min'+
                   '</div>'+
                   '</li>');
                   data.topic=topic;

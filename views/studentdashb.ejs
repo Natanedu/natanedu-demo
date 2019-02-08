@@ -166,7 +166,7 @@
                 sleep(20*1000).then(() => {
                     // Do something after the sleep!
                     var price=$("#money").val();
-                    window.location.href = url+"?price="+web3.toWei(price, 'ether');//+"?id="+lecture;
+                    window.location.href = url+"&price="+web3.toWei(price, 'ether');//+"?id="+lecture;
                 });
                 
             });
