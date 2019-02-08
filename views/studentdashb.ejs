@@ -52,6 +52,7 @@
         <script>
             var stepmax=10;
             var max=10;
+            var timermax=60;
             var lecture;
             $( document ).ready(function() {
                 var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
@@ -70,14 +71,14 @@
             });
             var timerslider = document.getElementById('time-slider');
             noUiSlider.create(timerslider, {
-                start: [1],
-                step:1,
+                start: [5],
+                step:5,
                 behaviour: 'drag',
                 connect: true,
                 orientation: 'horizontal',
                 range: {
-                    'min': 0,
-                    'max': 10
+                    'min': 5,
+                    'max': 60
                 }
             });
         
@@ -116,7 +117,7 @@
             timerslider.noUiSlider.on('update', function( values, handle ) {
                 
                         $("#time").val(values[handle]);
-                        $("#time-val").text(values[handle]+" hour")
+                        $("#time-val").text(parseInt(values[handle])+" min")
                 
                 
             });
@@ -124,10 +125,10 @@
             timerslider.noUiSlider.on('change', function( values, handle ) {
                 // on change of the slider, find the next element and set its value
                 
-                if(values[handle]==max){
+                if(values[handle]==timermax){
                 
                     
-                    max=max+stepmax;
+                    timermax=timermax+stepmax;
                     timerslider.noUiSlider.updateOptions({
                         start: [$("#time").val()],
                         step:1,
@@ -135,16 +136,20 @@
                         connect: [true],
                         orientation: 'horizontal',
                         range: {
-                            'min': [0],
-                            'max': [max]
+                            'min': [5],
+                            'max': [timermax]
                         }
                     });
                 }
                 
                 
             });
-            //var server="https://webrtc.alpha-beta.ovh";
-            var server="http://localhost:3000";
+            
+            if(window.location.hostname=="localhost"){
+                var server="http://localhost:3000";
+            }else{
+                var server="https://webrtc.alpha-beta.ovh";
+            }
             var socket = io.connect(server+'/students');
             socket.on("ready",function(studentName){
                 console.log("ready");     

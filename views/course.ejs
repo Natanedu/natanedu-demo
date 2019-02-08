@@ -21,11 +21,18 @@
                     <img src="../../img/logo.png" class="size-35 logo-nav" />
                     <span id="timer" class="center counter"></span>
                 </a>
-
+                
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a id="filesend" onclick="openfile()" class="waves-effect waves-light btn-flat white-text "
-                            href="#!">
+                        <a id="record" onclick="record()" class="waves-effect waves-light btn-flat white-text " href="#!">
+                            <i class="material-icons">
+                                    fiber_manual_record<!-- fiber_smart_record -->
+                            </i>
+                            
+                        </a>
+                    </li>
+                    <li>
+                        <a id="filesend" onclick="openfile()" class="waves-effect waves-light btn-flat white-text " href="#!">
                             <i class="material-icons">
                                 attach_file
                             </i>
@@ -35,13 +42,18 @@
                     </li>
                     <li>
                         <a id="videocontrol" class="waves-effect waves-light btn-flat white-text " href="#!">
-                            <i class="material-icons">
+                            <i class="material-icons" id="normal_quality">
                                 videocam
                             </i>
+                            <i class="material-icons" id="hd_quality">
+                                hd
+                            </i>
                         </a>
+                        <input type="hidden" value="normal" id="quality" />
                     </li>
                     <li>
-                        <a id="backtodash" class="waves-effect waves-light btn-flat red-text lighten-1-text" href="/<%=type %>/dashboard">
+                        <a id="backtodash" class="waves-effect waves-light btn-flat red-text lighten-1-text"
+                            href="/<%=type %>/dashboard">
                             <i class="material-icons">
                                 call_end
                             </i>
@@ -84,7 +96,8 @@
                     <label for="msg">Text message</label>
                 </div>
                 <div class="input-field col s2 no-margin">
-                    <button onclick="send()" class="btn waves-effect waves-light btn-flat"><i class="material-icons">send</i></button>
+                    <button onclick="send()" class="btn waves-effect waves-light btn-flat"><i
+                            class="material-icons">send</i></button>
                 </div>
             </div>
         </li>
@@ -153,7 +166,7 @@
         var _teacher = "<%=teacher %>";
         var lectureid = "<%=lecture%>";
         var price = "<%= price %>";
-        function payMoney() {           
+        function payMoney() {
             web3.eth.getAccounts(function (err, res) {
                 if (res[0] != undefined) {
                     _student = res[0];
@@ -282,7 +295,7 @@
         }
         $('#file').change(function (e) {
             file = document.getElementById('file').files[0];
-            connection.shareFile(file,otherid)
+            connection.shareFile(file, otherid)
         });
     </script>
 
@@ -315,6 +328,10 @@
             OfferToReceiveVideo: true
         };
 
+        connection.bandwidth = {
+            audio: 50,  // 50 kbps
+            video: 256 // 256 kbps
+        };
 
         connection.connectSocket(function (socket) {
             connection.socket.on(connection.socketCustomEvent, function () {
@@ -335,6 +352,14 @@
         connection.onstream = function (event) {
             if (event.type === "local") {
                 instances.open();
+                if (type == "teacher") {
+                    // Update the count down every 1 second
+                    getpayed.start();
+                }
+                if (type == "student") {
+                    setpayed.startTimeout();
+
+                }
                 document.getElementById("localVideo").appendChild(event.mediaElement);
             }
             if (event.type === "remote") {
@@ -393,14 +418,7 @@
             }
             if (begin) {
                 otherid = event.userid;
-                if (type == "teacher") {
-                    // Update the count down every 1 second
-                    getpayed.start();
-                }
-                if (type == "student") {
-                    setpayed.startTimeout();
 
-                }
                 begin = false;
 
             }
