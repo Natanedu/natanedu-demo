@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="../../web3/web3.js"></script>
-    <script src="../lecture/lecture.js"></script>
+    
 </head>
 
 <body>
@@ -161,7 +161,7 @@
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
     
-
+    <script src="../../lecture/lecture.js"></script>
     <script>
 
         var _teacher = "<%=teacher %>";
@@ -187,7 +187,7 @@
 
             clearTimeout(timer);
         }
-        var setpayed = new Interval(payMoney, 3 * 60 * 1000);
+        var setpayed = new Interval(payMoney,1000); //3 * 60 * 1000);
 
     </script>
     <% }else{  %>
