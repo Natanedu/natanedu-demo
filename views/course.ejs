@@ -30,7 +30,7 @@
 
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a id="record" onclick="record()" class="waves-effect waves-light btn-flat white-text "
+                        <a id="record" onclick="recordcall()" class="waves-effect waves-light btn-flat white-text "
                             href="#!">
                             <i class="material-icons">
                                 fiber_manual_record
@@ -147,7 +147,7 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>-->
     <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
     <script src="https://cdn.webrtc-experiment.com/FileBufferReader.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
     <script>
 
         function Interval(fn, time) {
@@ -172,16 +172,12 @@
             };
         }
         var name, last_name;
-        // Set the date we're counting down to
-        var _now = new Date();
 
 
-        var new_min = _now.getMinutes() + sessionStorage.coursetime
+
+        var counterdown = sessionStorage.coursetime * 60
 
 
-        console.log(new_min);
-        _now.setMinutes(new_min);
-        var countDownDate = _now.getTime();
     </script>
     <script src="../../js/timer.js"></script>
     <script>
@@ -199,12 +195,8 @@
         function payMoney() {
             web3.eth.getAccounts(function (err, res) {
                 if (res[0] != undefined) {
-                    alert("payed")
+
                     _student = res[0];
-                    console.log(lectureid);
-                    console.log(price);
-                    console.log(_student);
-                    console.log(_teacher);
                     payLecture(
                         lectureid,
                         price,
@@ -217,7 +209,7 @@
 
             clearTimeout(timer);
         }
-        var setpayed = new Interval(payMoney, 1000);// 3 * 60 * 1000);
+        var setpayed = new Interval(payMoney, 3 * 60 * 1000);
 
     </script>
     <% }else{  %>
@@ -329,6 +321,9 @@
                 connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
                 });
+                if (timecourse.isRunning()) {
+                    timecourse.stop();
+                }
                 instances.close();
                 $("#stream-end").removeClass("hide");
                 $("#stream_info").html(data.msg);
@@ -487,44 +482,59 @@
     </script>
     <script>
         var record = false;
-        function record() {
+        var firstRemoteStream;
+        var mediaRecorder;
+        function recordcall() {
+
             if (record == false) {
 
                 $("#record").removeClass("white-text");
                 $("#record").addClass("red-text");
                 $("#record .material-icons").html("fiber_smart_record")
-                if (navigator.userAgent.search("Chrome") == 0) {
-                    connection.streamEvents[otherid].startRecording({
-                        audio: true,
-                        video: true
-                    });
+                
+                if (navigator.userAgent.search("Chrome") != -1) {
+                    firstRemoteStream = connection.streamEvents.selectFirst({
+                        remote: true,
+                        isVideo: true,
+                        isAudio: true
+                    }).stream;
+                    mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
+                    mediaRecorder.mimeType = 'video/mp4'; // check this line for audio/wav
+
                 }
                 //Check if browser is Firefox 
-                else if (navigator.userAgent.search("Firefox") == 0) {
-                    // insert conditional Firefox Code here
-                    connection.streamEvents[otherid].stream.startRecording({
-                        audio: true
-                    });
+                else if (navigator.userAgent.search("Firefox") != -1) {
+                    firstRemoteStream = connection.streamEvents.selectFirst({
+                        remote: true,
+                        isAudio: true
+                    }).stream;
+                    mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
+                    mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
                 }
-
-            } else {
-                $("#record").removeClass("white-text");
-                $("#record").addClass("red-text");
-                $("#record .material-icons").html("fiber_manual_record")
-                connection.streamEvents['stream-id'].stream.stopRecording(function (blob) {
-                    if (navigator.userAgent.search("Chrome") == 0) {
+                
+                mediaRecorder.ondataavailable = function (blob) {
+                    $("#record").removeClass("red-text");
+                    $("#record").addClass("white-text");
+                    $("#record .material-icons").html("fiber_manual_record")
+                    if (navigator.userAgent.search("Chrome") != -1) {
                         var mediaElement = document.createElement('video');
                         mediaElement.src = URL.createObjectURL(blob);
                         $("#recorder-container").append(mediaElement);
                     }
                     //Check if browser is Firefox 
-                    else if (navigator.userAgent.search("Firefox") == 0) {
+                    else if (navigator.userAgent.search("Firefox") != -1) {
 
                         var mediaElement = document.createElement('audio');
-                        mediaElement.src = URL.createObjectURL(blob.audio);
+                        mediaElement.src = URL.createObjectURL(blob);
                         $("#recorder-container").append(mediaElement);
                     }
-                });
+                    record=false;
+                };
+                mediaRecorder.start(3000);
+                record = true;
+            }else{
+                mediaRecorder.stop();
+                
             }
 
         }
