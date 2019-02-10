@@ -6,9 +6,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../../css/dash.css">
     <link rel="stylesheet" href="../../css/conference.css">
+    <link rel="stylesheet" href="../../css/whiteboard.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="../../css/color-picker.min.css" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="../../web3/web3.js"></script>
 
 </head>
@@ -125,7 +128,25 @@
             </div>
         </div>
     </div>
+    <ul id="panel-draw" class="sidenav sidenav-fixed">
+        <li><a class="subheader">Panel</a></li>
+        <li><a href="#!"><i class="fas fa-paint-brush"></i></a></li>
+        <li><a href="#!"><i class="fal fa-draw-circle"></i></a></li>
+        <li><a href="#!">
+                <div class="" id="color-picker"></div>
+            </a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
 
+
+    </ul>
+    <div id="container">
+        <div id="draw-container">
+                <%- include('whiteboard') %>
+              
+        </div>
+    </div>
     <div id="filecontainer" class="hide">
 
     </div>
@@ -148,8 +169,15 @@
     <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
     <script src="https://cdn.webrtc-experiment.com/FileBufferReader.js"></script>
     <script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
-    <script>
+    <script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
+    <!--<script src="https://cdn.WebRTC-Experiment.com/getScreenId.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>-->
+    <script type="text/javascript" src="../../js/picker/color-picker.min.js"></script>
+    <script src="../../js/fabric.js"></script>
+    <script src="https://chancejs.com/chance.min.js"></script>
 
+    <script>
+        var chance = new Chance(Math.random);
         function Interval(fn, time) {
             var timer = false;
             this.start = function () {
@@ -210,7 +238,7 @@
             clearTimeout(timer);
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
-
+        $("#panel-draw").addClass("hide");
     </script>
     <% }else{  %>
 
@@ -238,7 +266,7 @@
             $("#chatbox").scrollTop($("#chatbox").height());
 
         }
-
+        // function to create box chat file 
         function FileChat(uid, name, progress, sender) {
 
             var block = '<li id="item-' + uid + '" class="collection-item"><span class="title" >' + name + '<span id="val">( ' + progress + ' % )</span></span>';
@@ -257,6 +285,7 @@
             $("#chatbox").scrollTop($("#chatbox").height());
 
         }
+        // send message 
         function send() {
 
             var text = $("#msg").val();
@@ -270,6 +299,7 @@
 
         }
 
+        //simulate input file click
         function openfile(event) {
             //event.preventDefault();
             document.getElementById('file').click();
@@ -283,7 +313,7 @@
     <script>
 
         var begin = true;
-
+        var canvas ;
 
         var otherid;
         var connection = new RTCMultiConnection();
@@ -356,7 +386,7 @@
         connection.onmessage = function (event) {
             console.log("onmessage");
             var message = event.data;
-            console.log(message.text);
+            
             if (message.leave == "true") {
                 console.log(message);
                 instances.close();
@@ -366,6 +396,13 @@
                 connection.closeSocket();
                 timecourse.stop();
             }
+            if(message.draw=="true"){
+                if(type=="student"){
+                    canvas.loadFromDatalessJSON()
+                    caches.renderAll();
+                }
+            }
+            console.log(message.text);
             if (message.text != "") {
                 console.log(message.text)
                 chat(message.text, "other");
@@ -484,6 +521,7 @@
         var record = false;
         var firstRemoteStream;
         var mediaRecorder;
+        var recorder;
         function recordcall() {
 
             if (record == false) {
@@ -491,55 +529,64 @@
                 $("#record").removeClass("white-text");
                 $("#record").addClass("red-text");
                 $("#record .material-icons").html("fiber_smart_record")
-                
-                if (navigator.userAgent.search("Chrome") != -1) {
-                    firstRemoteStream = connection.streamEvents.selectFirst({
-                        remote: true,
-                        isVideo: true,
-                        isAudio: true
-                    }).stream;
-                    mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
-                    mediaRecorder.mimeType = 'video/mp4'; // check this line for audio/wav
+                firstRemoteStream = connection.streamEvents.selectFirst({
+                    remote: true,
+                    isVideo: true,
+                    isAudio: true
+                }).stream;
+                /* if (navigator.userAgent.search("Chrome") != -1) {
+                     
+                     mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
+                     mediaRecorder.mimeType = 'video/mp4'; // check this line for audio/wav
+ 
+                 }
+                 //Check if browser is Firefox 
+                 else if (navigator.userAgent.search("Firefox") != -1) {
+                     firstRemoteStream = connection.streamEvents.selectFirst({
+                         remote: true,
+                         isAudio: true
+                     }).stream;
+                     mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
+                     mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
+                 }*/
+                recorder = RecordRTC([firstRemoteStream], {
+                    type: 'video'
+                });
+                recorder.startRecording();
 
-                }
-                //Check if browser is Firefox 
-                else if (navigator.userAgent.search("Firefox") != -1) {
-                    firstRemoteStream = connection.streamEvents.selectFirst({
-                        remote: true,
-                        isAudio: true
-                    }).stream;
-                    mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
-                    mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
-                }
-                
-                mediaRecorder.ondataavailable = function (blob) {
+                /*mediaRecorder.ondataavailable = function (blob) {
+           
+                };
+                mediaRecorder.start(3000);*/
+                record = true;
+            } else {
+                //mediaRecorder.stop();
+                recorder.stopRecording(function () {
                     $("#record").removeClass("red-text");
                     $("#record").addClass("white-text");
                     $("#record .material-icons").html("fiber_manual_record")
-                    if (navigator.userAgent.search("Chrome") != -1) {
-                        var mediaElement = document.createElement('video');
-                        mediaElement.src = URL.createObjectURL(blob);
-                        $("#recorder-container").append(mediaElement);
-                    }
-                    //Check if browser is Firefox 
-                    else if (navigator.userAgent.search("Firefox") != -1) {
 
-                        var mediaElement = document.createElement('audio');
-                        mediaElement.src = URL.createObjectURL(blob);
-                        $("#recorder-container").append(mediaElement);
-                    }
-                    record=false;
-                };
-                mediaRecorder.start(3000);
-                record = true;
-            }else{
-                mediaRecorder.stop();
-                
+                    var url = URL.createObjectURL(recorder.getBlob())
+                    var mediaElement = document.createElement('video');
+                    mediaElement.src = url;
+                    window.open(url);
+                    $("#recorder-container").append(mediaElement);
+
+                    recorder = null;
+                    record = false;
+                })
             }
 
         }
     </script>
     <script src="../../js/fileshare.js"></script>
+    <%if(type=='student'){ %>
+
+    <% }else{  %>
+
+    <script src="../../js/draw.js"></script>
+
+    <% }  %>
 
 </body>
 
