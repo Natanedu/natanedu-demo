@@ -623,8 +623,8 @@ var NatanLectureABI = [
     "constant": false,
     "inputs": [
       {
-        "name": "_amount",
-        "type": "uint256"
+        "name": "_teacher",
+        "type": "address"
       }
     ],
     "name": "transfer",
@@ -632,12 +632,12 @@ var NatanLectureABI = [
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function",
-    "signature": "0x12514bba"
+    "signature": "0x1a695230"
   }
 ]
-
+  
 var lectureContract = web3.eth.contract(NatanLectureABI);
-var contractAddress = '0x724079b9E905D515399dd4510744D5150629515d';
+var contractAddress = '0x068D1d62f8e392457b0149Cb3f2e4C2ae6c56B5a';
 var lectureInstance = lectureContract.at(contractAddress);
 
 var registerTeacher = function(fName,lName,country,topic,language,min,max) {
