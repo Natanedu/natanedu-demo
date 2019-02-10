@@ -656,6 +656,22 @@ var payLecture = function(_lectureId, _price, _studentAddress, _teacherAddress) 
     });
 }  
 
+var transfer = function(_teacherAdd) {
+  lectureInstance.transfer(_teacherAdd, function(err, res) {
+    if(!err) {
+
+    }
+    else {
+      swal({
+          title: "Error Transfer Money",
+          text: "Can not transfer to teacher wallet!",
+          icon: "error",
+          button: "Cancel"
+      });
+    }
+  });
+}
+
 var postIPFS = function(_lectureId, _ipfsHash) {
     lectureInstance.saveRecordedLecture(_lectureId, _ipfsHash, function(err, res) {
         if(!err) {

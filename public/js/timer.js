@@ -1,6 +1,3 @@
-
-
-
 function caluclate() {
     var minutes = parseInt(counterdown / 60, 10);
     var seconds = parseInt(counterdown % 60, 10);
