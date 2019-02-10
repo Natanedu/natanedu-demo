@@ -11,11 +11,11 @@ var elems = document.getElementById('geometry-select');
 var dropdown = M.Dropdown.init(elems, {
     coverTrigger: true,
     container: document.getElementById("dropdown-container"),
-    onOpenStart:function(){
+    onOpenStart: function () {
         $("#geometry").hide();
     },
     onOpenEnd: function () {
-        
+
         console.log("click");
         $("#geometry").css("width", "64px");
         $("#geometry").css("left", "10px");
@@ -27,7 +27,7 @@ var elems_zoom = document.getElementById('zoom-select');
 var dropdown_zoom = M.Dropdown.init(elems_zoom, {
     coverTrigger: true,
     container: document.getElementById("zoom-container"),
-    onOpenStart:function(){
+    onOpenStart: function () {
         $("#zoom").hide();
     },
     onOpenEnd: function () {
@@ -268,7 +268,7 @@ function DrawText() {
     canvas.renderAll();
 }
 // reference canvas element
- canvas = this.__canvas = new fabric.Canvas('draw-container', {
+canvas = this.__canvas = new fabric.Canvas('draw-container', {
     isDrawingMode: true
 });
 fabric.Object.prototype.transparentCorners = false;
@@ -277,26 +277,38 @@ fabric.Object.prototype.transparentCorners = false;
 
 
 function observe(eventName) {
-    logObservingEvent(eventName);
-    canvas2.on(eventName, function(opt){ log(eventName, opt) });
-  }
 
-  function observeObj(eventName) {
-    logObservingEventObj(eventName);
-    canvas2.getObjects().forEach(function(o) {
-      o.on(eventName, function(opt){ 
-          connection.send({opt:canvas.toDatalessJSON(),draw:"true"})
-      });
+    canvas.on(eventName, function (opt) { 
+        console.log(opt)
+        connection.send({ opt: canvas.toDatalessJSON(), draw: "true" }) 
     });
-  }
+}
 
-  observe('object:modified');
-  observe('object:moving');
-  observe('object:scaling');
-  observe('object:rotating');
-  observe('object:moved');
-  observe('object:scaled');
-  observe('object:rotated');
+function observeObj(eventName) {
+    logObservingEventObj(eventName);
+    canvas.getObjects().forEach(function (o) {
+        o.on(eventName, function (opt) {
+            console.log(opt)
+            connection.send({ opt: canvas.toDatalessJSON(), draw: "true" })
+        });
+    });
+}
+
+observe('object:modified');
+observe('object:moving');
+observe('object:scaling');
+observe('object:rotating');
+observe('object:moved');
+observe('object:scaled');
+observe('object:rotated');
+observeObj('moving');
+observeObj('scaling');
+observeObj('rotating');
+observeObj('skewing');
+observeObj('moved');
+observeObj('scaled');
+observeObj('rotated');
+observeObj('skewed');
 
 
 

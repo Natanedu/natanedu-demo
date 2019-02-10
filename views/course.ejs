@@ -10,8 +10,6 @@
     <link rel="stylesheet" media="screen" type="text/css" href="../../css/color-picker.min.css" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <script src="../../web3/web3.js"></script>
 
 </head>
@@ -128,24 +126,12 @@
             </div>
         </div>
     </div>
-    <ul id="panel-draw" class="sidenav sidenav-fixed">
-        <li><a class="subheader">Panel</a></li>
-        <li><a href="#!"><i class="fas fa-paint-brush"></i></a></li>
-        <li><a href="#!"><i class="fal fa-draw-circle"></i></a></li>
-        <li><a href="#!">
-                <div class="" id="color-picker"></div>
-            </a></li>
-        <li>
-            <div class="divider"></div>
-        </li>
-
-
-    </ul>
+   
     <div id="container">
-        <div id="draw-container">
+        
                 <%- include('whiteboard') %>
               
-        </div>
+      
     </div>
     <div id="filecontainer" class="hide">
 
@@ -374,7 +360,7 @@
             if (event.type === "local") {
                 instances.open();
 
-
+                
                 document.getElementById("localVideo").appendChild(event.mediaElement);
             }
             if (event.type === "remote") {
@@ -398,7 +384,7 @@
             }
             if(message.draw=="true"){
                 if(type=="student"){
-                    canvas.loadFromDatalessJSON()
+                    canvas.loadFromDatalessJSON(message.opt)
                     caches.renderAll();
                 }
             }
@@ -419,14 +405,18 @@
         }
         connection.onUserStatusChanged = function (event) {
             console.log(event);
-            if (connection.userid != event.userid) {
+            if (connection.userid != event.userid && event.status=="online") {
                 if (begin) {
                     otherid = event.userid;
                     $("#main").removeClass("hide");
                     $("#videos").removeClass("hide");
                     $("#navbar").removeClass("hide");
                     $("#waiting").addClass("hide");
-
+                    $("#whiteboard").removeClass("hide");
+                    if(type=="teacher"){
+                        
+                        $("#panel-draw").removeClass("hide");
+                    }
                 }
             }
             if (event.status == "offline" && otherid == event.userid) {
@@ -484,6 +474,8 @@
                 $("#stream-end").removeClass("hide");
                 $("#stream_info").html("Course was finished");
                 $("#backtodash").addClass("hide");
+                $("#whiteboard").addClass("hide");
+                $("#panel-draw").addClass("hide");
             }
 
         };
@@ -581,7 +573,13 @@
     </script>
     <script src="../../js/fileshare.js"></script>
     <%if(type=='student'){ %>
-
+        <script>
+        // reference canvas element
+        canvas = this.__canvas = new fabric.Canvas('draw-container', {
+            isDrawingMode: false
+        });
+        fabric.Object.prototype.transparentCorners = false;
+        </script>
     <% }else{  %>
 
     <script src="../../js/draw.js"></script>
