@@ -29,9 +29,9 @@ const onClassAccepted = (student_nsp, { url, socket } = {}) => ({id,lecture,wall
     date: new Date().getMilliseconds()
   })
   const student_room_url = `${url}/room/student/${hash}?id=${lecture}&teacher=${wallet}`;
-  
   const teacher_room_url = `${url}/room/teacher/${hash}?id=${lecture}`;
   socket.emit("joining-room", teacher_room_url);
+  teacher.leave(topic);
   student_nsp.to(id).emit("teacher-found", student_room_url);
   
 };

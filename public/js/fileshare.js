@@ -36,7 +36,7 @@ connection.onFileEnd = function (file) {
         var fileNameMatches = (file.name || '').toLowerCase().match(/.png|.jpg|.jpeg/g);
         if (fileNameMatches) {
             $("#item-" + file.uuid +' .title').css("display","none"); 
-            $("#item-" + file.uuid).append('<img  id="show-' + file.uuid + '" />')
+            $("#item-" + file.uuid).append('<img width="40%"  id="show-' + file.uuid + '" />')
             var img = document.getElementById('show-' + file.uuid);
             img.src = URL.createObjectURL(file);
 

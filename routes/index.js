@@ -25,14 +25,17 @@ router.get("/webrtc", function(req, res) {
 router.get("/room/:type/:hash", function(req, res) {
   var hash=req.params.hash;
   var type=req.params.type;
-  var id=req.params.id;
-  if(req.query.teacher){
-    var teacher=req.query.teacher;
-    var price=req.params.price;
-    res.render("course", { id:hash,type:type,lecture:id,teacher:teacher,price:price });
-  }else{
+  var id=req.query.id;
+  
+  if(type=="teacher"){
     res.render("course", { id:hash,type:type,lecture:id });
+  }else{
+    var teacher=req.query.teacher;
+    var price=req.query.price;
+    res.render("course", { id:hash,type:type,lecture:id,teacher:teacher,price:price });
   }
+ 
+  
   
   
   
