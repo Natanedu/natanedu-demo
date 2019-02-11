@@ -1,5 +1,5 @@
 // function for creating the notification
-function createNotification(title,text) {
+function createNotification(title,body) {
   
     // Let's check if the browser supports notifications
     if (!"Notification" in window) {
@@ -11,7 +11,7 @@ function createNotification(title,text) {
       // If it's okay let's create a notification
 
     
-      var notification = new Notification(title, { body: text });
+      var notification = new Notification(title,body );//body{ body: text }
 
       window.navigator.vibrate(500);
     }
@@ -31,7 +31,7 @@ function createNotification(title,text) {
         if (permission === "granted") {
           
          
-          var notification = new Notification(title, { body: text });
+          var notification = new Notification(title, body);
 
           window.navigator.vibrate(500);
         }

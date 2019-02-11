@@ -124,7 +124,8 @@
                   '</li>');
                   data.topic=topic;
                 var text = 'The student  ' + data.student_name + ' want a course in '+data.topic;
-                createNotification(title,text);
+                var option={body:text,icon:'../../img/N.png'}
+                createNotification(title,option);
               }           
                 
             });

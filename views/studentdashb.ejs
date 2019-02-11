@@ -158,7 +158,9 @@
             socket.on("teacher-not-found",function(data){
                 $("#search-core").removeClass("hide");
                 $("#waiting-core").addClass("hide");
-                createNotification("Alert","Opps!No teacher avaible for now!")
+                var text="Opps!No teacher avaible for now!";
+                var option={body:text,icon:'../../img/sad.png'}
+                createNotification("Alert",option)
             });
             socket.on("teacher-found",function(url){
                 // Usage!
