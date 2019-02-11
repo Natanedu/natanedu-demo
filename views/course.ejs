@@ -11,7 +11,7 @@
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="../../web3/web3.js"></script>
-
+    <script src="../../lecture/lecture.js"></script>
 </head>
 
 <body>
@@ -163,7 +163,10 @@
     <script src="https://chancejs.com/chance.min.js"></script>
 
     <script>
+        var type = "<%=type %>";
         var chance = new Chance(Math.random);
+
+
         function Interval(fn, time) {
             var timer = false;
             this.start = function () {
@@ -193,14 +196,11 @@
 
 
     </script>
-    <script src="../../js/timer.js"></script>
-    <script>
-        var timecourse = new Interval(caluclate, 1000);
-    </script>
+    
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
 
-    <script src="../../lecture/lecture.js"></script>
+    
     <script>
 
         var _teacher = "<%=teacher %>";
@@ -221,7 +221,7 @@
                 }
             });
 
-            clearTimeout(timer);
+            setpayed.stopTimeout();
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
         $("#panel-draw").addClass("hide");
@@ -232,6 +232,10 @@
     <script src="../../teacher/teacher.js"></script>
 
     <% } %>
+    <script src="../../js/timer.js"></script>
+    <script>
+        var timecourse = new Interval(caluclate, 1000);
+    </script>
 
     <script>
         function chat(msg, sender) {
@@ -306,7 +310,7 @@
         var connection = new RTCMultiConnection();
         var predefinedRoomId = "<%= id %>";
         var socket;
-        var type = "<%=type %>";
+        
         var leave_channel = 'leave-room-' + predefinedRoomId;
         var begin_stream = 'begin-room-' + predefinedRoomId;
         // this line is VERY_important
@@ -413,8 +417,8 @@
         }
         var failed=0;
         connection.onPeerStateChanged = function (state) {
-            if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
-                console.log(failed)
+            if (state.iceConnectionState.search(/failed/gi) !== -1) {
+                console.log("failed")
                 failed--;
                 connection.renegotiate();
                 console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
