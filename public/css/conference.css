@@ -88,39 +88,3 @@
     margin-top: 0px;
     margin-bottom: 0px;
 }
-
-
-.cust-side {
-    width: 6%;
-    position: fixed;
-    left: 12px;
-}
-
-.center-font {
-    width: 100%;
-    position: relative;
-    top: 35%;
-}
-
-.center-font-small {
-    width: 50%;
-    position: relative;
-    top: 35%;
-    left: 20%;
-}
-
-.color-box {
-
-    height: 46%;
-    border: 1px solid;
-}
-
-.canvas-container {
-    width: 500px;
-    height: 500px;
-}
-
-.upper-canvas {
-    width: 500px;
-    height: 500px;
-}

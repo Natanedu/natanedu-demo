@@ -269,7 +269,10 @@ function DrawText() {
 }
 // reference canvas element
 canvas = this.__canvas = new fabric.Canvas('draw-container', {
-    isDrawingMode: true
+    isDrawingMode: true,
+    backgroundColor: '#fff',
+    selectionColor: 'blue',
+    selectionLineWidth: 2
 });
 fabric.Object.prototype.transparentCorners = false;
 
@@ -279,16 +282,16 @@ fabric.Object.prototype.transparentCorners = false;
 function observe(eventName) {
 
     canvas.on(eventName, function (opt) { 
-        console.log(opt)
+
         connection.send({ opt: canvas.toDatalessJSON(), draw: "true" }) 
     });
 }
 
 function observeObj(eventName) {
-    logObservingEventObj(eventName);
+
     canvas.getObjects().forEach(function (o) {
         o.on(eventName, function (opt) {
-            console.log(opt)
+         
             connection.send({ opt: canvas.toDatalessJSON(), draw: "true" })
         });
     });
@@ -301,6 +304,17 @@ observe('object:rotating');
 observe('object:moved');
 observe('object:scaled');
 observe('object:rotated');
+observe('object:added');
+observe('object:removed');
+observe('path:created');
+observe('after:render');
+
+
+observe('selection:cleared');
+observe('selection:created');
+observe('selection:updated');
+
+
 observeObj('moving');
 observeObj('scaling');
 observeObj('rotating');

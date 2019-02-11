@@ -126,12 +126,12 @@
             </div>
         </div>
     </div>
-   
+
     <div id="container">
-        
-                <%- include('whiteboard') %>
-              
-      
+
+        <%- include('whiteboard') %>
+
+
     </div>
     <div id="filecontainer" class="hide">
 
@@ -225,6 +225,7 @@
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
         $("#panel-draw").addClass("hide");
+        $("#draw-container").css("left","15%");
     </script>
     <% }else{  %>
 
@@ -299,7 +300,7 @@
     <script>
 
         var begin = true;
-        var canvas ;
+        var canvas;
 
         var otherid;
         var connection = new RTCMultiConnection();
@@ -333,6 +334,7 @@
         connection.connectSocket(function (socket) {
             connection.socket.on(connection.socketCustomEvent, function (data) {
                 console.log(data)
+                failed=16;
                 // stop all local cameras
                 connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
@@ -360,7 +362,7 @@
             if (event.type === "local") {
                 instances.open();
 
-                
+
                 document.getElementById("localVideo").appendChild(event.mediaElement);
             }
             if (event.type === "remote") {
@@ -372,7 +374,7 @@
         connection.onmessage = function (event) {
             console.log("onmessage");
             var message = event.data;
-            
+
             if (message.leave == "true") {
                 console.log(message);
                 instances.close();
@@ -382,10 +384,10 @@
                 connection.closeSocket();
                 timecourse.stop();
             }
-            if(message.draw=="true"){
-                if(type=="student"){
+            if (message.draw == "true") {
+                if (type == "student") {
                     canvas.loadFromDatalessJSON(message.opt)
-                    caches.renderAll();
+                    canvas.renderAll();
                 }
             }
             console.log(message.text);
@@ -403,9 +405,21 @@
                 connection.renegotiate(); // share with all users
             }*/
         }
+        var failed=0;
+        connection.onPeerStateChanged = function (state) {
+            if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
+                console.log(failed)
+                failed--;
+                connection.renegotiate();
+                console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
+            }
+        };
+        connection.onReConnecting = function (event) {
+            console.info('ReConnecting with', event.userid, '...');
+        };
         connection.onUserStatusChanged = function (event) {
             console.log(event);
-            if (connection.userid != event.userid && event.status=="online") {
+            if (connection.userid != event.userid && event.status == "online" ) {
                 if (begin) {
                     otherid = event.userid;
                     $("#main").removeClass("hide");
@@ -413,17 +427,17 @@
                     $("#navbar").removeClass("hide");
                     $("#waiting").addClass("hide");
                     $("#whiteboard").removeClass("hide");
-                    if(type=="teacher"){
-                        
+                    if (type == "teacher") {
+
                         $("#panel-draw").removeClass("hide");
                     }
                 }
             }
-            if (event.status == "offline" && otherid == event.userid) {
+            if (event.status == "offline" && otherid == event.userid && failed<-15) {
 
+                    failed=0;
 
-
-                timecourse.stop();
+              /*  timecourse.stop();
 
 
                 if (type == "student") {
@@ -431,7 +445,7 @@
                 }
                 connection.getAllParticipants().forEach(function (participantId) {
                     connection.disconnectWith(participantId);
-                });
+                });*/
             } else if (event.status == "online" && otherid == event.userid) {
                 if (begin) {
 
@@ -476,6 +490,12 @@
                 $("#backtodash").addClass("hide");
                 $("#whiteboard").addClass("hide");
                 $("#panel-draw").addClass("hide");
+                timecourse.stop();
+
+
+                if (type == "student") {
+                    setpayed.stopTimeout();
+                }
             }
 
         };
@@ -573,13 +593,13 @@
     </script>
     <script src="../../js/fileshare.js"></script>
     <%if(type=='student'){ %>
-        <script>
+    <script>
         // reference canvas element
         canvas = this.__canvas = new fabric.Canvas('draw-container', {
             isDrawingMode: false
         });
         fabric.Object.prototype.transparentCorners = false;
-        </script>
+    </script>
     <% }else{  %>
 
     <script src="../../js/draw.js"></script>
