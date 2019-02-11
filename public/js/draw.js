@@ -1,6 +1,7 @@
 var shapes = []
 var selection;
-var color = ""
+var color = "";
+// simulate mouse event to color picker
 function triggerMouseEvent(node, eventType) {
     var clickEvent = document.createEvent('MouseEvents');
     clickEvent.initEvent(eventType, true, true);
@@ -155,9 +156,13 @@ function activateDrawing() {
 function erase() {
     canvas.remove(selection);
     canvas.renderAll();
+    canvas_2.remove(selection);
 };
 function clearAll() {
     canvas.clear();
+    canvas.set("backgroundColor","#ffffff");
+    canvas.set("selectionColor", 'blue');
+    canvas.set("selectionLineWidth", "2");
     canvas.renderAll();
 };
 function createCircle() {
@@ -180,6 +185,7 @@ function createCircle() {
         selection = null;
 
     });
+    
     shapes.push(circle);
     canvas.add(circle); // add object
     defaultproperty(circle);
@@ -231,12 +237,10 @@ function createTriangle() {
     })(triangle.toObject);
     triangle.name = chance.string({ length: 10 });
     triangle.on('selected', function () {
-        console.log('selected a rectangle');
         selection = triangle;
-        console.log(triangle)
     });
     triangle.on('deselected', function () {
-        console.log('diselected');
+        
         selection = null;
 
     });
@@ -253,12 +257,10 @@ function DrawText() {
         fontSize: 20
     });
     text.on('selected', function () {
-        console.log('selected a rectangle');
-        selection = triangle;
-        console.log(triangle)
+        selection = text;
     });
     text.on('deselected', function () {
-        console.log('diselected');
+    
         selection = null;
 
     });
@@ -266,6 +268,8 @@ function DrawText() {
     canvas.add(text); // add object
     //defaultproperty(text);
     canvas.renderAll();
+    text.set("selectable","false");
+    canvas_2.add(text);
 }
 // reference canvas element
 canvas = this.__canvas = new fabric.Canvas('draw-container', {
@@ -275,8 +279,6 @@ canvas = this.__canvas = new fabric.Canvas('draw-container', {
     selectionLineWidth: 2
 });
 fabric.Object.prototype.transparentCorners = false;
-
-
 
 
 function observe(eventName) {

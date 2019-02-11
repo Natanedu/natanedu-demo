@@ -1,5 +1,3 @@
-
-
 .cust-side {
     width: 6%;
     position: fixed;
@@ -9,21 +7,20 @@
 .center-font {
     width: 100%;
     position: relative;
-    top: 15%;
+    top: 12%;
 }
 
 .center-font-small {
     width: 50%;
     position: relative;
     top: 35%;
-    
 }
 
 .color-box {
-
     height: 39%;
     border: 1px solid;
-    left: 40%;
+    left: 0%;
+    top: 29%;
 }
 
 .canvas-container {

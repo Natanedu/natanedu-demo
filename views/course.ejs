@@ -256,7 +256,7 @@
         // function to create box chat file 
         function FileChat(uid, name, progress, sender) {
 
-            var block = '<li id="item-' + uid + '" class="collection-item"><span class="title" >' + name + '<span id="val">( ' + progress + ' % )</span></span>';
+            var block = '<li id="item-' + uid + '" class="collection-item"><div class="row"><span class="col s9 title" >' + name + '<span id="val">( ' + progress + ' % )</span></span></div>';
             block = block + '<div class="progress" >';
             block = block + '<div class="determinate" id="progress-' + uid + '" style="width: 0%"></div></div></li>';
             //block = block + '<span class="secondary-content second-chat-zone">' + time + '</span>';
@@ -386,12 +386,18 @@
             }
             if (message.draw == "true") {
                 if (type == "student") {
-                    canvas.loadFromDatalessJSON(message.opt)
+                    canvas.loadFromDatalessJSON(message.opt);
+                    canvas.getObjects().forEach(function(obj){
+                        obj.set("hasControls",false);
+                        obj.set("selectable",false);
+                        obj.set("evented",false);
+                        obj.set("hasBorders",false);
+                    })
                     canvas.renderAll();
                 }
             }
             console.log(message.text);
-            if (message.text != "") {
+            if (message.text != "" && message.text != undefined) {
                 console.log(message.text)
                 chat(message.text, "other");
             }

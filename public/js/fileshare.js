@@ -32,11 +32,12 @@ connection.onFileEnd = function (file) {
         name = name.trim().toString();
         type_file = file.type.toString();
         console.log(type_file);
-
+        
         var fileNameMatches = (file.name || '').toLowerCase().match(/.png|.jpg|.jpeg/g);
         if (fileNameMatches) {
+
             $("#item-" + file.uuid +' .title').css("display","none"); 
-            $("#item-" + file.uuid).append('<img width="40%"  id="show-' + file.uuid + '" />')
+            $("#item-" + file.uuid+" .row").append('<span clas="col s9"><img  style="width:60%"  id="show-' + file.uuid + '" /></span>')
             var img = document.getElementById('show-' + file.uuid);
             img.src = URL.createObjectURL(file);
 
@@ -45,7 +46,7 @@ connection.onFileEnd = function (file) {
         }*/
 
         $("#filecontainer").append('<input type="hidden" id="' + file.uuid + '" value="' + file.url + '" />')
-        $("#item-" + file.uuid).append('<span class="secondary-content"><a href="#!" onclick=\'downloadfile(' + file.uuid + ',"' + name + '")\'  class="btn waves-effect waves-light btn-flat"><i class="material-icons">get_app</i></a></span>');
+        $("#item-" + file.uuid +" .row").append('<span class="secondary-content"><a href="#!" onclick=\'downloadfile(' + file.uuid + ',"' + name + '")\'  class="btn waves-effect waves-light btn-flat"><i class="material-icons">get_app</i></a></span>');
 
     }
 };
