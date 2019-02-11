@@ -1,190 +1,617 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Realtime communication with WebRTC</title>
+
+<head>
+    <title>Natan Lecture</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../../css/dash.css">
     <link rel="stylesheet" href="../../css/conference.css">
-    
+    <link rel="stylesheet" href="../../css/whiteboard.css">
+    <link rel="stylesheet" media="screen" type="text/css" href="../../css/color-picker.min.css" />
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="../../web3/web3.js"></script>
 
-    <script src="../web3/web.js"></script>
-  </head>
+</head>
 
-  <body>
-        <div class="navbar-fixed">
-                <nav class="nav-natanedu">
-                    <div class="nav-wrapper">
-                        <a href="#" class="brand-logo"> 
-                          
-                        <img src="../../img/logo.png" class="size-35 logo-nav"/>
-                        <span id="timer" class="center"></span>
-                        </a>    
-                       
-                        <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a id="backtodash" class="waves-effect waves-light btn red lighten-1" href="/<%=type %>/dashboard">end the course </a></li>
-                        
-                        </ul>
-                    </div>
-                    
-                    </nav>
-            
+<body>
+    <div id="waiting" class="container">
+        <div class="row">
+            <%- include('waiting') %>
+        </div>
+    </div>
+    <div class="navbar-fixed hide" id="navbar">
+        <nav class="nav-natanedu">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">
+
+                    <img src="../../img/logo.png" class="size-35 logo-nav" />
+                    <span id="timer" class="center counter"></span>
+                </a>
+
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li>
+                        <a id="record" onclick="recordcall()" class="waves-effect waves-light btn-flat white-text "
+                            href="#!">
+                            <i class="material-icons">
+                                fiber_manual_record
+                                <!-- fiber_smart_record -->
+                            </i>
+
+                        </a>
+                    </li>
+                    <li>
+                        <a id="filesend" onclick="openfile()" class="waves-effect waves-light btn-flat white-text "
+                            href="#!">
+                            <i class="material-icons">
+                                attach_file
+                            </i>
+                            <input type="file" class="hide" id="file" accept="application/msword, application/vnd.ms-powerpoint,
+                            text/plain, application/pdf, image/jpeg,image/png" />
+                        </a>
+                    </li>
+                    <li>
+                        <a id="videocontrol" class="waves-effect waves-light btn-flat white-text " href="#!">
+                            <i class="material-icons" id="normal_quality">
+                                videocam
+                            </i>
+                            <i class="material-icons" id="hd_quality">
+                                hd
+                            </i>
+                        </a>
+                        <input type="hidden" value="normal" id="quality" />
+                    </li>
+                    <li>
+                        <a id="backtodash" class="waves-effect waves-light btn-flat red-text lighten-1-text"
+                            href="/<%=type %>/dashboard">
+                            <i class="material-icons">
+                                call_end
+                            </i>
+                        </a>
+                    </li>
+
+                </ul>
             </div>
-            <div class="container" id="main" style="height: 500px;margin-top: 4%;">
-                    <div class="row">
-                            <div id="videos" class="conference">
-                                    <div  id="remoteVideo" class="col s6 remote"style="width:100%">
-                              
-                                        </div>
-                                    <div  id="localVideo" class="col s3 offset-s2 local" >
-                              
-                                    </div>
-                                    
-                            </div>
-                            <div class="grey-text lighten-3-text hide" style="margin-top:15%;text-align:center;" id="stream-end">
-                                    <span  class="material-icons" style="font-size:38px">
-                                            cast</span><br/>
-                                    <span id="stream_info"></span><br/>
-                                    <a href="/<%=type %>/dashboard" class="waves-effect waves-light btn">close</a>
-                                </div>
-                    </div>
-            </div>
-  
 
+        </nav>
+
+    </div>
+    <ul id="videos" class="sidenav sidenav-fixed text-zone chat-sidebar hide">
+        <li>
+            <div class="row ">
+                <div class="col s6">
+                    <div id="remoteVideo" class="remote">
+
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div id="localVideo" class="local">
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </li>
+        <li class="message-container">
+            <ul class="collection message-box" id="chatbox">
+
+
+
+            </ul>
+            <div class="row no-margin message-send">
+                <div class="input-field col s10 no-margin">
+                    <input placeholder="Text message" id="msg" type="text" class="validate">
+                    <label for="msg">Text message</label>
+                </div>
+                <div class="input-field col s2 no-margin">
+                    <button onclick="send()" class="btn waves-effect waves-light btn-flat"><i
+                            class="material-icons">send</i></button>
+                </div>
+            </div>
+        </li>
+
+
+    </ul>
+
+    <div class="container hide" id="main">
+        <div class="row">
+
+            <div class="grey-text lighten-3-text hide" style="margin-top:15%;text-align:center;" id="stream-end">
+                <span class="material-icons" style="font-size:38px">
+                    cast</span><br />
+                <span id="stream_info"></span><br />
+                <a href="/<%=type %>/dashboard" class="waves-effect waves-light btn">close</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+
+        <%- include('whiteboard') %>
+
+
+    </div>
+    <div id="filecontainer" class="hide">
+
+    </div>
+    <div id="recorder-container" class="hide">
+
+    </div>
 
     <!-- This file is automatically added/served when running "node index.js". -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        var elems = document.getElementById('videos');
+        var instances = M.Sidenav.init(elems, { edge: "right", draggable: true });
+        instances.close();
+        $("#msg-waiting").text("preparing course...");
+        $("#waiting-core").removeClass("hide");
+    </script>
     <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-   <!--  <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>-->
+    <script src="https://rtcmulticonnection.herokuapp.com/socket.io/socket.io.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/FileBufferReader.js"></script>
+    <script src="https://cdn.webrtc-experiment.com/MediaStreamRecorder.js"> </script>
+    <script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
+    <!--<script src="https://cdn.WebRTC-Experiment.com/getScreenId.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>-->
+    <script type="text/javascript" src="../../js/picker/color-picker.min.js"></script>
+    <script src="../../js/fabric.js"></script>
+    <script src="https://chancejs.com/chance.min.js"></script>
+
+    <script>
+        var chance = new Chance(Math.random);
+        function Interval(fn, time) {
+            var timer = false;
+            this.start = function () {
+                if (!this.isRunning())
+                    timer = setInterval(fn, time);
+            };
+            this.startTimeout = function () {
+                timer = setTimeout(fn, time);
+            };
+            this.stop = function () {
+                clearInterval(timer);
+                timer = false;
+            };
+            this.stopTimeout = function () {
+                clearTimeout(timer);
+                timer = false;
+            };
+            this.isRunning = function () {
+                return timer !== false;
+            };
+        }
+        var name, last_name;
+
+
+
+        var counterdown = sessionStorage.coursetime * 60
+
+
+    </script>
+    <script src="../../js/timer.js"></script>
+    <script>
+        var timecourse = new Interval(caluclate, 1000);
+    </script>
     <%if(type=='student'){ %>
-        <script src="../../student/student.js"></script>
-        <script>
-            var name;
-            
-        </script>
+    <script src="../../student/student.js"></script>
+
+    <script src="../../lecture/lecture.js"></script>
+    <script>
+
+        var _teacher = "<%=teacher %>";
+        var lectureid = "<%=lecture%>";
+        var price = "<%= price %>";
+        function payMoney() {
+            web3.eth.getAccounts(function (err, res) {
+                if (res[0] != undefined) {
+
+                    _student = res[0];
+                    payLecture(
+                        lectureid,
+                        price,
+                        _student,
+                        _teacher,
+                        { value: price }
+                    );
+                }
+            });
+
+            clearTimeout(timer);
+        }
+        var setpayed = new Interval(payMoney, 3 * 60 * 1000);
+        $("#panel-draw").addClass("hide");
+        $("#draw-container").css("left","15%");
+    </script>
     <% }else{  %>
 
-        <script src="../../teacher/teacher.js"></script>
-        <script>
-            
-            var name,last_name;
-            // Set the date we're counting down to
-            var now =  Date.now();
-            var new_min=now.getMinutes()+3
-            console.log(new_min);
-            var countDownDate=now.setMinutes(new_min);
+    <script src="../../teacher/teacher.js"></script>
 
-                // Update the count down every 1 second
-                var x = setInterval(function() {
+    <% } %>
 
-                // Get todays date and time
-                var now = new Date().getTime();
-
-                // Find the distance between now and the count down date
-                var distance = countDownDate - now;
-
-                // Time calculations for days, hours, minutes and seconds
-                
-                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                // Display the result in the element with id="demo"
-                document.getElementById("timer").innerHTML =  minutes + "m " + seconds + "s ";
-                        console.log(minutes + "m " + seconds + "s ");
-                // If the count down is finished, write some text 
-                if (distance < 0) {
-                    clearInterval(x);
-                    document.getElementById("demo").innerHTML = "You are payed";
-                }
-                }, 1000);
-        </script>
-        <% } %>
     <script>
-        
+        function chat(msg, sender) {
+            var d = new Date();
+            var t = d.getTime();
+            var time = d.getHours() + ":" + d.getMinutes();
+            var block = '<li id="item-msg-' + t + '" class="collection-item"><span class="title">' + msg + '</span>';
+
+            block = block + '<span class="secondary-content second-chat-zone">' + time + '</span></li>';
+
+            $("#chatbox").append(block);
+            if (sender == "me") {
+                $("#item-msg-" + t).addClass("container-chat-sender");
+            } else {
+
+                $("#item-msg-" + t).addClass("container-chat-receiver");
+
+            }
+            $("#chatbox").scrollTop($("#chatbox").height());
+
+        }
+        // function to create box chat file 
+        function FileChat(uid, name, progress, sender) {
+
+            var block = '<li id="item-' + uid + '" class="collection-item"><div class="row"><span class="col s9 title" >' + name + '<span id="val">( ' + progress + ' % )</span></span></div>';
+            block = block + '<div class="progress" >';
+            block = block + '<div class="determinate" id="progress-' + uid + '" style="width: 0%"></div></div></li>';
+            //block = block + '<span class="secondary-content second-chat-zone">' + time + '</span>';
+
+            $("#chatbox").append(block);
+            if (sender == "me") {
+                $("#item-" + uid).addClass("container-chat-sender");
+            } else {
+
+                $("#item-" + uid).addClass("container-chat-receiver");
+
+            }
+            $("#chatbox").scrollTop($("#chatbox").height());
+
+        }
+        // send message 
+        function send() {
+
+            var text = $("#msg").val();
+            console.log(text);
+            if (text != '') {
+                console.log(text);
+                chat(text, "me");
+                connection.send({ text: text });
+                $("#msg").val("");
+            }
+
+        }
+
+        //simulate input file click
+        function openfile(event) {
+            //event.preventDefault();
+            document.getElementById('file').click();
+        }
+        $('#file').change(function (e) {
+            file = document.getElementById('file').files[0];
+            connection.shareFile(file, otherid)
+        });
+    </script>
+
+    <script>
+
+        var begin = true;
+        var canvas;
+
+        var otherid;
         var connection = new RTCMultiConnection();
         var predefinedRoomId = "<%= id %>";
+        var socket;
+        var type = "<%=type %>";
+        var leave_channel = 'leave-room-' + predefinedRoomId;
+        var begin_stream = 'begin-room-' + predefinedRoomId;
         // this line is VERY_important
         connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+        // connection.socketURL = 'http://localhost:3000/';
 
         // all below lines are optional; however recommended.
 
         connection.session = {
             audio: true,
-            video: true
+            video: true,
+            data: true
         };
 
         connection.sdpConstraints.mandatory = {
             OfferToReceiveAudio: true,
             OfferToReceiveVideo: true
         };
-        var socket;
-        var type="<%=type %>";
-        
-        connection.socketCustomEvent = 'leave-room-'+predefinedRoomId;
-        connection.onstream = function(event) {
-            if(event.type==="local"){
-                document.getElementById("localVideo").appendChild( event.mediaElement );
-            }
-            if(event.type==="remote"){
-                document.getElementById("remoteVideo").appendChild( event.mediaElement );
-            }
-           
-        };
-        connection.onmessage = function(event) {
-                var message = event.data;
-                if(message.shareYourCameraWithMe) {
-                    connection.dontAttachStream = false;
-                    connection.renegotiate(event.userid); // share only with single user
-                }
 
-                if(message.shareYourCameraWithAllUsers) {
-                    connection.dontAttachStream = false;
-                    connection.renegotiate(); // share with all users
+        connection.bandwidth = {
+            audio: 50,  // 50 kbps
+            video: 256 // 256 kbps
+        };
+        connection.setCustomSocketEvent(leave_channel);
+        connection.connectSocket(function (socket) {
+            connection.socket.on(connection.socketCustomEvent, function (data) {
+                console.log(data)
+                failed=16;
+                // stop all local cameras
+                connection.attachStreams.forEach(function (localStream) {
+                    localStream.stop();
+                });
+                if (timecourse.isRunning()) {
+                    timecourse.stop();
                 }
-        }
-       
-        connection.checkPresence(predefinedRoomId, function(isRoomEists, roomid) {
-            if(isRoomEists) {
-                connection.join(roomid);
+                instances.close();
+                $("#stream-end").removeClass("hide");
+                $("#stream_info").html(data.msg);
+                $("#backtodash").addClass("hide");
+                // close socket.io connection
+                connection.closeSocket();
+                connection.getAllParticipants().forEach(function (participantId) {
+                    connection.disconnectWith(participantId);
+                });
+            })
+
+        });
+        connection.filesContainer = document.getElementById("filecontainer");
+
+
+
+        connection.onstream = function (event) {
+            if (event.type === "local") {
+                instances.open();
+
+
+                document.getElementById("localVideo").appendChild(event.mediaElement);
             }
-            else {
-                connection.open(roomid);
+            if (event.type === "remote") {
+                document.getElementById("remoteVideo").appendChild(event.mediaElement);
             }
-            
-            connection.socket.on(connection.socketCustomEvent, function(message) {
+
+        };
+
+        connection.onmessage = function (event) {
+            console.log("onmessage");
+            var message = event.data;
+
+            if (message.leave == "true") {
                 console.log(message);
-                $("#videos").addClass("hide");
+                instances.close();
                 $("#stream-end").removeClass("hide");
                 $("#stream_info").html(message.msg);
                 $("#backtodash").addClass("hide");
-            });
+                connection.closeSocket();
+                timecourse.stop();
+            }
+            if (message.draw == "true") {
+                if (type == "student") {
+                    canvas.loadFromDatalessJSON(message.opt);
+                    canvas.getObjects().forEach(function(obj){
+                        obj.set("hasControls",false);
+                        obj.set("selectable",false);
+                        obj.set("evented",false);
+                        obj.set("hasBorders",false);
+                    })
+                    canvas.renderAll();
+                }
+            }
+            console.log(message.text);
+            if (message.text != "" && message.text != undefined) {
+                console.log(message.text)
+                chat(message.text, "other");
+            }
+            /*if (message.shareYourCameraWithMe) {
+                connection.dontAttachStream = false;
+                connection.renegotiate(event.userid); // share only with single user
+            }
+
+            if (message.shareYourCameraWithAllUsers) {
+                connection.dontAttachStream = false;
+                connection.renegotiate(); // share with all users
+            }*/
+        }
+        var failed=0;
+        connection.onPeerStateChanged = function (state) {
+            if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
+                console.log(failed)
+                failed--;
+                connection.renegotiate();
+                console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
+            }
+        };
+        connection.onReConnecting = function (event) {
+            console.info('ReConnecting with', event.userid, '...');
+        };
+        connection.onUserStatusChanged = function (event) {
+            console.log(event);
+            if (connection.userid != event.userid && event.status == "online" ) {
+                if (begin) {
+                    otherid = event.userid;
+                    $("#main").removeClass("hide");
+                    $("#videos").removeClass("hide");
+                    $("#navbar").removeClass("hide");
+                    $("#waiting").addClass("hide");
+                    $("#whiteboard").removeClass("hide");
+                    if (type == "teacher") {
+
+                        $("#panel-draw").removeClass("hide");
+                    }
+                }
+            }
+            if (event.status == "offline" && otherid == event.userid && failed<-15) {
+
+                    failed=0;
+
+              /*  timecourse.stop();
+
+
+                if (type == "student") {
+                    setpayed.stopTimeout();
+                }
+                connection.getAllParticipants().forEach(function (participantId) {
+                    connection.disconnectWith(participantId);
+                });*/
+            } else if (event.status == "online" && otherid == event.userid) {
+                if (begin) {
+
+
+                    // Update the count down every 1 second
+                    timecourse.start();
+
+                    if (type == "student") {
+                        setpayed.startTimeout();
+                    }
+                    begin = false;
+
+                }
+            }
+
+        };
+
+
+
+        connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
+            if (isRoomEists) {
+                connection.join(roomid);
+            } else {
+                connection.open(roomid)
+            }
+
         });
 
-     
-        if(type=="student"){
-            var timer=setTimeout(payMoney, 3*60*1000)
-        }
-        function payMoney() {
-            //alert('Hello');
-            clearTimeout(timer);
-            }
-            document.getElementById("backtodash").addEventListener('click',function(event){
-                if(type=="student"){
-                        lectureInstance.students(account, function(err, res) {
-                        name = res[0] +" "+ res[1];
-                            console.log(name);
-                            var msg=name +" has leave the course";
-                        connection.socket.emit(connection.socketCustomEvent, {msg:msg,type:type});
-                        window.location.href="/<%=type %>/dashboard";
-                        $("#backtodash").addClass("hide");
-                        });
+        connection.enableFileSharing = true;
+
+
+
+
+
+        connection.onleave = function (event) {
+            if (event.userid == otherid) {
+
+                //console.log(message);
+                $("#videos").addClass("hide");
+                $("#stream-end").removeClass("hide");
+                $("#stream_info").html("Course was finished");
+                $("#backtodash").addClass("hide");
+                $("#whiteboard").addClass("hide");
+                $("#panel-draw").addClass("hide");
+                timecourse.stop();
+
+
+                if (type == "student") {
+                    setpayed.stopTimeout();
                 }
-                        
-                
-            })
+            }
+
+        };
+
+
+        document.getElementById("backtodash").addEventListener('click', function (event) {
+            event.preventDefault();
+            if (type == "student") {
+                lectureInstance.students(account, function (err, res) {
+                    name = res[0] + " " + res[1];
+                    console.log(name);
+                    var msg = name + " has leave the course";
+                    //connection.send({ msg: msg, type: type, leave: "true" });
+                    connection.socket.emit(connection.socketCustomEvent, { msg: msg, type: type, leave: "true" })
+                    //connection.disconnectWith( otherid );
+                    //window.location.href = "/<%=type %>/dashboard";
+                    $("#backtodash").addClass("hide");
+                });
+            } else {
+
+                console.log(name);
+                var msg = name + " has leave the course";
+                //connection.send({ msg: msg, type: type, leave: "true" });
+                connection.socket.emit(connection.socketCustomEvent, { msg: msg, type: type, leave: "true" })
+                //connection.disconnectWith( otherid );
+                //window.location.href = "/<%=type %>/dashboard";
+                $("#backtodash").addClass("hide");
+
+            }
+
+
+        })
     </script>
-    
-  </body>
+    <script>
+        var record = false;
+        var firstRemoteStream;
+        var mediaRecorder;
+        var recorder;
+        function recordcall() {
+
+            if (record == false) {
+
+                $("#record").removeClass("white-text");
+                $("#record").addClass("red-text");
+                $("#record .material-icons").html("fiber_smart_record")
+                firstRemoteStream = connection.streamEvents.selectFirst({
+                    remote: true,
+                    isVideo: true,
+                    isAudio: true
+                }).stream;
+                /* if (navigator.userAgent.search("Chrome") != -1) {
+                     
+                     mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
+                     mediaRecorder.mimeType = 'video/mp4'; // check this line for audio/wav
+ 
+                 }
+                 //Check if browser is Firefox 
+                 else if (navigator.userAgent.search("Firefox") != -1) {
+                     firstRemoteStream = connection.streamEvents.selectFirst({
+                         remote: true,
+                         isAudio: true
+                     }).stream;
+                     mediaRecorder = new MediaStreamRecorder(firstRemoteStream);
+                     mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
+                 }*/
+                recorder = RecordRTC([firstRemoteStream], {
+                    type: 'video'
+                });
+                recorder.startRecording();
+
+                /*mediaRecorder.ondataavailable = function (blob) {
+           
+                };
+                mediaRecorder.start(3000);*/
+                record = true;
+            } else {
+                //mediaRecorder.stop();
+                recorder.stopRecording(function () {
+                    $("#record").removeClass("red-text");
+                    $("#record").addClass("white-text");
+                    $("#record .material-icons").html("fiber_manual_record")
+
+                    var url = URL.createObjectURL(recorder.getBlob())
+                    var mediaElement = document.createElement('video');
+                    mediaElement.src = url;
+                    window.open(url);
+                    $("#recorder-container").append(mediaElement);
+
+                    recorder = null;
+                    record = false;
+                })
+            }
+
+        }
+    </script>
+    <script src="../../js/fileshare.js"></script>
+    <%if(type=='student'){ %>
+    <script>
+        // reference canvas element
+        canvas = this.__canvas = new fabric.Canvas('draw-container', {
+            isDrawingMode: false
+        });
+        fabric.Object.prototype.transparentCorners = false;
+    </script>
+    <% }else{  %>
+
+    <script src="../../js/draw.js"></script>
+
+    <% }  %>
+
+</body>
+
 </html>

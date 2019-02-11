@@ -32,74 +32,11 @@
         </div>
         <div class="contaier" id="main">
             <div class="row">
-                <div class="col s12">
-                        <div class="row col s3"></div>
-                        <div class="row col s6">
-                            <div class="card">
-                            <div  class="card-title title-center"><span>Search for course</span></div>
-                                
-                            
-                            <div class="card-content">
-                                <div class="row">
-                                <div class="col s2"></div>
-                                    <div class="col s10">
-                                    <div class="row"> 
-                                        <div class="input-field col s8">
-                                            <input id="topic" type="text" class="validate">
-                                            <label for="topic">Subject</label>
-                                            </div> 
-                                            <div class="col s4"></div>                                  
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8"  id="language-input">
-                                            <select id="languagepicker" >
-                                                <option value="" disabled selected>Choose language of course</option>
-                                            </select>
-                                        </div>
-                                        <div class="col s4"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8">
-                                        <textarea id="chapitre" class="materialize-textarea"></textarea>
-                                        <label for="chapitre">Chaptire you want to learn</label>
-                                        </div>
-                                        <div class="col s4"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div  class="input-field col s6 " style="margin-bottom:0px">
-                                            <label style="top:-32px;">
-                                                <span>Time of course</span>
-                                            </label>
-                                            <div class="range-field" id="time-slider" style="margin-top: 5px;margin-left: 5px;"></div>
-                                            <input type="hidden" id="time" value="1"/>
-                                            <span id="time-val"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div  class="input-field col s6 " style="margin-bottom:0px">
-                                            <label style="top:-32px;">
-                                                <span>Price</span>
-                                            </label>
-                                            <div class="range-field" id="price-slider" style="margin-top: 5px;margin-left: 5px;"></div>
-                                            <input type="hidden" id="money" value="0.2"/>
-                                            <span id="money-val"></span>
-                                        </div>
-                                    </div> 
-                                    </div>
-                                    <div class="col s2"></div>
-                                </div>
-                                
-                            </div>
-                            <div class="card-action">
-                                <button class="waves-effect waves-light btn" onclick="search()">Find natan</button>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="row col s3"></div>
-                    </div>
-                </div>
+                    <%- include('search') %>
+                    <%- include('waiting') %>
             </div>
         </div>
+        
 
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -115,6 +52,8 @@
         <script>
             var stepmax=10;
             var max=10;
+            var timermax=60;
+            var lecture;
             $( document ).ready(function() {
                 var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
                 M.Dropdown.init(elems_lang, {});
@@ -132,14 +71,14 @@
             });
             var timerslider = document.getElementById('time-slider');
             noUiSlider.create(timerslider, {
-                start: [1],
-                step:1,
+                start: [10],
+                step:5,
                 behaviour: 'drag',
                 connect: true,
                 orientation: 'horizontal',
                 range: {
-                    'min': 0,
-                    'max': 10
+                    'min': 5,
+                    'max': 60
                 }
             });
         
@@ -178,7 +117,7 @@
             timerslider.noUiSlider.on('update', function( values, handle ) {
                 
                         $("#time").val(values[handle]);
-                        $("#time-val").text(values[handle]+" hour")
+                        $("#time-val").text(parseInt(values[handle])+" min")
                 
                 
             });
@@ -186,10 +125,10 @@
             timerslider.noUiSlider.on('change', function( values, handle ) {
                 // on change of the slider, find the next element and set its value
                 
-                if(values[handle]==max){
+                if(values[handle]==timermax){
                 
                     
-                    max=max+stepmax;
+                    timermax=timermax+stepmax;
                     timerslider.noUiSlider.updateOptions({
                         start: [$("#time").val()],
                         step:1,
@@ -197,35 +136,45 @@
                         connect: [true],
                         orientation: 'horizontal',
                         range: {
-                            'min': [0],
-                            'max': [max]
+                            'min': [5],
+                            'max': [timermax]
                         }
                     });
                 }
                 
                 
             });
-            var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+            
+            if(window.location.hostname=="localhost"){
+                var server="http://localhost:3000";
+            }else{
+                var server="https://webrtc.alpha-beta.ovh";
+            }
             var socket = io.connect(server+'/students');
             socket.on("ready",function(studentName){
                 console.log("ready");     
                         
             })
             socket.on("teacher-not-found",function(data){
+                $("#search-core").removeClass("hide");
+                $("#waiting-core").addClass("hide");
                 createNotification("Alert","Opps!No teacher avaible for now!")
             });
             socket.on("teacher-found",function(url){
                 // Usage!
-                sleep(2000).then(() => {
+                $("#msg-waiting").text("connecting with teacher....")
+                sleep(20*1000).then(() => {
                     // Do something after the sleep!
-                    window.location.href = url;
+                    var price=$("#money").val();
+                    sessionStorage.coursetime=$("#time").val();
+                    window.location.href = url+"&price="+web3.toWei(price, 'ether');//+"?id="+lecture;
                 });
                 
             });
             // sleep time expects milliseconds
-        function sleep (time) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-        }
+            function sleep (time) {
+            return new Promise((resolve) => setTimeout(resolve, time));
+            }
 
 
             function search(){
@@ -239,19 +188,51 @@
                     var hour=$("#time").val();
                     var language  = $('#language-input .dropdown-content .selected').text();
                     if(topic==""||language=="Choose language of course"){
-                        alert("empty fields!");
-                    }else{
-                        socket.emit("search-class", {
-                            chapitre: chapitres,
-                            student_name: studentName,
-                            topic: topic,
-                            prize: web3.toWei(price, 'ether'),
-                            lang: language,
-                            hour:hour
+                        swal({
+                            title: "Invalid inputs",
+                            text: "Correct inputs",
+                            icon: "error",
+                            button: "Ok",
+                            closeOnClickOutside: false
+                        });
+                    }else {
+                        web3.eth.getBalance(account, function(err, res) {
+                            if(res.toNumber() < web3.toWei(price, 'ether')) {
+                                swal({
+                                    title: "Insufficient Balance",
+                                    text: "Please check your balance",
+                                    icon: "error",
+                                    button: "Ok",
+                                    closeOnClickOutside: false
+                                });
+                            }
+                            else {
+                                lectureInstance.generateLectureId(function(err, res) {
+                                    if(!err) {
+                                        lectureInstance.generateLectureId.call(function(err, id) {
+                                            lecture=id.toNumber();
+                                            console.log(lecture);
+                                            $("#search-core").addClass("hide");
+                                            $("#msg-waiting").text("searching for teacher...")
+                                            $("#waiting-core").removeClass("hide");
+
+                                            socket.emit("search-class", {
+                                                lectureId: id.toNumber(),
+                                                chapitre: chapitres,
+                                                student_name: studentName,
+                                                topic: topic,
+                                                prize: web3.toWei(price, 'ether'),
+                                                lang: language,
+                                                hour:hour
+                                            });
+                                        });
+                                    }
+                                });
+                            }
                         });
                     }    
                 });
             }
-            </script>        
+        </script>        
     </body>
 </html>

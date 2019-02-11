@@ -640,229 +640,71 @@ var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x068D1d62f8e392457b0149Cb3f2e4C2ae6c56B5a';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var registerTeacher = function(fName,lName,country,topic,language,min,max) {
-    var account;
-    //input from teacher-user
-  
-
-    web3.eth.getAccounts(function(err, res) {
-        if(res[0] != undefined) {
-            account = res[0];
-            console.log(account);
-
-            lectureInstance.listedTeachers(account, function(err, res) {
-              if(err != null) {
-                swal ( "Oops" ,  "Something went wrong!" ,  "error" );
-              }
-              else {
-                if(res != 0){
-                  swal ( "Oops" ,  "User already exist" ,  "error" );
-                
-                }
-                else {
-                  lectureInstance.registerTeacher(account, fName, lName, country, topic, language, min, max, function(err, res) {
-                    if(err != null) {
-                        console.log(err);
-                    }
-                    else {
-                      lectureInstance.listedTeachers(account, function(err, res) {
-                        if(err != null) {
-                            console.log(err);
-                        }
-                        else {
-                            console.log(res);
-                        }
-                      });
-                    }
-                });
-                }
-              }
-            });
-        }
-    });
-}
-
-var loginTeacher = function() {
-  var account;
-  web3.eth.getAccounts(function(err, res) {
-    if(res[0] != undefined) {
-      account = res[0];
-      console.log(account);
-
-      lectureInstance.listedTeachers(account, function(err, res) {
-        if(err != null) {
-          swal ( "Oops" ,  "Something went wrong!" ,  "error" );
-        }
-        else {
-          if(res == 0){
-            swal ( "Oops" ,  "teacher not found!" ,  "error" );
-          }
-          else if (res == 1) {
-            swal ( "Oops" ,  "Blacklisted teacher!" ,  "error" );
-          }
-          else if ((res == 2) || (res == 3)) {
-            swal("Congrats!", "you're logged in", "success");
-            //redirect to teacher dashboard
-
-            window.location.href="/teacher/dashboard";
-          }
-        }
-      })      
-    }
-  });
-}
-
-function getCurrentTeacher(account){
-    lectureInstance.teachers(account, function(err, res) {
+var payLecture = function(_lectureId, _price, _studentAddress, _teacherAddress) {
+    lectureInstance.payLecture(_lectureId, _price, _studentAddress, _teacherAddress, {from: _studentAddress, value: _price}, function(err, res) {
         if(!err) {
-            console.log(res)
-            name=res[0];
-            last_name=res[1];
-            topic=res[3];
-            lang=res[4];
-            min_price=res[5].toNumber()
-            max_price=res[6].toNumber()
-            const data = { wallet: account, topic: topic, country: res[2],lang:lang,min:min_price,max:max_price };
-            
-            socket.emit("try-to-join", data);
+            //show success alert in teacher frontend
         }
         else {
-            console.log(err);
-        }
-    });
-}
-
-function getAllTeachers() {
-    //get number of teachers
-    lectureInstance.getTeachersCount(function(err, res) {
-        var teachersCount = res.toNumber();
-        //get all teachers addresses
-        for(i=0; i<teachersCount; i++) {
-            lectureInstance.teachersAddress(i, function(err, res){
-                teachersAddresses.push(res);
-                lectureInstance.listedTeachers(res, function(err, status) {
-                    switch(status.toNumber()) {
-                        case 1:
-                            blacklistedTeachersAddresses.push(res);
-                            lectureInstance.teachers(res, function(err, res) {
-                                blacklistedTeachers.push(res);
-                            });
-                            break;
-                        case 2:
-                            inprocessTeacherAddresses.push(res);
-                            lectureInstance.teachers(res, function(err, res) {
-                                inprocessTeachers.push(res);
-                            });
-                            break;
-                        case 3: 
-                            whitelistedTeachersAddresses.push(res);
-                            lectureInstance.teachers(res, function(err, res) {
-                                whitelistedTeachers.push(res);
-                            });
-                            break;
-                        default:
-                            console.log("unknown status teacher");
-                            console.log(status.toNumber());
-                    }
-                });
+            swal({
+                title: "Error Payment",
+                text: "Can not pay for lecture!",
+                icon: "error",
+                button: "Cancel"
             });
         }
     });
-}
+}  
 
+var transfer = function(_teacherAdd) {
+  lectureInstance.transfer(_teacherAdd, function(err, res) {
+    if(!err) {
 
-var whitelistTeacher = function(teacherAddress) {
-    web3.eth.getAccounts(function(err, res) {
-        if(res[0] != undefined) {
-            owner = res[0];
-            lectureInstance.whiteListTeacher(teacherAddress, { from: owner }, function(err, res) {
-                if(!err) {
-                    swal({
-                        title: "Whitelisted",
-                        text: "Teacher whitelisted!",
-                        icon: "success",
-                        button: "Ok"
-                    });
-                } 
-                else {
-                    swal({
-                        title: "Error",
-                        text: "error!",
-                        icon: "error",
-                        button: "Cancel"
-                    });
-                }
-            });
-        }
-    });
-}
-
-var blacklistTeacher = function(teacherAddress) {
-  web3.eth.getAccounts(function(err, res) {
-      if(res[0] != undefined) {
-          owner = res[0];
-          lectureInstance.blackListTeacher(teacherAddress, { from: owner }, function(err, res) {
-              if(!err) {
-                  swal({
-                      title: "Blacklisted",
-                      text: "Teacher blacklisted!",
-                      icon: "success",
-                      button: "Ok"
-                  });
-              } 
-              else {
-                  swal({
-                      title: "Error",
-                      text: "error!",
-                      icon: "error",
-                      button: "Cancel"
-                  });
-              }
-          });
-      }
-  });
-}
-
-var withdrawMoney = function(_amount) {
-  web3.eth.getAccounts(function(err, res) {
-    if(res[0] != undefined) {
-      teacher = res[0];
-      lectureInstance.transfer(_amount, { from: teacher }, function(err, res) {
-          if(!err) {
-              swal({
-                  title: "Done",
-                  text: "Ether transfered to your wallet!",
-                  icon: "success",
-                  button: "Ok"
-              });
-          } 
-          else {
-              swal({
-                  title: "Error",
-                  text: "error!",
-                  icon: "error",
-                  button: "Cancel"
-              });
-          }
+    }
+    else {
+      swal({
+          title: "Error Transfer Money",
+          text: "Can not transfer to teacher wallet!",
+          icon: "error",
+          button: "Cancel"
       });
     }
   });
 }
 
-var getBalance = function() {
-  web3.eth.getAccounts(function(err, res) {
-    if(res[0] != undefined) {
-      teacher = res[0];
-      lectureInstance.teacherBalance(teacher, function(err, res) {
+var postIPFS = function(_lectureId, _ipfsHash) {
+    lectureInstance.saveRecordedLecture(_lectureId, _ipfsHash, function(err, res) {
         if(!err) {
-          teacherBalance = web3.fromWei(res.toNumber(), "ether");
+            swal({
+                title: "Saved",
+                text: "Lecture stored in IPFS network!",
+                icon: "success",
+                button: "Ok"
+            });
         }
         else {
-          console.log(err);
+            swal({
+                title: "Error",
+                text: "error!",
+                icon: "error",
+                button: "Cancel"
+            });
         }
-      });
-    }
-  });
+    });
 }
 
-
+var getIPFS = function(_lectureId) {
+    lectureInstance.getRecordedLecture(_lectureId, function(err, res) {
+        if(!err) {
+            alert("lecture IPFS path: " + res);
+        }
+        else {
+            swal({
+                title: "Error",
+                text: "Lecture not found or you don't have permission to view the lecture!",
+                icon: "error",
+                button: "Cancel"
+            });
+        }
+    });
+}

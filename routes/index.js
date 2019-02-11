@@ -9,8 +9,6 @@ router.get("/home", function(req, res) {
   res.render("home", { title: "Express" });
 });
 
-
-
 router.get("/student/dashboard", function(req, res) {
   res.render("studentdashb", { title: "Express" });
 });
@@ -24,22 +22,38 @@ router.get("/webrtc", function(req, res) {
 });
 
 // Route to conferences room
-router.get("/room/:type/:id", function(req, res) {
-  var id=req.params.id;
+router.get("/room/:type/:hash", function(req, res) {
+  var hash=req.params.hash;
   var type=req.params.type;
-  res.render("course", { id:id,type,type });
+  var id=req.query.id;
+  
+  if(type=="teacher"){
+    res.render("course", { id:hash,type:type,lecture:id });
+  }else{
+    var teacher=req.query.teacher;
+    var price=req.query.price;
+    res.render("course", { id:hash,type:type,lecture:id,teacher:teacher,price:price });
+  }
+ 
+  
+  
+  
+  
 });
 
 router.get("/videocall", function(req, res) {
   res.render("videocall", { title: "Express" });
 });
 
-router.get("/student/search_lecture", function(req, res) {
-  res.render("searchlecture", { title: "Express" });
+//Admin routes
+router.get("/owner/login", function(req, res) {
+  res.render("owner", { title: "Express" })
 });
 
-router.get("/student/search_page", function(req, res) {
-  res.render("searchpage", { title: "Express" });
+/*
+router.get("/owner/dashboard", function(req, res) {
+  res.render("ownerdashboard", { title: "Express" });
 });
+*/
 
 module.exports = router;

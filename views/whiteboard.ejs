@@ -1,0 +1,74 @@
+
+<ul id="panel-draw" class="sidenav sidenav-fixed cust-side hide" style="left: 12px;height:82%;top:14%;padding-bottom: 0px">
+    <li><a class="subheader" style="padding-left: 22px;">Panel</a></li>
+    <li><a href="#!" onclick="activateControl()"><img src="https://img.icons8.com/ios/50/000000/expand-filled.png"
+                class="center-font"></a></li>
+    <li><a href="#!" onclick="activateDrawing()"><img src="https://img.icons8.com/ios-glyphs/24/000000/pencil.png"
+                class="center-font"></a></li>
+    <li><a href="#!" onclick="activateDrawing()"><img src="https://img.icons8.com/ios/50/000000/paint-filled.png"
+                class="center-font"></a></li>
+    <li><a href="#!" id="geometry-select" data-target='geometry'><img
+                src="https://img.icons8.com/ios/50/000000/geometry-filled.png" class="center-font"></a></li>
+    <li>
+        <a href="#!" id="picker">
+            <input type="text" id="color-picker-input" style="display:none">
+            <div class="color-box center-font" id="color-picker-value"></div>
+
+        </a>
+    </li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li>
+        <a href="#!" onclick="erase()">
+            <img src="https://img.icons8.com/ios/50/000000/erase-filled.png" class="center-font">
+        </a>
+    </li>
+    <li>
+        <a href="#!" onclick="clearAll()"><img src="https://img.icons8.com/ios/50/000000/delete-sign-filled.png"
+                class="center-font"></a>
+    </li>
+    <li>
+        <a href="#!" onclick="DrawText()"><img src="https://img.icons8.com/ios/50/000000/type-filled.png"
+                class="center-font"></a>
+    </li>
+    <li>
+        <a href="#!" id="zoom-select" data-target="zoom"><img src="https://img.icons8.com/ios/50/000000/search.png"
+                class="center-font"></a>
+    </li>
+
+
+</ul>
+<div id="dropdown-container" style="position: fixed;left: 86px;z-index: 999;">
+
+</div>
+<div id="zoom-container" style="position: fixed;left: 86px;z-index: 999;">
+
+</div>
+<!-- geo Structure -->
+<ul id='geometry' class='dropdown-content' style="min-width: 48px;width:64px;left: 0px;">
+    <li><a href="#!" onclick="createCircle()"><img src="https://img.icons8.com/ios/50/000000/360-degrees-filled.png"
+                class="center-font-small"></a>
+    </li>
+    <li><a href="#!" onclick="createRect()"><img src="https://img.icons8.com/ios/50/000000/rectangle-stroked-filled.png"
+                class="center-font-small"></a></li>
+    <li><a href="#!" onclick="createTriangle()"><img
+                src="https://img.icons8.com/material-outlined/50/000000/triangle-stroked.png"
+                class="center-font-small"></a></li>
+</ul>
+
+<!-- zoom in out Structure -->
+<ul id='zoom' class='dropdown-content' style="min-width: 48px;width:64px;left: 0px;">
+    <li><a href="#!" onclick="zoomin()"><img src="https://img.icons8.com/ios/50/000000/zoom-in.png"
+                class="center-font-small"></a>
+    </li>
+    <li><a href="#!" onclick="zoomout()"><img src="https://img.icons8.com/ios/50/000000/zoom-out.png"
+                class="center-font-small"></a></li>
+</ul>
+<div id="whiteboard" class="canvas-container hide"  style="left:10%; position: relative;top:21%;">
+    <canvas id="draw-container" width="750px" height="500px">
+
+    </canvas>
+</div>
+
+

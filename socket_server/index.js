@@ -8,14 +8,13 @@ module.exports = (url, app) => {
   const io = app ? new Socket_Server(app) : new Socket_Server(3030);
 
   console.log(
-    `WebSocket Server listening on URL https://webrtc.alpha-beta.ovh:${process.env.PORT ||
-      3000}`
+    `WebSocket Server listening on URL ${url}`
   );
 
   const Teacher_Nsp = io.of("/teachers");
   const Default_Nsp = io.of("/students");
   const Conferences_Nsp = io.of("/conferences");
-
+    const webrtc=io.of("/webrtc");
   Teachers_Socket(Teacher_Nsp, Default_Nsp, { url });
   Students_Socket(Default_Nsp, Teacher_Nsp, { url });
   Conferences_Socket(Conferences_Nsp);

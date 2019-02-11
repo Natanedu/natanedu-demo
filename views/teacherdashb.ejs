@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- script js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     <script src="../js/makenotifcation.js"></script>
@@ -16,7 +17,13 @@
     
     <!-- web3 -->
     <script src="../web3/web3.js"></script> 
-    <script src="../teacher/teacher.js"></script>    
+    <script src="../teacher/teacher.js"></script>  
+    
+    <script>
+      //teacher balance
+      var teacherBalance = 0;
+      getBalance();
+    </script>
 </head>
 
 <body >
@@ -67,21 +74,26 @@
           M.Dropdown.init(elems_lang, {});
         });
         
-        var server="http://localhost:3000";//https://webrtc.alpha-beta.ovh";
+        if(window.location.hostname=="localhost"){
+                var server="http://localhost:3000";
+            }else{
+                var server="https://webrtc.alpha-beta.ovh";
+            }
         var socket = io.connect(server+'/teachers');
           socket.on('ready', function(){
             getCurrentTeacher(account);            
           });
-          socket.on('joined', function(data){
-            console.log(data);
+          socket.on('joined', function(d){
+            console.log(d);
             console.log(topic);
             console.log(min_price);
               
           });
             socket.on("joining-room",function(url){
-                console.log(url)
+                console.log(url);
+                console.log(data)
                 // Sets the new href (URL) for the current window.
-                window.location.href = url;
+                window.location.href = url;//+"?id="+data.id;
             })
             var title="Your courses";
             socket.on("class-available", function(student){
@@ -96,18 +108,18 @@
                   $("#empty-notif").addClass("hide");
                   }
 
-                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;">'+
+                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;height:auto;padding-bottom: 1px;">'+
                   '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
                   ' <p class="grey-text"> The student '+
                       data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
                       'detail: '+data.chapitre+
                     '</p><br/>'+
                     '<div class="row">'+
-                        '<button onclick="accecpt()" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
+                        '<button onclick="accecpt('+data.hour+')" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
                       '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
                     '</div>'+
                     '<div class="secondary-content">'+
-                        parseInt(data.hour)+'hour'+
+                        parseInt(data.hour)+'min'+
                   '</div>'+
                   '</li>');
                   data.topic=topic;
@@ -123,8 +135,10 @@
                   $("#empty-notif").removeClass("hide");
                   }
             }
-            function accecpt(){
-              socket.emit("class-accepted", data.id);
+            function accecpt(time){
+              sessionStorage.coursetime=time;
+              console.log(account);
+              socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account});
             }
     </script>
  
