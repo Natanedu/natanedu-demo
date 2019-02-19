@@ -47,6 +47,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
         <script src="../js/spoken-language.js"></script> 
+        <script src="../js/subjectpicker.js"></script> 
         
 
         <script>
@@ -184,7 +185,8 @@
                     studentName = res[0] +" "+ res[1];
                     console.log(studentName);
 
-                    var topic=$("#topic").val();
+                    var topic = $('#topic-input .dropdown-content .selected').text();//$("#topic").val();
+                    console.log(topic)
                     var chapitres=$("#chapitre").val();
                     var price=$("#money").val();
                     var hour=$("#time").val();
