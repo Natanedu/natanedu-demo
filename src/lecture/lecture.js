@@ -653,6 +653,7 @@ var payLecture = function(_lectureId, _price, _studentAddress, _teacherAddress) 
                 icon: "error",
                 button: "Cancel"
             });
+            //TODO: disconnect call
         }
     });
 }  
