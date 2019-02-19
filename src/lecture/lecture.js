@@ -644,6 +644,7 @@ var payLecture = function(_lectureId, _price, _studentAddress, _teacherAddress) 
     lectureInstance.payLecture(_lectureId, _price, _studentAddress, _teacherAddress, {from: _studentAddress, value: _price}, function(err, res) {
         if(!err) {
             //show success alert in teacher frontend
+            console.log(res);
         }
         else {
             swal({

@@ -229,6 +229,15 @@
                                             });
                                         });
                                     }
+                                    else {
+                                        swal({
+                                            title: "Transaction Error",
+                                            text: "Please confirm the transaction in metamask popup",
+                                            icon: "error",
+                                            button: "Ok",
+                                            closeOnClickOutside: false
+                                        });
+                                    }
                                 });
                             }
                         });
