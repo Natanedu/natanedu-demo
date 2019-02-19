@@ -1,65 +1,68 @@
 <div class="col s12" id="search-core">
-        <div class="row col s3"></div>
-        <div class="row col s6">
-            <div class="card">
-            <div  class="card-title title-center"><span>Search for course</span></div>
-                
-            
+    <div class="row col s3"></div>
+    <div class="row col s6">
+        <div class="card">
+            <div class="card-title title-center"><span>Search for course</span></div>
+
+
             <div class="card-content">
                 <div class="row">
-                <div class="col s2"></div>
+                    <div class="col s2"></div>
                     <div class="col s10">
-                    <div class="row"> 
-                        <div class="input-field col s8">
-                            <input id="topic" type="text" class="validate">
-                            <label for="topic">Subject</label>
-                            </div> 
-                            <div class="col s4"></div>                                  
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s8"  id="language-input">
-                            <select id="languagepicker" >
-                                <option value="" disabled selected>Choose language of course</option>
-                            </select>
+                        <div class="row">
+                            <div class="input-field col s8" id="topic-input">
+                                <select id="teacher_topic">
+                                    <option value="" disabled selected>Topic</option>
+                                </select>
+                            </div>
+                            <div class="col s4"></div>
                         </div>
-                        <div class="col s4"></div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s8">
-                        <textarea id="chapitre" class="materialize-textarea"></textarea>
-                        <label for="chapitre">Chapter you want to learn</label>
+                        <div class="row">
+                            <div class="input-field col s8" id="language-input">
+                                <select id="languagepicker">
+                                    <option value="" disabled selected>Choose language of course</option>
+                                </select>
+                            </div>
+                            <div class="col s4"></div>
                         </div>
-                        <div class="col s4"></div>
-                    </div>
-                    <div class="row">
-                        <div  class="input-field col s6 " style="margin-bottom:0px">
-                            <label style="top:-32px;">
-                                <span>Time of course</span>
-                            </label>
-                            <div class="range-field" id="time-slider" style="margin-top: 5px;margin-left: 5px;"></div>
-                            <input type="hidden" id="time" value="1"/>
-                            <span id="time-val"></span>
+                        <div class="row">
+                            <div class="input-field col s8">
+                                <textarea id="chapitre" class="materialize-textarea"></textarea>
+                                <label for="chapitre">Chapter you want to learn</label>
+                            </div>
+                            <div class="col s4"></div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div  class="input-field col s6 " style="margin-bottom:0px">
-                            <label style="top:-32px;">
-                                <span>Price</span>
-                            </label>
-                            <div class="range-field" id="price-slider" style="margin-top: 5px;margin-left: 5px;"></div>
-                            <input type="hidden" id="money" value="0.2"/>
-                            <span id="money-val"></span>
+                        <div class="row">
+                            <div class="input-field col s6 " style="margin-bottom:0px">
+                                <label style="top:-32px;">
+                                    <span>Time of course</span>
+                                </label>
+                                <div class="range-field" id="time-slider" style="margin-top: 5px;margin-left: 5px;">
+                                </div>
+                                <input type="hidden" id="time" value="1" />
+                                <span id="time-val"></span>
+                            </div>
                         </div>
-                    </div> 
+                        <div class="row">
+                            <div class="input-field col s6 " style="margin-bottom:0px">
+                                <label style="top:-32px;">
+                                    <span>Price</span>
+                                </label>
+                                <div class="range-field" id="price-slider" style="margin-top: 5px;margin-left: 5px;">
+                                </div>
+                                <input type="hidden" id="money" value="0.2" />
+                                <span id="money-val"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="col s2"></div>
                 </div>
-                
+
             </div>
             <div class="card-action">
                 <button class="waves-effect waves-light btn" onclick="search()">Find natan</button>
             </div>
-            </div>
         </div>
-        <div class="row col s3"></div>
     </div>
+    <div class="row col s3"></div>
+</div>

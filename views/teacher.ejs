@@ -1,69 +1,77 @@
 <div id="Teacher" class="col s12 heigth-100">
-    <div class="row">
-        <div class="col s12 title-form" style="padding-top: 5%;">
-          <span class="black-text">Sign Up</span>
+  <div class="row">
+    <div class="col s12 title-form" style="padding-top: 5%;">
+      <span class="black-text">Sign Up</span>
+    </div>
+    <div class="col s12 form-extra">
+      <div class="row input-margin-2">
+        <div class="col s2"></div>
+        <div class="input-field col s4 input-padding-2-5 input-margin-2 size-35">
+          <input id="teacher_first_name" type="text" class="validate" name="firstname_teacher">
+          <label for="teacher_first_name">First Name</label>
         </div>
-            <div class="col s12 form-extra">
-              <div class="row input-margin-2">
-                  <div class="col s2"></div>
-                <div class="input-field col s4 input-padding-2-5 input-margin-2 size-35">
-                  <input id="teacher_first_name" type="text" class="validate" name="firstname_teacher">
-                  <label for="teacher_first_name">First Name</label>
-                </div>
-                <div class="input-field col s4 input-padding-2-5 input-margin-2 size-35">
-                  <input id="teacher_last_name" type="text" class="validate" name="lastname_teacher">
-                  <label for="teacher_last_name">Last Name</label>
-                </div>
-                <div class="col s2"></div>
-              </div>
-              <div class="row input-margin-5">
-                  <div class="col s2"></div>
-                    <div class="input-field col s8 input-padding-2-5 input-margin-2">
+        <div class="input-field col s4 input-padding-2-5 input-margin-2 size-35">
+          <input id="teacher_last_name" type="text" class="validate" name="lastname_teacher">
+          <label for="teacher_last_name">Last Name</label>
+        </div>
+        <div class="col s2"></div>
+      </div>
+      <div class="row input-margin-5">
+        <div class="col s2"></div>
+        <!--
+                  <div class="input-field col s8 input-padding-2-5 input-margin-2">
                       <input id="teacher_topic" type="text" class="validate" name="topic_teacher">
                       <label for="teacher_topic">Topic</label>
                     </div>
-                    <div class="col s2"></div>
-                </div>
-                <div class="row input-margin-5">
-                    <div class="col s2"></div>
-                  <div class="input-field col s8 input-padding-2-5 input-margin-2" id="country-input">
-                    <select id="countrypicker" >
-                      <option value="" disabled selected>Choose your country</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row input-margin-5">
-                    <div class="col s2"></div>
-                  <div class="input-field col s8 input-padding-2-5 input-margin-2" id="language-input">
-                    <select id="languagepicker" >
-                      <option value="" disabled selected>Choose language of course</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom:0px;margin-top: 7px;">
-                    <div class="col s2">
-                       
-                    </div>
-                    
-                    
-                    <div  class="input-field col s6 " style="margin-bottom:0px">
-                        <label style="top:-32px;">
-                            <span>Price per hour</span>
-                        </label>
-                      <div class="range-field" id="money-slider" style="margin-top: 5px;margin-left: 5px;"></div>
-                      <input type="hidden" id="min-money" value="0.2"/>
-                      <input type="hidden" id="max-money" value="3"/>
-                      <span id="money-val-min"></span>~<span id="money-val-max"></span>
-                    </div>
-                </div>
-              </div>
-                <div class="row">
-                    <div class="col s4"></div>
-                    <div class="input-field col s4">
-                        <button onclick="signTeacher()" class="col s12 waves-effect waves-teal btn-flat  radius-8 accent-color"><span class="white-text ">Sign Up</span></button>
-                    </div>
-                    <div class="col s3"></div>
-                </div>
-               
-     </div>
+        -->
+        <div class="input-field col s8 input-padding-2-5 input-margin-2" id="topic-input">
+          <select id="teacher_topic">
+            <option value="" disabled selected>Topic</option>
+          </select>
+        </div>
+        <div class="col s2"></div>
+      </div>
+      <div class="row input-margin-5">
+        <div class="col s2"></div>
+        <div class="input-field col s8 input-padding-2-5 input-margin-2" id="country-input">
+          <select id="countrypicker">
+            <option value="" disabled selected>Choose your country</option>
+          </select>
+        </div>
+      </div>
+      <div class="row input-margin-5">
+        <div class="col s2"></div>
+        <div class="input-field col s8 input-padding-2-5 input-margin-2" id="language-input">
+          <select id="languagepicker">
+            <option value="" disabled selected>Choose language of course</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" style="margin-bottom:0px;margin-top: 7px;">
+        <div class="col s2">
+
+        </div>
+
+
+        <div class="input-field col s6 " style="margin-bottom:0px">
+          <label style="top:-32px;">
+            <span>Price per hour</span>
+          </label>
+          <div class="range-field" id="money-slider" style="margin-top: 5px;margin-left: 5px;"></div>
+          <input type="hidden" id="min-money" value="0.2" />
+          <input type="hidden" id="max-money" value="3" />
+          <span id="money-val-min"></span>~<span id="money-val-max"></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s4"></div>
+      <div class="input-field col s4">
+        <button onclick="signTeacher()" class="col s12 waves-effect waves-teal btn-flat  radius-8 accent-color"><span
+            class="white-text ">Sign Up</span></button>
+      </div>
+      <div class="col s3"></div>
+    </div>
+
+  </div>
 </div>

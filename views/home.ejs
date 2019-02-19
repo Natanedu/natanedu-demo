@@ -134,9 +134,9 @@
                 var instance = M.FormSelect.getInstance(elem);
                 var fName = $('#teacher_first_name').val();
                 var lName =$('#teacher_last_name').val();
-                var topic = $('#teacher_topic').val();
                 var country  = $('#country-input .dropdown-content .selected').text();
                 var language  = $('#language-input .dropdown-content .selected').text();
+                var topic  = $('#topic-input .dropdown-content .selected').text();
                 var min=$("#min-money").val();
                 var max=$("#max-money").val();
                 if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
@@ -155,6 +155,7 @@
             }
            </script>   
             <script src="../js/countrypicker.js"></script> 
+            <script src="../js/subjectpicker.js"></script> 
             <script src="../js/spoken-language.js"></script> 
     </body>
 </html> 
