@@ -235,6 +235,9 @@
             $("#whiteboard").addClass("hide");
             $("#panel-draw").addClass("hide");
             connection.closeSocket();
+            connection.getAllParticipants().forEach(function (participantId) {
+                    connection.disconnectWith(participantId);
+                });
             timecourse.stop();
 
             setpayed.stopTimeout();
