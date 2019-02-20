@@ -196,11 +196,11 @@
 
 
     </script>
-    
+
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
 
-    
+
     <script>
 
         var _teacher = "<%=teacher %>";
@@ -211,6 +211,7 @@
                 if (res[0] != undefined) {
 
                     _student = res[0];
+                    deniedpayed.startTimeout()
                     payLecture(
                         lectureid,
                         price,
@@ -223,9 +224,25 @@
 
             setpayed.stopTimeout();
         }
+        function closeCourse() {
+            connection.attachStreams.forEach(function (localStream) {
+                    localStream.stop();
+                });
+            instances.close();
+            $("#stream-end").removeClass("hide");
+            $("#stream_info").html(message.msg);
+            $("#backtodash").addClass("hide");
+            $("#whiteboard").addClass("hide");
+            $("#panel-draw").addClass("hide");
+            connection.closeSocket();
+            timecourse.stop();
+
+            setpayed.stopTimeout();
+        }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
+        var deniedpayed = new Interval(closeCourse, 30*  1000);
         $("#panel-draw").addClass("hide");
-        $("#draw-container").css("left","15%");
+        $("#draw-container").css("left", "15%");
     </script>
     <% }else{  %>
 
@@ -310,7 +327,7 @@
         var connection = new RTCMultiConnection();
         var predefinedRoomId = "<%= id %>";
         var socket;
-        
+
         var leave_channel = 'leave-room-' + predefinedRoomId;
         var begin_stream = 'begin-room-' + predefinedRoomId;
         // this line is VERY_important
@@ -338,7 +355,7 @@
         connection.connectSocket(function (socket) {
             connection.socket.on(connection.socketCustomEvent, function (data) {
                 console.log(data)
-                failed=16;
+                failed = 16;
                 // stop all local cameras
                 connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
@@ -391,11 +408,11 @@
             if (message.draw == "true") {
                 if (type == "student") {
                     canvas.loadFromDatalessJSON(message.opt);
-                    canvas.getObjects().forEach(function(obj){
-                        obj.set("hasControls",false);
-                        obj.set("selectable",false);
-                        obj.set("evented",false);
-                        obj.set("hasBorders",false);
+                    canvas.getObjects().forEach(function (obj) {
+                        obj.set("hasControls", false);
+                        obj.set("selectable", false);
+                        obj.set("evented", false);
+                        obj.set("hasBorders", false);
                     })
                     canvas.renderAll();
                 }
@@ -415,7 +432,7 @@
                 connection.renegotiate(); // share with all users
             }*/
         }
-        var failed=0;
+        var failed = 0;
         connection.onPeerStateChanged = function (state) {
             if (state.iceConnectionState.search(/failed/gi) !== -1) {
                 console.log("failed")
@@ -429,7 +446,7 @@
         };
         connection.onUserStatusChanged = function (event) {
             console.log(event);
-            if (connection.userid != event.userid && event.status == "online" ) {
+            if (connection.userid != event.userid && event.status == "online") {
                 if (begin) {
                     otherid = event.userid;
                     $("#main").removeClass("hide");
@@ -443,19 +460,19 @@
                     }
                 }
             }
-            if (event.status == "offline" && otherid == event.userid && failed<-15) {
+            if (event.status == "offline" && otherid == event.userid && failed < -15) {
 
-                    failed=0;
+                failed = 0;
 
-              /*  timecourse.stop();
-
-
-                if (type == "student") {
-                    setpayed.stopTimeout();
-                }
-                connection.getAllParticipants().forEach(function (participantId) {
-                    connection.disconnectWith(participantId);
-                });*/
+                /*  timecourse.stop();
+  
+  
+                  if (type == "student") {
+                      setpayed.stopTimeout();
+                  }
+                  connection.getAllParticipants().forEach(function (participantId) {
+                      connection.disconnectWith(participantId);
+                  });*/
             } else if (event.status == "online" && otherid == event.userid) {
                 if (begin) {
 
