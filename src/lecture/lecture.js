@@ -636,6 +636,8 @@ var NatanLectureABI = [
   }
 ]
 
+var payTxHash = "";
+
 var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x068D1d62f8e392457b0149Cb3f2e4C2ae6c56B5a';
 var lectureInstance = lectureContract.at(contractAddress);
@@ -646,6 +648,7 @@ var payLecture = function (_lectureId, _price, _studentAddress, _teacherAddress)
       //show success alert in teacher frontend
       deniedpayed.stopTimeout();
       console.log(res);
+      payTxHash = res;
     }
     else {
       instances.close();

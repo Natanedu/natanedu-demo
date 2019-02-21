@@ -225,21 +225,22 @@
             setpayed.stopTimeout();
         }
         function closeCourse() {
-            connection.attachStreams.forEach(function (localStream) {
+            if(payTxHash == "") {
+                connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
                 });
-            instances.close();
-            $("#stream-end").removeClass("hide");
-            $("#stream_info").html("Opps!you should pay to continue the course");
-            $("#backtodash").addClass("hide");
-            $("#whiteboard").addClass("hide");
-            $("#panel-draw").addClass("hide");
-            connection.closeSocket();
-            connection.getAllParticipants().forEach(function (participantId) {
+                instances.close();
+                $("#stream-end").removeClass("hide");
+                $("#stream_info").html("Opps!you should pay to continue the course");
+                $("#backtodash").addClass("hide");
+                $("#whiteboard").addClass("hide");
+                $("#panel-draw").addClass("hide");
+                connection.closeSocket();
+                connection.getAllParticipants().forEach(function (participantId) {
                     connection.disconnectWith(participantId);
                 });
+            }
             timecourse.stop();
-
             setpayed.stopTimeout();
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
