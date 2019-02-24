@@ -651,9 +651,7 @@ var registerTeacher = function(fName,lName,country,topic,language,min,max) {
             console.log(account);
             
             lectureInstance.listedTeachers(account, function(err, res) {
-              $("#main-content").removeClass("hide");
-            $("#waiting-core").addClass("hide");
-            $("#msg-waiting").text("");
+              wait_instance.close();
               if(err != null) {
                 swal ( "Oops" ,  "Something went wrong!" ,  "error" );
               }
