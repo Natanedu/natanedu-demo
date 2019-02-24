@@ -225,7 +225,7 @@
             setpayed.stopTimeout();
         }
         function closeCourse() {
-            if(payTxHash == "") {
+            if (payTxHash == "") {
                 connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
                 });
@@ -244,7 +244,7 @@
             setpayed.stopTimeout();
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
-        var deniedpayed = new Interval(closeCourse, 30*  1000);
+        var deniedpayed = new Interval(closeCourse, 30 * 1000);
         $("#panel-draw").addClass("hide");
         $("#draw-container").css("left", "15%");
     </script>
@@ -495,15 +495,27 @@
         };
 
 
+        if (type == "teacher") {
+            connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
+                if (isRoomEists) {
+                    connection.join(roomid);
+                } else {
+                    connection.open(roomid)
+                }
 
-        connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
-            if (isRoomEists) {
-                connection.join(roomid);
-            } else {
-                connection.open(roomid)
-            }
+            });
+        } else if (type == "student") {
+           var jointoroom= setInterval(function () {
+                connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
+                    if (isRoomEists) {
+                        connection.join(roomid);
+                        clearInterval(jointoroom);
+                    }
 
-        });
+                });
+            }, 1000)
+        }
+
 
         connection.enableFileSharing = true;
 
