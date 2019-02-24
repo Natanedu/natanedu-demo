@@ -89,6 +89,10 @@
             console.log(min_price);
               
           });
+          socket.on('lose', function(d){
+            denied(d.lectureId)
+              
+          });
             socket.on("joining-room",function(url){
                 console.log(url);
                 console.log(data)
@@ -103,12 +107,13 @@
               if(data.prize<=max_price&&data.prize>=min_price&&data.lang==lang){
                 var d = new Date();
                 var id = d.getTime();
+                var hash=data.lectureId
                 if (document.getElementById("notification").hasChildNodes()) {
                   $("#notification").removeClass("hide");
                   $("#empty-notif").addClass("hide");
                   }
 
-                  $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;padding-bottom:7px;">'+
+                  $("#notification").append('<li id="'+hash+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;padding-bottom:7px;">'+
                   '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
                   ' <p class="grey-text"> The student '+
                       data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
@@ -116,7 +121,7 @@
                     '</p><br/>'+
                     '<div class="row col s12">'+
                         '<button onclick="accecpt('+data.hour+')" class="col s4 m3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
-                      '<button onclick="denied('+id+')" class="col s4 m3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
+                      '<button onclick="denied('+hash+')" class="col s4 m3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
                     '</div>'+
                     '<div class="secondary-content">'+
                         parseInt(data.hour)+'min'+
@@ -139,7 +144,7 @@
             function accecpt(time){
               sessionStorage.coursetime=time;
               console.log(account);
-              socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account});
+              socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account,topic:data.topic});
             }
     </script>
  
