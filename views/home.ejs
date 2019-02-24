@@ -48,7 +48,7 @@
             <div id="wait" class="modal">
                 <div class="modal-content">
                         <div class="row col s12">
-                                <div class="preloader-wrapper big active " style="left:20%">
+                                <div class="preloader-wrapper big active " style="left:40%">
                                         <div class="spinner-layer spinner-blue-only">
                                           <div class="circle-clipper left">
                                             <div class="circle"></div>
@@ -73,8 +73,8 @@
           <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
            
            <script>
-                var elems_wait = document.querySelectorAll('#wait');
-                var wait_instance = M.Modal.init(elems_wait, {});
+                var elems_wait = document.getElementById('wait');
+                var wait_instance = M.Modal.init(elems_wait, {dismissible:false});
                var stepmax=10;
                var max=10;
                $(document).ready(function(){
