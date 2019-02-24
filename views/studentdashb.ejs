@@ -166,7 +166,7 @@
             socket.on("teacher-found",function(url){
                 // Usage!
                 $("#msg-waiting").text("connecting with teacher....")
-                sleep(20*1000).then(() => {
+                sleep(10*1000).then(() => {
                     // Do something after the sleep!
                     var price=$("#money").val();
                     sessionStorage.coursetime=$("#time").val();

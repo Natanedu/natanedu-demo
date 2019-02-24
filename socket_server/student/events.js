@@ -27,7 +27,7 @@ const onSearchClass = (teachers_nsp, student_socket) => ({
   });
 
   // Sets a timer. If the not teacher found, emits the event 'teacher-not-found'
-  timerManager.setTimeout(student_socket.id, 1*60*1000, () => {
+  timerManager.setTimeout(student_socket.id, 1*30*1000, () => {
     console.log(
       `Student: Teacher not found for the following query, topic: ${topic}, prize: ${prize}, lang: ${lang}\n Student Name: ${student_name}`
     );
