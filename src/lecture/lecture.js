@@ -670,8 +670,11 @@ var payLecture = function (_lectureId, _price, _studentAddress, _teacherAddress)
 
 var transfer = function (_teacherAdd) {
   lectureInstance.transfer(_teacherAdd, function (err, res) {
-    if (!err) {
+    if (!err && res) {
 
+      var text = "congrats you have received your payment";
+      var option={body:text,icon:'../../img/fireworks.png'}
+      createNotification(title,option);
     }
     else {
       swal({

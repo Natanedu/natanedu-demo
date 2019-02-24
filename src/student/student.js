@@ -658,6 +658,9 @@ var registerStudent = function(fName,lName) {
       console.log(account);
 
       lectureInstance.listedStudents(account, function(err, res) {
+          $("#main-content").removeClass("hide");
+          $("#waiting-core").addClass("hide");
+          $("#msg-waiting").text("");
         if(err != null) {
           swal ( "Oops" ,  "Something went wrong!" ,  "error" );
         }
