@@ -5,6 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Teacher Dashboard</title>
+    <script>
+      if(localStorage.logged==false){
+        window.location.href="/";
+      }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -36,7 +41,7 @@
               </a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/profile">profile</a></li>
-                <li><a href="#logout">logout</a></li>
+                <li><a href="#logout" id="logout">logout</a></li>
               </ul>
             </div>
             
@@ -146,6 +151,11 @@
               console.log(account);
               socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account,topic:data.topic});
             }
+            document.getElementById("logout").addEventListener('click',function(event){
+               event.preventDefault();
+               localStorage.logged=false
+               window.location.href="/"
+            })
     </script>
  
 </body>

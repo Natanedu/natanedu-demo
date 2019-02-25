@@ -702,6 +702,7 @@ var loginTeacher = function() {
             swal ( "Oops" ,  "Blacklisted teacher!" ,  "error" );
           }
           else if ((res == 2) || (res == 3)) {
+            localStorage.setItem("logged", true);
             swal("Congrats!", "you're logged in", "success");
             //redirect to teacher dashboard
 
