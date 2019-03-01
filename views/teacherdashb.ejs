@@ -5,6 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Teacher Dashboard</title>
+    <script>
+      if(localStorage.logged==false){
+        window.location.href="/";
+      }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -36,7 +41,7 @@
               </a>
               <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/profile">profile</a></li>
-                <li><a href="#logout">logout</a></li>
+                <li><a href="#logout" id="logout">logout</a></li>
               </ul>
             </div>
             
@@ -47,21 +52,21 @@
         <div class="row">
             <div class="col s12">
                 <div class="row">
-                  <div class="col s4"></div>
+                  <div class="col s12 m3 l4"></div>
                   
-                  <div class="col s4">
+                  <div class="col s12 m6  l4">
                      
                           <ul class="collection hide" id="notification">
                           </ul>
                           <div class="grey-text lighten-3-text" style="margin-top:45%;text-align:center;" id="empty-notif">
-                              <span  class="material-icons" style="font-size:38px">
+                              <span  class="material-icons" style="font-size:100px">
                                   notifications</span><br/>
-                              <span>No notification for now!</span>
+                              <span style="font-size:19px">No notification for now!</span>
                           </div>
                       
                   </div>
                   
-                  <div class="col s4"></div>
+                  <div class="col s12 m3 l4"></div>
                 </div>
                
             </div>
@@ -89,6 +94,10 @@
             console.log(min_price);
               
           });
+          socket.on('lose', function(d){
+            denied(d.lectureId)
+              
+          });
             socket.on("joining-room",function(url){
                 console.log(url);
                 console.log(data)
@@ -103,20 +112,21 @@
               if(data.prize<=max_price&&data.prize>=min_price&&data.lang==lang){
                 var d = new Date();
                 var id = d.getTime();
+                var hash=data.lectureId
                 if (document.getElementById("notification").hasChildNodes()) {
                   $("#notification").removeClass("hide");
                   $("#empty-notif").addClass("hide");
                   }
 
-                $("#notification").append('<li id="'+id+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;height:auto;padding-bottom: 1px;">'+
+                  $("#notification").append('<li id="'+hash+'" class="collection-item avatar item-list" style="padding-left:20px;padding-top:20px;padding-bottom:7px;">'+
                   '<span class="title " style="font-size:20px;">'+topic+'('+data.lang+')'+'</span>'+
                   ' <p class="grey-text"> The student '+
                       data.student_name+' request a ' +topic+ ' lecture for '+ web3.fromWei(data.prize, "ether")+' Ether<br/>'+
                       'detail: '+data.chapitre+
                     '</p><br/>'+
-                    '<div class="row">'+
-                        '<button onclick="accecpt('+data.hour+')" class="col s3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
-                      '<button onclick="denied('+id+')" class="col s3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
+                    '<div class="row col s12">'+
+                        '<button onclick="accecpt('+data.hour+')" class="col s4 m3 waves-effect waves-teal btn-small btn  accent-color" style="float:right">accept</button>'+
+                      '<button onclick="denied('+hash+')" class="col s4 m3 waves-effect waves-light btn-small btn-flat denied-btn  red-text darken-1-text" style="float:right">denied</button>'+  
                     '</div>'+
                     '<div class="secondary-content">'+
                         parseInt(data.hour)+'min'+
@@ -124,7 +134,8 @@
                   '</li>');
                   data.topic=topic;
                 var text = 'The student  ' + data.student_name + ' want a course in '+data.topic;
-                createNotification(title,text);
+                var option={body:text,icon:'../../img/N.png'}
+                createNotification(title,option);
               }           
                 
             });
@@ -138,8 +149,13 @@
             function accecpt(time){
               sessionStorage.coursetime=time;
               console.log(account);
-              socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account});
+              socket.emit("class-accepted", {id:data.id,lecture:data.lectureId,wallet:account,topic:data.topic});
             }
+            document.getElementById("logout").addEventListener('click',function(event){
+               event.preventDefault();
+               localStorage.logged=false
+               window.location.href="/"
+            })
     </script>
  
 </body>

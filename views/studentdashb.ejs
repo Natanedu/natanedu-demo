@@ -1,238 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <title>Student Dashboard</title>
+    <script>
+        if (localStorage.logged == false) {
+            window.location.href = "/";
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../css/dash.css">
-    <link rel="stylesheet" href="/css/uirange.css"/>
+    <link rel="stylesheet" href="/css/uirange.css" />
 
     <!-- web3 -->
-    <script src="../web3/web3.js"></script> 
-    <script src="../student/student.js"></script> 
+    <script src="../web3/web3.js"></script>
+    <script src="../student/student.js"></script>
 
-    </head>
+</head>
 
-  <body>
-        <div class="navbar-fixed">
-            <nav class="nav-natanedu">
-                <div class="nav-wrapper">
-                    <a href="#" class="brand-logo"> 
-                    <img src="../img/logo.png" class="size-35 logo-nav"/>
-                    </a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+<body>
+    <div class="navbar-fixed">
+        <nav class="nav-natanedu">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">
+                    <img src="../img/logo.png" class="size-35 logo-nav" />
+                </a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="/profile">profile</a></li>
-                    
-                    </ul>
-                </div>
-                
-                </nav>
-        
-        </div>
-        <div class="contaier" id="main">
-            <div class="row">
-                    <%- include('search') %>
-                    <%- include('waiting') %>
+                    <li><a href="#" id="logout">Logout</a></li>
+                </ul>
             </div>
+
+        </nav>
+
+    </div>
+    <div class="contaier" id="main">
+        <div class="row">
+            <%- include('search') %>
+            <%- include('waiting') %>
         </div>
-        
+    </div>
 
-        <!-- Compiled and minified JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script src="../js/makenotifcation.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-        <script src="../js/spoken-language.js"></script> 
-        
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/12.1.0/nouislider.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../js/makenotifcation.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-        <script>
-            var stepmax=10;
-            var max=10;
-            var timermax=60;
-            var lecture;
-            $( document ).ready(function() {
-                var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
-                M.Dropdown.init(elems_lang, {});
-            });
-            var slider = document.getElementById('price-slider');
-            noUiSlider.create(slider, {
-                start: [0.2],
-                step:0.1,
-                margin: 0.2,
-                orientation: 'horizontal',
-                range: {
-                    'min': 0,
-                    'max': 10
-                }
-            });
-            var timerslider = document.getElementById('time-slider');
-            noUiSlider.create(timerslider, {
-                start: [10],
-                step:5,
-                behaviour: 'drag',
-                connect: true,
-                orientation: 'horizontal',
-                range: {
-                    'min': 5,
-                    'max': 60
-                }
-            });
-        
-            slider.noUiSlider.on('update', function( values, handle ) {
-                
-                        $("#money").val(values[handle]);
-                        $("#money-val").text(values[handle]+" eth")
-                
-                
-            });
-        
-            slider.noUiSlider.on('change', function( values, handle ) {
-                // on change of the slider, find the next element and set its value
-                
-                if(values[handle]==max){
-                
-                    
-                    max=max+stepmax;
-                    slider.noUiSlider.updateOptions({
-                        start: [$("#money").val()],
-                        step:0.1,
-                        behaviour: 'drag',
-                        connect: true,
-                        margin: 0.2,
-                        orientation: 'horizontal',
-                        range: {
-                            'min': [0],
-                            'max': [max]
-                        }
-                    });
-                }
-                
-                
-            });
-            
-            timerslider.noUiSlider.on('update', function( values, handle ) {
-                
-                        $("#time").val(values[handle]);
-                        $("#time-val").text(parseInt(values[handle])+" min")
-                
-                
-            });
-        
-            timerslider.noUiSlider.on('change', function( values, handle ) {
-                // on change of the slider, find the next element and set its value
-                
-                if(values[handle]==timermax){
-                
-                    
-                    timermax=timermax+stepmax;
-                    timerslider.noUiSlider.updateOptions({
-                        start: [$("#time").val()],
-                        step:1,
-                        behaviour: 'drag',
-                        connect: [true],
-                        orientation: 'horizontal',
-                        range: {
-                            'min': [5],
-                            'max': [timermax]
-                        }
-                    });
-                }
-                
-                
-            });
-            
-            if(window.location.hostname=="localhost"){
-                var server="http://localhost:3000";
-            }else{
-                var server="https://webrtc.alpha-beta.ovh";
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="../js/spoken-language.js"></script>
+    <script src="../js/subjectpicker.js"></script>
+
+
+    <script>
+        document.getElementById("logout").addEventListener('click', function (event) {
+            event.preventDefault();
+            localStorage.logged = false
+            window.location.href = "/"
+            console.log(localStorage.logged);
+        })
+        var stepmax = 10;
+        var max = 10;
+        var timermax = 60;
+        var lecture;
+        $(document).ready(function () {
+            var elems_lang = document.querySelectorAll('#language-input .dropdown-trigger');
+            M.Dropdown.init(elems_lang, {});
+        });
+        var slider = document.getElementById('price-slider');
+        noUiSlider.create(slider, {
+            start: [0.2],
+            step: 0.1,
+            margin: 0.2,
+            orientation: 'horizontal',
+            range: {
+                'min': 0,
+                'max': 10
             }
-            var socket = io.connect(server+'/students');
-            socket.on("ready",function(studentName){
-                console.log("ready");     
-                        
-            })
-            socket.on("teacher-not-found",function(data){
-                $("#search-core").removeClass("hide");
-                $("#waiting-core").addClass("hide");
-                createNotification("Alert","Opps!No teacher avaible for now!")
-            });
-            socket.on("teacher-found",function(url){
-                // Usage!
-                $("#msg-waiting").text("connecting with teacher....")
-                sleep(20*1000).then(() => {
-                    // Do something after the sleep!
-                    var price=$("#money").val();
-                    sessionStorage.coursetime=$("#time").val();
-                    window.location.href = url+"&price="+web3.toWei(price, 'ether');//+"?id="+lecture;
+        });
+        var timerslider = document.getElementById('time-slider');
+        noUiSlider.create(timerslider, {
+            start: [10],
+            step: 5,
+            behaviour: 'drag',
+            connect: true,
+            orientation: 'horizontal',
+            range: {
+                'min': 5,
+                'max': 60
+            }
+        });
+
+        slider.noUiSlider.on('update', function (values, handle) {
+
+            $("#money").val(values[handle]);
+            $("#money-val").text(values[handle] + " eth")
+
+
+        });
+
+        slider.noUiSlider.on('change', function (values, handle) {
+            // on change of the slider, find the next element and set its value
+
+            if (values[handle] == max) {
+
+
+                max = max + stepmax;
+                slider.noUiSlider.updateOptions({
+                    start: [$("#money").val()],
+                    step: 0.1,
+                    behaviour: 'drag',
+                    connect: true,
+                    margin: 0.2,
+                    orientation: 'horizontal',
+                    range: {
+                        'min': [0],
+                        'max': [max]
+                    }
                 });
-                
+            }
+
+
+        });
+
+        timerslider.noUiSlider.on('update', function (values, handle) {
+
+            $("#time").val(values[handle]);
+            $("#time-val").text(parseInt(values[handle]) + " min")
+
+
+        });
+
+        timerslider.noUiSlider.on('change', function (values, handle) {
+            // on change of the slider, find the next element and set its value
+
+            if (values[handle] == timermax) {
+
+
+                timermax = timermax + stepmax;
+                timerslider.noUiSlider.updateOptions({
+                    start: [$("#time").val()],
+                    step: 1,
+                    behaviour: 'drag',
+                    connect: [true],
+                    orientation: 'horizontal',
+                    range: {
+                        'min': [5],
+                        'max': [timermax]
+                    }
+                });
+            }
+
+
+        });
+
+        if (window.location.hostname == "localhost") {
+            var server = "http://localhost:3000";
+        } else {
+            var server = "https://webrtc.alpha-beta.ovh";
+        }
+        var socket = io.connect(server + '/students');
+        socket.on("ready", function (studentName) {
+            console.log("ready");
+
+        })
+        socket.on("teacher-not-found", function (data) {
+            $("#search-core").removeClass("hide");
+            $("#waiting-core").addClass("hide");
+            var text = "Opps!No teacher avaible for now!";
+            var option = { body: text, icon: '../../img/sad.png' }
+            createNotification("Alert", option)
+        });
+        socket.on("teacher-found", function (url) {
+            // Usage!
+            $("#msg-waiting").text("connecting with teacher....")
+            sleep(10 * 1000).then(() => {
+                // Do something after the sleep!
+                var price = $("#money").val();
+                sessionStorage.coursetime = $("#time").val();
+                window.location.href = url + "&price=" + web3.toWei(price, 'ether');//+"?id="+lecture;
             });
-            // sleep time expects milliseconds
-            function sleep (time) {
+
+        });
+        // sleep time expects milliseconds
+        function sleep(time) {
             return new Promise((resolve) => setTimeout(resolve, time));
-            }
+        }
 
 
-            function search(){
-                lectureInstance.students(account, function(err, res) {
-                    studentName = res[0] +" "+ res[1];
-                    console.log(studentName);
+        function search() {
+            lectureInstance.students(account, function (err, res) {
+                studentName = res[0] + " " + res[1];
+                console.log(studentName);
 
-                    var topic=$("#topic").val();
-                    var chapitres=$("#chapitre").val();
-                    var price=$("#money").val();
-                    var hour=$("#time").val();
-                    var language  = $('#language-input .dropdown-content .selected').text();
-                    if(topic==""||language=="Choose language of course"){
-                        swal({
-                            title: "Invalid inputs",
-                            text: "Correct inputs",
-                            icon: "error",
-                            button: "Ok",
-                            closeOnClickOutside: false
-                        });
-                    }else {
-                        web3.eth.getBalance(account, function(err, res) {
-                            if(res.toNumber() < web3.toWei(price, 'ether')) {
-                                swal({
-                                    title: "Insufficient Balance",
-                                    text: "Please check your balance",
-                                    icon: "error",
-                                    button: "Ok",
-                                    closeOnClickOutside: false
-                                });
-                            }
-                            else {
-                                lectureInstance.generateLectureId(function(err, res) {
-                                    if(!err) {
-                                        lectureInstance.generateLectureId.call(function(err, id) {
-                                            lecture=id.toNumber();
-                                            console.log(lecture);
-                                            $("#search-core").addClass("hide");
-                                            $("#msg-waiting").text("searching for teacher...")
-                                            $("#waiting-core").removeClass("hide");
+                var topic = $('#topic-input .dropdown-content .selected').text();//$("#topic").val();
+                console.log(topic)
+                var chapitres = $("#chapitre").val();
+                var price = $("#money").val();
+                var hour = $("#time").val();
+                var language = $('#language-input .dropdown-content .selected').text();
+                if (topic == "" || language == "Choose language of course") {
+                    swal({
+                        title: "Invalid inputs",
+                        text: "Correct inputs",
+                        icon: "error",
+                        button: "Ok",
+                        closeOnClickOutside: false
+                    });
+                } else {
+                    web3.eth.getBalance(account, function (err, res) {
+                        if (res.toNumber() < web3.toWei(price, 'ether')) {
+                            swal({
+                                title: "Insufficient Balance",
+                                text: "Please check your balance",
+                                icon: "error",
+                                button: "Ok",
+                                closeOnClickOutside: false
+                            });
+                        }
+                        else {
+                            lectureInstance.generateLectureId(function (err, res) {
+                                if (!err) {
+                                    lectureInstance.generateLectureId.call(function (err, id) {
+                                        lecture = id.toNumber();
+                                        console.log(lecture);
+                                        $("#search-core").addClass("hide");
+                                        $("#msg-waiting").text("searching for teacher...")
+                                        $("#waiting-core").removeClass("hide");
 
-                                            socket.emit("search-class", {
-                                                lectureId: id.toNumber(),
-                                                chapitre: chapitres,
-                                                student_name: studentName,
-                                                topic: topic,
-                                                prize: web3.toWei(price, 'ether'),
-                                                lang: language,
-                                                hour:hour
-                                            });
+                                        socket.emit("search-class", {
+                                            lectureId: id.toNumber(),
+                                            chapitre: chapitres,
+                                            student_name: studentName,
+                                            topic: topic,
+                                            prize: web3.toWei(price, 'ether'),
+                                            lang: language,
+                                            hour: hour
                                         });
-                                    }
-                                });
-                            }
-                        });
-                    }    
-                });
-            }
-        </script>        
-    </body>
+                                    });
+                                }
+                                else {
+                                    swal({
+                                        title: "Transaction Error",
+                                        text: "Please confirm the transaction in metamask popup",
+                                        icon: "error",
+                                        button: "Ok",
+                                        closeOnClickOutside: false
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
 </html>

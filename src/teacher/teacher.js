@@ -649,8 +649,9 @@ var registerTeacher = function(fName,lName,country,topic,language,min,max) {
         if(res[0] != undefined) {
             account = res[0];
             console.log(account);
-
+            
             lectureInstance.listedTeachers(account, function(err, res) {
+              wait_instance.close();
               if(err != null) {
                 swal ( "Oops" ,  "Something went wrong!" ,  "error" );
               }
@@ -701,6 +702,7 @@ var loginTeacher = function() {
             swal ( "Oops" ,  "Blacklisted teacher!" ,  "error" );
           }
           else if ((res == 2) || (res == 3)) {
+            localStorage.setItem("logged", true);
             swal("Congrats!", "you're logged in", "success");
             //redirect to teacher dashboard
 

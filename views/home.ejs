@@ -26,7 +26,7 @@
                 </div>
                
             </div>
-            <div class="col s4 core-form" style="padding: 0px;">
+            <div class="col s4 core-form" style="padding: 0px;" id="main-content">
                 <nav class="nav-extended nav-color z-depth-0">
                     <div class="nav-content ">
                       <ul class="tabs">
@@ -40,7 +40,31 @@
                
                 <%- include('login') %>
             </div>
+          
+               
+         
           </div>
+          <!-- Modal Structure -->
+            <div id="wait" class="modal">
+                <div class="modal-content">
+                        <div class="row col s12">
+                                <div class="preloader-wrapper big active " style="left:40%">
+                                        <div class="spinner-layer spinner-blue-only">
+                                          <div class="circle-clipper left">
+                                            <div class="circle"></div>
+                                          </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                          </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col s12 grey-text lighten-4-text" >
+                                            <span id="msg-waiting">your account is being created, click on sign up after the metamask confirmation</span>
+                                      </div>
+                        </div>
+                </div>
+            </div>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       
           <!-- Compiled and minified JavaScript -->
@@ -49,6 +73,8 @@
           <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
            
            <script>
+                var elems_wait = document.getElementById('wait');
+                var wait_instance = M.Modal.init(elems_wait, {dismissible:false});
                var stepmax=10;
                var max=10;
                $(document).ready(function(){
@@ -134,12 +160,13 @@
                 var instance = M.FormSelect.getInstance(elem);
                 var fName = $('#teacher_first_name').val();
                 var lName =$('#teacher_last_name').val();
-                var topic = $('#teacher_topic').val();
                 var country  = $('#country-input .dropdown-content .selected').text();
                 var language  = $('#language-input .dropdown-content .selected').text();
+                var topic  = $('#topic-input .dropdown-content .selected').text();
                 var min=$("#min-money").val();
                 var max=$("#max-money").val();
                 if(country!="Choose your country" ||language!="Choose language of course"||fName!=""||lName!=""||topic!=""){
+                    wait_instance.open();
                     registerTeacher(fName,lName,country,topic,language,web3.toWei(min, 'ether'),web3.toWei(max, 'ether'));      
                 }   
                
@@ -149,12 +176,14 @@
                 var fName = $('#fistname_student').val();
                 var lName =$('#lastname_student').val();
                 if(fName!=""||lName!=""){
-                registerStudent(fName,lName);
+                    wait_instance.open();
+                    registerStudent(fName,lName);
                     
                 }  
             }
            </script>   
             <script src="../js/countrypicker.js"></script> 
+            <script src="../js/subjectpicker.js"></script> 
             <script src="../js/spoken-language.js"></script> 
     </body>
 </html> 

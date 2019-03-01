@@ -10,8 +10,9 @@
     <link rel="stylesheet" media="screen" type="text/css" href="../../css/color-picker.min.css" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="../js/makenotifcation.js"></script>
     <script src="../../web3/web3.js"></script>
-
+    <script src="../../lecture/lecture.js"></script>
 </head>
 
 <body>
@@ -163,7 +164,10 @@
     <script src="https://chancejs.com/chance.min.js"></script>
 
     <script>
+        var type = "<%=type %>";
         var chance = new Chance(Math.random);
+
+
         function Interval(fn, time) {
             var timer = false;
             this.start = function () {
@@ -193,14 +197,11 @@
 
 
     </script>
-    <script src="../../js/timer.js"></script>
-    <script>
-        var timecourse = new Interval(caluclate, 1000);
-    </script>
+
     <%if(type=='student'){ %>
     <script src="../../student/student.js"></script>
 
-    <script src="../../lecture/lecture.js"></script>
+
     <script>
 
         var _teacher = "<%=teacher %>";
@@ -211,6 +212,7 @@
                 if (res[0] != undefined) {
 
                     _student = res[0];
+                    deniedpayed.startTimeout()
                     payLecture(
                         lectureid,
                         price,
@@ -221,17 +223,41 @@
                 }
             });
 
-            clearTimeout(timer);
+            setpayed.stopTimeout();
+        }
+        function closeCourse() {
+            if (payTxHash == "") {
+                connection.attachStreams.forEach(function (localStream) {
+                    localStream.stop();
+                });
+                instances.close();
+                $("#stream-end").removeClass("hide");
+                $("#stream_info").html("Opps!you should pay to continue the course");
+                $("#backtodash").addClass("hide");
+                $("#whiteboard").addClass("hide");
+                $("#panel-draw").addClass("hide");
+                connection.closeSocket();
+                connection.getAllParticipants().forEach(function (participantId) {
+                    connection.disconnectWith(participantId);
+                });
+            }
+            timecourse.stop();
+            setpayed.stopTimeout();
         }
         var setpayed = new Interval(payMoney, 3 * 60 * 1000);
+        var deniedpayed = new Interval(closeCourse, 30 * 1000);
         $("#panel-draw").addClass("hide");
-        $("#draw-container").css("left","15%");
+        $("#draw-container").css("left", "15%");
     </script>
     <% }else{  %>
 
     <script src="../../teacher/teacher.js"></script>
 
     <% } %>
+    <script src="../../js/timer.js"></script>
+    <script>
+        var timecourse = new Interval(caluclate, 1000);
+    </script>
 
     <script>
         function chat(msg, sender) {
@@ -306,7 +332,7 @@
         var connection = new RTCMultiConnection();
         var predefinedRoomId = "<%= id %>";
         var socket;
-        var type = "<%=type %>";
+
         var leave_channel = 'leave-room-' + predefinedRoomId;
         var begin_stream = 'begin-room-' + predefinedRoomId;
         // this line is VERY_important
@@ -334,7 +360,7 @@
         connection.connectSocket(function (socket) {
             connection.socket.on(connection.socketCustomEvent, function (data) {
                 console.log(data)
-                failed=16;
+                failed = 16;
                 // stop all local cameras
                 connection.attachStreams.forEach(function (localStream) {
                     localStream.stop();
@@ -387,11 +413,11 @@
             if (message.draw == "true") {
                 if (type == "student") {
                     canvas.loadFromDatalessJSON(message.opt);
-                    canvas.getObjects().forEach(function(obj){
-                        obj.set("hasControls",false);
-                        obj.set("selectable",false);
-                        obj.set("evented",false);
-                        obj.set("hasBorders",false);
+                    canvas.getObjects().forEach(function (obj) {
+                        obj.set("hasControls", false);
+                        obj.set("selectable", false);
+                        obj.set("evented", false);
+                        obj.set("hasBorders", false);
                     })
                     canvas.renderAll();
                 }
@@ -411,10 +437,10 @@
                 connection.renegotiate(); // share with all users
             }*/
         }
-        var failed=0;
+        var failed = 0;
         connection.onPeerStateChanged = function (state) {
-            if (state.iceConnectionState.search(/closed|failed/gi) !== -1) {
-                console.log(failed)
+            if (state.iceConnectionState.search(/failed/gi) !== -1) {
+                console.log("failed")
                 failed--;
                 connection.renegotiate();
                 console.error('Peer connection is closed between you & ', state.userid, state.extra, 'state:', state.iceConnectionState);
@@ -425,7 +451,7 @@
         };
         connection.onUserStatusChanged = function (event) {
             console.log(event);
-            if (connection.userid != event.userid && event.status == "online" ) {
+            if (connection.userid != event.userid && event.status == "online") {
                 if (begin) {
                     otherid = event.userid;
                     $("#main").removeClass("hide");
@@ -439,19 +465,19 @@
                     }
                 }
             }
-            if (event.status == "offline" && otherid == event.userid && failed<-15) {
+            if (event.status == "offline" && otherid == event.userid && failed < -15) {
 
-                    failed=0;
+                failed = 0;
 
-              /*  timecourse.stop();
-
-
-                if (type == "student") {
-                    setpayed.stopTimeout();
-                }
-                connection.getAllParticipants().forEach(function (participantId) {
-                    connection.disconnectWith(participantId);
-                });*/
+                /*  timecourse.stop();
+  
+  
+                  if (type == "student") {
+                      setpayed.stopTimeout();
+                  }
+                  connection.getAllParticipants().forEach(function (participantId) {
+                      connection.disconnectWith(participantId);
+                  });*/
             } else if (event.status == "online" && otherid == event.userid) {
                 if (begin) {
 
@@ -470,15 +496,27 @@
         };
 
 
+        if (type == "teacher") {
+            connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
+                if (isRoomEists) {
+                    connection.join(roomid);
+                } else {
+                    connection.open(roomid)
+                }
 
-        connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
-            if (isRoomEists) {
-                connection.join(roomid);
-            } else {
-                connection.open(roomid)
-            }
+            });
+        } else if (type == "student") {
+           var jointoroom= setInterval(function () {
+                connection.checkPresence(predefinedRoomId, function (isRoomEists, roomid) {
+                    if (isRoomEists) {
+                        connection.join(roomid);
+                        clearInterval(jointoroom);
+                    }
 
-        });
+                });
+            }, 1000)
+        }
+
 
         connection.enableFileSharing = true;
 

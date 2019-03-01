@@ -21,9 +21,14 @@ const onTryToJoin = teacher => async ({ wallet, topic, country,lang,min,max } = 
   }
 };
 
-const onClassAccepted = (student_nsp, { url, socket } = {}) => ({id,lecture,wallet}) => {
+const onClassAccepted = (student_nsp, { url, socket } = {}) => ({id,lecture,wallet,topic}) => {
   console.log("Teacher: Class accepted, joining room...");
+
   timerManager.clearTimeout(id);
+  console.log("their is request take it by teacher");
+  
+  //teacher.leave(topic);
+  socket.to(topic).emit("lose", {lecture});
   var hash=objectHash({
     id: socket.id,
     date: new Date().getMilliseconds()

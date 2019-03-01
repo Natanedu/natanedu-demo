@@ -635,76 +635,91 @@ var NatanLectureABI = [
     "signature": "0x1a695230"
   }
 ]
-  
+
+var payTxHash = "";
+
 var lectureContract = web3.eth.contract(NatanLectureABI);
 var contractAddress = '0x068D1d62f8e392457b0149Cb3f2e4C2ae6c56B5a';
 var lectureInstance = lectureContract.at(contractAddress);
 
-var payLecture = function(_lectureId, _price, _studentAddress, _teacherAddress) {
-    lectureInstance.payLecture(_lectureId, _price, _studentAddress, _teacherAddress, {from: _studentAddress, value: _price}, function(err, res) {
-        if(!err) {
-            //show success alert in teacher frontend
-        }
-        else {
-            swal({
-                title: "Error Payment",
-                text: "Can not pay for lecture!",
-                icon: "error",
-                button: "Cancel"
-            });
-        }
-    });
-}  
+var payLecture = function (_lectureId, _price, _studentAddress, _teacherAddress) {
+  lectureInstance.payLecture(_lectureId, _price, _studentAddress, _teacherAddress, { from: _studentAddress, value: _price }, function (err, res) {
+    if (!err) {
+      //show success alert in teacher frontend
+      deniedpayed.stopTimeout();
+      console.log(res);
+      payTxHash = res;
+    }
+    else {
+      instances.close();
+      $("#stream-end").removeClass("hide");
+      $("#stream_info").html(message.msg);
+      $("#backtodash").addClass("hide");
+      connection.closeSocket();
+      timecourse.stop();
+      swal({
+        title: "Error Payment",
+        text: "Can not pay for lecture!",
+        icon: "error",
+        button: "Cancel"
+      });
+      //TODO: disconnect call
+    }
+  });
+}
 
-var transfer = function(_teacherAdd) {
-  lectureInstance.transfer(_teacherAdd, function(err, res) {
-    if(!err) {
+var transfer = function (_teacherAdd) {
+  lectureInstance.transfer(_teacherAdd, function (err, res) {
+    if (!err && res) {
 
+      var text = "congrats you have received your payment";
+      var option={body:text,icon:'../../img/fireworks.png'}
+      createNotification(title,option);
     }
     else {
       swal({
-          title: "Error Transfer Money",
-          text: "Can not transfer to teacher wallet!",
-          icon: "error",
-          button: "Cancel"
+        title: "Error Transfer Money",
+        text: "Can not transfer to teacher wallet!",
+        icon: "error",
+        button: "Cancel"
       });
     }
   });
 }
 
-var postIPFS = function(_lectureId, _ipfsHash) {
-    lectureInstance.saveRecordedLecture(_lectureId, _ipfsHash, function(err, res) {
-        if(!err) {
-            swal({
-                title: "Saved",
-                text: "Lecture stored in IPFS network!",
-                icon: "success",
-                button: "Ok"
-            });
-        }
-        else {
-            swal({
-                title: "Error",
-                text: "error!",
-                icon: "error",
-                button: "Cancel"
-            });
-        }
-    });
+var postIPFS = function (_lectureId, _ipfsHash) {
+  lectureInstance.saveRecordedLecture(_lectureId, _ipfsHash, function (err, res) {
+    if (!err) {
+      swal({
+        title: "Saved",
+        text: "Lecture stored in IPFS network!",
+        icon: "success",
+        button: "Ok"
+      });
+    }
+    else {
+      swal({
+        title: "Error",
+        text: "error!",
+        icon: "error",
+        button: "Cancel"
+      });
+    }
+  });
 }
 
-var getIPFS = function(_lectureId) {
-    lectureInstance.getRecordedLecture(_lectureId, function(err, res) {
-        if(!err) {
-            alert("lecture IPFS path: " + res);
-        }
-        else {
-            swal({
-                title: "Error",
-                text: "Lecture not found or you don't have permission to view the lecture!",
-                icon: "error",
-                button: "Cancel"
-            });
-        }
-    });
+var getIPFS = function (_lectureId) {
+  lectureInstance.getRecordedLecture(_lectureId, function (err, res) {
+    if (!err) {
+      alert("lecture IPFS path: " + res);
+    }
+    else {
+      swal({
+        title: "Error",
+        text: "Lecture not found or you don't have permission to view the lecture!",
+        icon: "error",
+        button: "Cancel"
+      });
+    }
+  });
 }

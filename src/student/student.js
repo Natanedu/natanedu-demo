@@ -658,6 +658,7 @@ var registerStudent = function(fName,lName) {
       console.log(account);
 
       lectureInstance.listedStudents(account, function(err, res) {
+        wait_instance.close();
         if(err != null) {
           swal ( "Oops" ,  "Something went wrong!" ,  "error" );
         }
